@@ -56,8 +56,8 @@ public class DriveTrain extends SubsystemBase{
     }
         
     public void drive(double l, double r) {
-        left1.set(-l);
-        right1.set(r);
+        left1.set(-l * 0.1);
+        right1.set(r * 0.1);
     }
 
     public void stop() {

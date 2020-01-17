@@ -16,4 +16,37 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+    
+    /* Motor Ports */
+    public static final int FRONT_ONE_PIN = 1, 
+                            FRONT_TWO_PIN = 2,
+                            FRONT_THREE_PIN = 3,
+                            BACK_ONE_PIN = 4,
+                            BACK_TWO_PIN = 5,                   
+                            BACK_THREE_PIN = 6;
+
+    /* Joystick Ports */
+    public static final int joy1 = 0,
+                            joy2 = 1,
+                            joy3 = 2,
+                            joy4 = 5; // Button for Limelight
+
+    /* Joystick Buttons */
+    public static final int arm1 = 4,
+                            arm2 = 1,
+                            arm3 = 6,
+                            arm4 = 5,
+                            arm5 = 3;
+
+    /* Default Autonomous Values */
+    public static final double autoAngle = 90,
+                                d1 = 40,
+                                d2 = 0;
+
+    /* Hatch Panel Arm Fixed Power */
+    public static final double armPower = 1.0;
+
+    /* Hall Effect Sensor Port */
+    public static final int sensorPrt = 0;
+
 }

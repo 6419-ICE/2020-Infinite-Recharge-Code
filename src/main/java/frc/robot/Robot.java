@@ -10,11 +10,6 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.PWMVictorSPX;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import frc.robot.subsystems.DriveTrain;
-
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
  * each mode, as described in the TimedRobot documentation. If you change the name of this class or
@@ -22,7 +17,6 @@ import frc.robot.subsystems.DriveTrain;
  * project.
  */
 public class Robot extends TimedRobot {
-  private CommandBase teleopCommand;
   private CommandBase autoCommand;
   private RobotContainer m_robotContainer; // Replaces OI
 
@@ -100,7 +94,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    
+
   }
 
   @Override

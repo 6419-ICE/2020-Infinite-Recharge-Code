@@ -10,8 +10,10 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj2.command.CommandGroupBase;
 import frc.robot.commands.HandleDriveTrain;
 import frc.robot.subsystems.*;
+import frc.robot.commands.*;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -24,7 +26,7 @@ public class RobotContainer {
   public static final DriveTrain drivetrain = new DriveTrain();
   private static Joystick leftJoystick;
   private static Joystick rightJoystick;
-
+  public final AutoGroup m_AutoGroup = new AutoGroup();
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
@@ -36,7 +38,7 @@ public class RobotContainer {
 
   /**
    * Use this method to define your button->command mappings.  Buttons can be created by
-   * instantiating a {@link GenericHID} or one of its subclasses ({@link
+   * instantiating a {@link GenericHID} or none of its subclasses ({@link
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
@@ -53,6 +55,9 @@ public class RobotContainer {
     return rightJoystick;
   }
 
+  public CommandGroupBase getAutonomousCommand(){
+    return m_AutoGroup;
+  }
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *

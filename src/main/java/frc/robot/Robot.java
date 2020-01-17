@@ -8,7 +8,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.CommandGroupBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  * project.
  */
 public class Robot extends TimedRobot {
-  private CommandBase autoCommand;
+  private CommandGroupBase autoCommand;
   private RobotContainer m_robotContainer; // Replaces OI
 
   /**
@@ -63,7 +63,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-
+    autoCommand = m_robotContainer.getAutonomousCommand();
     // schedule the autonomous command (example)
     if (autoCommand != null) {
       autoCommand.schedule();
@@ -75,7 +75,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
-    
+    autoCommand.execute();
   }
 
   @Override

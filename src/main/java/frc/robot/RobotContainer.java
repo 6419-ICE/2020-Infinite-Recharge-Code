@@ -32,7 +32,7 @@ public class RobotContainer {
    */
   public RobotContainer() {
     // Configure the button bindings
-    drivetrain.setDefaultCommand(new HandleDriveTrain());
+    drivetrain.setDefaultCommand(new HandleDriveTrain(drivetrain));
     configureButtonBindings();
   }
 

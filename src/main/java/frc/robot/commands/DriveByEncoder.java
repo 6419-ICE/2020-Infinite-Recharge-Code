@@ -2,6 +2,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
+import frc.robot.subsystems.DriveTrain;
 
 import com.revrobotics.CANEncoder;
 import edu.wpi.first.wpilibj.Encoder;
@@ -19,10 +20,10 @@ public class DriveByEncoder extends CommandBase{
      *
      * @param subsystem The subsystem used by this command.
      */
-    public DriveByEncoder(double distance) {
-        addRequirements(RobotContainer.drivetrain);
-        leftEncoder = RobotContainer.drivetrain.motorEncoderL1;
-        rightEncoder = RobotContainer.drivetrain.motorEncoderR1;
+    public DriveByEncoder(DriveTrain drive, double distance) {
+        addRequirements(drive);
+        leftEncoder = drive.motorEncoderL1;
+        rightEncoder = drive.motorEncoderR1;
         this.distance = distance;
       }
 

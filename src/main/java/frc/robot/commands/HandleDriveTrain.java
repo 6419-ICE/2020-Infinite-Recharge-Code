@@ -2,6 +2,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
+import frc.robot.subsystems.DriveTrain;
 
 public class HandleDriveTrain extends CommandBase{
     @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
@@ -11,8 +12,8 @@ public class HandleDriveTrain extends CommandBase{
      *
      * @param subsystem The subsystem used by this command.
      */
-    public HandleDriveTrain() {
-        addRequirements(RobotContainer.drivetrain);
+    public HandleDriveTrain(DriveTrain drive) {
+        addRequirements(drive);
       }
 
         // Called when the command is initially scheduled.

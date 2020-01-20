@@ -12,7 +12,7 @@ import frc.robot.Constants;
 
 public class DriveTrain extends SubsystemBase{
 
-    private ADIS16448_IMU imu;
+    public ADIS16448_IMU imu;
 
     private CANSparkMax left1, left2, left3, right1, right2, right3;
     public CANEncoder   motorEncoderL1,

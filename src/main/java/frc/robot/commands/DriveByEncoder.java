@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.DriveTrain;
 
+import com.analog.adis16448.frc.ADIS16448_IMU;
 import com.revrobotics.CANEncoder;
 import edu.wpi.first.wpilibj.Encoder;
 
@@ -14,6 +15,8 @@ public class DriveByEncoder extends CommandBase{
     private CANEncoder leftEncoder, rightEncoder;
     private double distance;
     private boolean leftFinished, rightFinished;
+    private ADIS16448_IMU imu;
+    private double originalHeader;
 
     /**
      * Creates a new DriveByEncoder Command.
@@ -24,6 +27,7 @@ public class DriveByEncoder extends CommandBase{
         addRequirements(drive);
         leftEncoder = drive.motorEncoderL1;
         rightEncoder = drive.motorEncoderR1;
+        imu = drive.imu;
         this.distance = distance;
       }
 
@@ -31,6 +35,7 @@ public class DriveByEncoder extends CommandBase{
     @Override
     public void initialize() {
         RobotContainer.drivetrain.drive(0, 0); // Don't move on init
+        originalHeader = imu.getAngle();
         resetEncoders();
         
     }
@@ -42,14 +47,20 @@ public class DriveByEncoder extends CommandBase{
         leftFinished = leftEncoder.getPosition() - leftStartValue >= distance;
         rightFinished = leftEncoder.getPosition() - rightStartValue >= distance;
 
-        if(!leftFinished) {
-            RobotContainer.drivetrain.drive(0.3, 0);
+        if(imu.getAngle() <= originalHeader - 2 && imu.getAngle() >= originalHeader + 2){
+            if(!leftFinished) {
+                RobotContainer.drivetrain.drive(0.3, 0);
+            }
+    
+            if(!rightFinished) {
+                RobotContainer.drivetrain.drive(0, 0.3);
+            }
+        } 
+        else if(imu.getAngle() <= originalHeader - 2) {
+            RobotContainer.drivetrain.drive(0.3, -0.3);
+        }else if(imu.getAngle() >= originalHeader + 2) {
+            RobotContainer.drivetrain.drive(-0.3, 0.3);
         }
-
-        if(!rightFinished) {
-            RobotContainer.drivetrain.drive(0, 0.3);
-        }
-
         super.execute();
     }
 

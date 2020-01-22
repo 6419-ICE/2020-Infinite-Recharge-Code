@@ -8,8 +8,11 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.CommandGroupBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.DriveByEncoder;
+import frc.robot.commands.DriveBySeconds;
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
  * each mode, as described in the TimedRobot documentation. If you change the name of this class or
@@ -64,6 +67,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     autoCommand = m_robotContainer.getAutonomousCommand();
+    //driveByEncoder = new DriveBySeconds(RobotContainer.drivetrain, 10);
     // schedule the autonomous command (example)
     if (autoCommand != null) {
       autoCommand.schedule();
@@ -75,7 +79,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
-    autoCommand.execute();
   }
 
   @Override
@@ -94,7 +97,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-
+    //RobotContainer .drivetrain.drive(0.3, 0.3);
   }
 
   @Override

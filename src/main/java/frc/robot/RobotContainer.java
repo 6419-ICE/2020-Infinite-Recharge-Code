@@ -26,7 +26,7 @@ public class RobotContainer {
   public static final DriveTrain drivetrain = new DriveTrain();
   private static Joystick leftJoystick;
   private static Joystick rightJoystick;
-  public final AutoGroup m_AutoGroup = new AutoGroup();
+  public final AutoGroup m_AutoGroup = new AutoGroup(drivetrain);
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */

@@ -19,7 +19,7 @@ public class HandleDriveTrain extends CommandBase{
         // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        RobotContainer.drivetrain.drive(0, 0); // Don't move on init
+        RobotContainer.drivetrain.stop(); // Don't move on init
     }
 
     // Called every time the scheduler runs while the command is scheduled.

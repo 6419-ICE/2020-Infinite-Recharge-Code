@@ -6,7 +6,7 @@ import frc.robot.subsystems.DriveTrain;
 
 import com.analog.adis16448.frc.ADIS16448_IMU;
 import com.revrobotics.CANEncoder;
-import edu.wpi.first.wpilibj.Encoder;
+
 
 public class DriveByEncoder extends CommandBase{
     @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
@@ -34,6 +34,8 @@ public class DriveByEncoder extends CommandBase{
         // Called when the command is initially scheduled.
     @Override
     public void initialize() {
+        leftEncoder.setPosition(0.0);
+        rightEncoder.setPosition(0.0);
         RobotContainer.drivetrain.drive(0, 0); // Don't move on init
         originalHeader = imu.getAngle();
         resetEncoders();

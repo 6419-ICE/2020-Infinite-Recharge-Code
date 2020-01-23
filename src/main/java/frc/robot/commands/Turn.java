@@ -1,43 +1,46 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj.Timer;
+
+import com.analog.adis16448.frc.ADIS16448_IMU;
 import frc.robot.RobotContainer;
 
-public class DriveBySeconds extends CommandBase{
+public class Turn extends CommandBase{
     @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-    private Timer timer;
-    private double timeLimit;
     private boolean done;
-    /**
-     * Creates a new HandleDriveTrain Command.
-     *
-     * @param subsystem The subsystem used by this command.
-     */
-    public DriveBySeconds(double seconds) {
-        timeLimit = seconds;
-        timer = new Timer();
+    private ADIS16448_IMU imu;
+    private double initAngle;
+    private double angle;
+    private double desiredAngle;
+    
+    public Turn(double angle) {
+        imu = RobotContainer.drivetrain.imu;
         addRequirements(RobotContainer.drivetrain);
-    }
+        this.angle = angle;
+      }
 
         // Called when the command is initially scheduled.
     @Override
     public void initialize() {
         done = false;
-        timer.reset();
+        imu.reset();
+        initAngle = imu.getAngle();
+        System.out.println(initAngle);
+        desiredAngle = initAngle + angle;
+        System.out.println(desiredAngle);
         RobotContainer.drivetrain.drive(0, 0); // Don't move on init
-        timer.start();
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        if (timer.get() > timeLimit) {
+        
+        if (Math.abs(imu.getAngle()) > Math.abs(desiredAngle)) {
             RobotContainer.drivetrain.drive(0.0, 0.0);
-            
+            System.out.println(imu.getAngle());
             done = true;
         } else {
-            RobotContainer.drivetrain.drive(1, 1);
+            RobotContainer.drivetrain.drive(.2, -.2);
         }
         super.execute();
     }

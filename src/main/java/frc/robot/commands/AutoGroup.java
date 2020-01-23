@@ -11,6 +11,7 @@ public class AutoGroup extends SequentialCommandGroup {
      * @param subsystem The subsystem used by this command.
      */
     public AutoGroup() {
-        addCommands(new DriveBySeconds(10));
+        addCommands(new Turn(360));
+        // addCommands(new DriveBySeconds(3.0));
     }
 }

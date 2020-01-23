@@ -3,7 +3,6 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.RobotContainer;
-import frc.robot.subsystems.DriveTrain;
 
 public class DriveBySeconds extends CommandBase{
     @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
@@ -14,10 +13,10 @@ public class DriveBySeconds extends CommandBase{
      *
      * @param subsystem The subsystem used by this command.
      */
-    public DriveBySeconds(DriveTrain drive, double seconds) {
+    public DriveBySeconds(double seconds) {
         timeLimit = seconds;
         timer = new Timer();
-        addRequirements(drive);
+        addRequirements(RobotContainer.drivetrain);
       }
 
         // Called when the command is initially scheduled.

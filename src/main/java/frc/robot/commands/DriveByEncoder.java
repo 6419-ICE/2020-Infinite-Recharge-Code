@@ -2,11 +2,8 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
-import frc.robot.subsystems.DriveTrain;
 
-import com.analog.adis16448.frc.ADIS16448_IMU;
 import com.revrobotics.CANEncoder;
-
 
 public class DriveByEncoder extends CommandBase{
     @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
@@ -15,7 +12,6 @@ public class DriveByEncoder extends CommandBase{
     private double rotations = .204;
     private double InchesPerRotation = 6 * Math.PI / rotations;
     private double angle;
-    private ADIS16448_IMU imu;
 
     /**
      * Creates a new DriveByEncoder Command.
@@ -27,7 +23,7 @@ public class DriveByEncoder extends CommandBase{
         leftEncoder = RobotContainer.drivetrain.motorEncoderL1;
         rightEncoder = RobotContainer.drivetrain.motorEncoderR1;
         distance = d;
-        angle = imu.getAngle();
+        angle = RobotContainer.drivetrain.imu.getAngle();
       }
 
         // Called when the command is initially scheduled.

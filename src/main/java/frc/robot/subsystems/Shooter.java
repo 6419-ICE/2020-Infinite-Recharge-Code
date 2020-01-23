@@ -7,9 +7,13 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.PWMVictorSPX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Shooter extends SubsystemBase {
+  private PWMVictorSPX shooterMotor1;
+  //private PWMVictorSPX shooterMotor2;
+  
   /**
    * Creates a new Shooter.
    */

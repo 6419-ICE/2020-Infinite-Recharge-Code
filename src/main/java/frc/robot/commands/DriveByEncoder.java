@@ -10,25 +10,24 @@ import com.revrobotics.CANEncoder;
 
 public class DriveByEncoder extends CommandBase{
     @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-
-    private double leftStartValue, rightStartValue;
     private CANEncoder leftEncoder, rightEncoder;
     private double distance;
-    private boolean leftFinished, rightFinished;
+    private double rotations = .204;
+    private double InchesPerRotation = 6 * Math.PI / rotations;
+    private double angle;
     private ADIS16448_IMU imu;
-    private double originalHeader;
 
     /**
      * Creates a new DriveByEncoder Command.
      *
      * @param subsystem The subsystem used by this command.
      */
-    public DriveByEncoder(DriveTrain drive, double distance) {
-        addRequirements(drive);
-        leftEncoder = drive.motorEncoderL1;
-        rightEncoder = drive.motorEncoderR1;
-        imu = drive.imu;
-        this.distance = distance;
+    public DriveByEncoder(double d) {
+        addRequirements(RobotContainer.drivetrain);
+        leftEncoder = RobotContainer.drivetrain.motorEncoderL1;
+        rightEncoder = RobotContainer.drivetrain.motorEncoderR1;
+        distance = d;
+        angle = imu.getAngle();
       }
 
         // Called when the command is initially scheduled.
@@ -37,32 +36,13 @@ public class DriveByEncoder extends CommandBase{
         leftEncoder.setPosition(0.0);
         rightEncoder.setPosition(0.0);
         RobotContainer.drivetrain.drive(0, 0); // Don't move on init
-        originalHeader = imu.getAngle();
-        resetEncoders();
         
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        
-        leftFinished = leftEncoder.getPosition() - leftStartValue >= distance;
-        rightFinished = leftEncoder.getPosition() - rightStartValue >= distance;
-
-        if(imu.getAngle() <= originalHeader - 2 && imu.getAngle() >= originalHeader + 2){
-            if(!leftFinished) {
-                RobotContainer.drivetrain.drive(0.3, 0);
-            }
-    
-            if(!rightFinished) {
-                RobotContainer.drivetrain.drive(0, 0.3);
-            }
-        } 
-        else if(imu.getAngle() <= originalHeader - 2) {
-            RobotContainer.drivetrain.drive(0.3, -0.3);
-        }else if(imu.getAngle() >= originalHeader + 2) {
-            RobotContainer.drivetrain.drive(-0.3, 0.3);
-        }
+        // RobotContainer.drivetrain.drive(1, 1);
         super.execute();
     }
 
@@ -75,11 +55,8 @@ public class DriveByEncoder extends CommandBase{
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        return leftFinished && rightFinished;
+        return true;
     }
 
-    private void resetEncoders() {
-        leftStartValue = leftEncoder.getPosition();
-        rightStartValue = rightEncoder.getPosition();
-    }
+
 }

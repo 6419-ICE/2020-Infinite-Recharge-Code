@@ -64,6 +64,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     autoCommand = m_robotContainer.getAutonomousCommand();
+    //driveByEncoder = new DriveBySeconds(RobotContainer.drivetrain, 10);
     // schedule the autonomous command (example)
     if (autoCommand != null) {
       autoCommand.schedule();
@@ -75,7 +76,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
-    autoCommand.execute();
   }
 
   @Override
@@ -94,7 +94,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-
+    //RobotContainer .drivetrain.drive(0.3, 0.3);
   }
 
   @Override

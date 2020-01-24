@@ -32,11 +32,7 @@ public final class Constants {
                             joy4 = 5; // Button for Limelight
 
     /* Joystick Buttons */
-    public static final int arm1 = 4,
-                            arm2 = 1,
-                            arm3 = 6,
-                            arm4 = 5,
-                            arm5 = 3;
+    public static final int shooterButton = 1;
 
     /* Default Autonomous Values */
     public static final double autoAngle = 90,
@@ -48,5 +44,4 @@ public final class Constants {
 
     /* Hall Effect Sensor Port */
     public static final int sensorPrt = 0;
-
 }

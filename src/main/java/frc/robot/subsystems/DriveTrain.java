@@ -6,13 +6,17 @@ import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants;
 
-public class DriveTrain extends SubsystemBase{
+public class DriveTrain extends PIDSubsystem{
 
     public ADIS16448_IMU imu;
+
+    public static double kI, kP, kD, kF;
 
     private CANSparkMax left1, left2, left3, right1, right2, right3;
     public CANEncoder   motorEncoderL1,
@@ -20,12 +24,18 @@ public class DriveTrain extends SubsystemBase{
                         motorEncoderL3,
                         motorEncoderR1,
                         motorEncoderR2,
-                        motorEncoderR3;
-    
+                        motorEncoderR3;    
+
+    private double rotations = .204;
+    private double InchesPerRotation = 6 * Math.PI * rotations;
+
     public CANPIDController leftController,
                             rightController;
     
     public DriveTrain(){
+        super(new PIDController(kP, kI, kD, kF));
+        getController().setTolerance(0.1);
+        disable();
         imu = new ADIS16448_IMU();
         imu.calibrate();
 
@@ -42,6 +52,12 @@ public class DriveTrain extends SubsystemBase{
         motorEncoderR1 = right1.getEncoder();
         motorEncoderR2 = right2.getEncoder();
         motorEncoderR3 = right3.getEncoder();
+
+        leftController = left1.getPIDController();
+        rightController = right1.getPIDController();
+        leftController.setOutputRange(-1, 1);
+        rightController.setOutputRange(-1, 1);
+        
         
         left2.follow(left1);
         left3.follow(left1);
@@ -64,4 +80,32 @@ public class DriveTrain extends SubsystemBase{
         left1.set(0.0);
         right1.set(0.0);
     }
+
+
+
+    @Override
+    protected double getMeasurement() {
+        return motorEncoderL1.getPosition() * InchesPerRotation;
+    }
+
+    @Override
+    protected void useOutput(double output, double setpoint) {
+        drive(output*.5, -output*.5);
+    }
+    public void enablePID (boolean enabled){
+        if(enabled){
+            enable();
+        } else if(!enabled){
+            disable();
+        }
+    }
+
+    public void setHeadingTarget(double target){
+        getController().setSetpoint(target);
+    }
+
+    public double getHeadingTarget(){
+        return getController().getSetpoint();
+    }
+
 }

@@ -53,14 +53,14 @@ public class DriveByEncoder extends CommandBase{
         SmartDashboard.putNumber("Left Encoder", leftEncoder.getPosition()*InchesPerRotation);
         SmartDashboard.putNumber("Right Encoder", rightEncoder.getPosition() * -InchesPerRotation);
         if(imu.getAngle() <= originalHeader+2.0 && imu.getAngle() >= originalHeader-2.0 && leftEncoder.getPosition()*InchesPerRotation < distance && rightEncoder.getPosition() * -InchesPerRotation < distance){
-            RobotContainer.drivetrain.drive(.5, .5);
+            RobotContainer.drivetrain.enablePID(true);
         } else if (imu.getAngle() >= originalHeader+2.0){
             RobotContainer.drivetrain.drive(0, 0.25);
         } else if (imu.getAngle() <= originalHeader-2.0){
             RobotContainer.drivetrain.drive(0.25, 0);
         }
         if (leftEncoder.getPosition() * InchesPerRotation > distance|| rightEncoder.getPosition() * -InchesPerRotation > distance){
-            RobotContainer.drivetrain.drive(0, 0);
+            RobotContainer.drivetrain.enablePID(false);
             done = true;
         }
     }

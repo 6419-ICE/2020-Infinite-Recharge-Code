@@ -7,6 +7,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -33,9 +34,9 @@ public class DriveTrain extends PIDSubsystem{
                             rightController;
     
     public DriveTrain(){
-        super(new PIDController(kP, kI, kD, kF));
+        super(new PIDController(0.04, 0, 0.08, 0));
         getController().setTolerance(0.1);
-        disable();
+        enable();
         imu = new ADIS16448_IMU();
         imu.calibrate();
 
@@ -72,8 +73,8 @@ public class DriveTrain extends PIDSubsystem{
     }
         
     public void drive(double l, double r) {
-        left1.set(l * 0.15);
-        right1.set(-r * 0.15);
+        left1.set(l * 0.4);
+        right1.set(-r * 0.4);
     }
 
     public void stop() {
@@ -90,6 +91,7 @@ public class DriveTrain extends PIDSubsystem{
 
     @Override
     protected void useOutput(double output, double setpoint) {
+        SmartDashboard.putNumber("PID Output", output);
         drive(output*.5, -output*.5);
     }
     public void enablePID (boolean enabled){

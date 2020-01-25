@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.DriveTrain;
@@ -25,8 +26,11 @@ public class HandleDriveTrain extends CommandBase{
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
+        double power = RobotContainer.getLeftJoy().getY();
+        power = Math.copySign(Math.abs(Math.pow(power, 2)), power);
+        SmartDashboard.putNumber("Power", power);
         // RobotContainer.drivetrain.drive(RobotContainer.getLeftJoy().getRawAxis(1), RobotContainer.getRightJoy().getRawAxis(1));
-        RobotContainer.drivetrain.arcadeDrive(RobotContainer.getLeftJoy().getY(), RobotContainer.getRightJoy().getX());
+        RobotContainer.drivetrain.arcadeDrive(power, RobotContainer.getRightJoy().getX());
         super.execute();
     }
 

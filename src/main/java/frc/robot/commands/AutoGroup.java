@@ -12,9 +12,11 @@ public class AutoGroup extends SequentialCommandGroup {
      */
     public AutoGroup() {
         /* Trench Run */
-        addCommands(new Turn(160));
-        addCommands(new DriveBySeconds(3.0, false));
-        addCommands(new DriveBySeconds(3.0, true));
-        addCommands(new Turn(160));
+        //addCommands(new Turn(180));
+        //addCommands(new DriveByEncoder(200));
+        //addCommands(new DriveByEncoder(-20));
+        //addCommands(new Turn(160));
+        
+        addCommands(new DriveToPoint(0, -200));
     }
 }

@@ -26,7 +26,7 @@ public class HandleDriveTrain extends CommandBase{
     @Override
     public void execute() {
         // RobotContainer.drivetrain.drive(RobotContainer.getLeftJoy().getRawAxis(1), RobotContainer.getRightJoy().getRawAxis(1));
-        RobotContainer.drivetrain.arcadeDrive(RobotContainer.getRightJoy().getX(), RobotContainer.getLeftJoy().getY());
+        RobotContainer.drivetrain.arcadeDrive(RobotContainer.getLeftJoy().getY(), RobotContainer.getRightJoy().getX());
         super.execute();
     }
 

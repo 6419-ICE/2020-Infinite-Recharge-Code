@@ -9,18 +9,16 @@ public class DriveBySeconds extends CommandBase{
     private Timer timer;
     private double timeLimit;
     private boolean done;
-    /**
-     * Creates a new HandleDriveTrain Command.
-     *
-     * @param subsystem The subsystem used by this command.
-     */
-    public DriveBySeconds(double seconds) {
+    private boolean backwards;
+
+    public DriveBySeconds(double seconds, boolean backwards) {
         timeLimit = seconds;
+        this.backwards = backwards;
         timer = new Timer();
         addRequirements(RobotContainer.drivetrain);
     }
 
-        // Called when the command is initially scheduled.
+    // Called when the command is initially scheduled.
     @Override
     public void initialize() {
         done = false;
@@ -37,7 +35,11 @@ public class DriveBySeconds extends CommandBase{
             
             done = true;
         } else {
-            RobotContainer.drivetrain.drive(1, 1);
+            if (backwards) {
+                RobotContainer.drivetrain.drive(-0.25, -0.25);
+            } else {
+                RobotContainer.drivetrain.drive(0.25, 0.25);
+            }
         }
         super.execute();
     }

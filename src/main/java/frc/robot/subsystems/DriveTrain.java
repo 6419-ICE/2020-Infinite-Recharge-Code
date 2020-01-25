@@ -80,11 +80,11 @@ public class DriveTrain extends PIDSubsystem{
         right1.set(-r * 0.8);
     }
 
-    public void arcadeDrive(double x, double y) {
-        double left = y - x;
-        double right = y + x;
-        left1.set(left);
-        right1.set(right);
+    public void arcadeDrive(double p, double t) {
+        double powValue = p * -1;
+        double turnValue = t; // Do not need to invert input
+        left1.set((turnValue + powValue) * 0.8);
+        right1.set((turnValue - powValue) * 0.8);
     }
 
     public void stop() {

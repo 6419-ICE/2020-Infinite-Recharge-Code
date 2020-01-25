@@ -60,6 +60,13 @@ public class DriveTrain extends SubsystemBase{
         right1.set(-r * 0.5);
     }
 
+    public void arcadeDrive(double x, double y) {
+        double left = y - x;
+        double right = y + x;
+        left1.set(left);
+        right1.set(right);
+    }
+
     public void stop() {
         left1.set(0.0);
         right1.set(0.0);

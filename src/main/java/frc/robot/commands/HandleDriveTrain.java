@@ -25,7 +25,8 @@ public class HandleDriveTrain extends CommandBase{
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        RobotContainer.drivetrain.drive(RobotContainer.getLeftJoy().getRawAxis(1), RobotContainer.getRightJoy().getRawAxis(1));
+        // RobotContainer.drivetrain.drive(RobotContainer.getLeftJoy().getRawAxis(1), RobotContainer.getRightJoy().getRawAxis(1));
+        RobotContainer.drivetrain.arcadeDrive(RobotContainer.getRightJoy().getX(), RobotContainer.getLeftJoy().getY());
         super.execute();
     }
 

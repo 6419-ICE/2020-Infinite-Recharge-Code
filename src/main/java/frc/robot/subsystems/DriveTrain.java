@@ -4,6 +4,7 @@ import com.analog.adis16448.frc.ADIS16448_IMU;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.controller.PIDController;
@@ -27,8 +28,10 @@ public class DriveTrain extends PIDSubsystem{
                         motorEncoderR2,
                         motorEncoderR3;    
 
+    
     private double rotations = .204;
     private double InchesPerRotation = 6 * Math.PI * rotations;
+    private double rotationsPerInch = 1.0/InchesPerRotation;
 
     public CANPIDController leftController,
                             rightController;
@@ -56,6 +59,7 @@ public class DriveTrain extends PIDSubsystem{
 
         leftController = left1.getPIDController();
         rightController = right1.getPIDController();
+
         leftController.setOutputRange(-1, 1);
         rightController.setOutputRange(-1, 1);
         
@@ -73,8 +77,8 @@ public class DriveTrain extends PIDSubsystem{
     }
         
     public void drive(double l, double r) {
-        left1.set(l * 0.4);
-        right1.set(-r * 0.4);
+        left1.set(l * 0.8);
+        right1.set(-r * 0.8);
     }
 
     public void stop() {
@@ -94,6 +98,12 @@ public class DriveTrain extends PIDSubsystem{
         SmartDashboard.putNumber("PID Output", output);
         drive(output*.5, -output*.5);
     }
+
+    public void setSetpoints(double left, double right){
+        leftController.setReference(left, ControlType.kPosition);
+        rightController.setReference(right, ControlType.kPosition);
+    }
+
     public void enablePID (boolean enabled){
         if(enabled){
             enable();

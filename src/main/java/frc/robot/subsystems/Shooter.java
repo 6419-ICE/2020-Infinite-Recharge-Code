@@ -7,18 +7,26 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.PWMVictorSPX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Shooter extends SubsystemBase {
+  private PWMVictorSPX shooterMotor1;
+  //private PWMVictorSPX shooterMotor2;
+  
   /**
    * Creates a new Shooter.
    */
   public Shooter() {
-
+    shooterMotor1 = new PWMVictorSPX(0);
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+  }
+
+  public void shoot(double p){
+    shooterMotor1.set(p);
   }
 }

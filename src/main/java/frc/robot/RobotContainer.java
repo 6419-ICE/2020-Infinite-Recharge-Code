@@ -9,9 +9,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandGroupBase;
-import frc.robot.commands.HandleDriveTrain;
 import frc.robot.subsystems.*;
 import frc.robot.commands.*;
 
@@ -24,15 +22,17 @@ import frc.robot.commands.*;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   public static final DriveTrain drivetrain = new DriveTrain();
+  public static final Shooter shooter = new Shooter();
   private static Joystick leftJoystick;
   private static Joystick rightJoystick;
-  public final AutoGroup m_AutoGroup = new AutoGroup();
+  public final CommandGroupBase m_AutoGroup = new AutoGroup();
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
     // Configure the button bindings
     drivetrain.setDefaultCommand(new HandleDriveTrain(drivetrain));
+    shooter.setDefaultCommand(new HandleShooter(shooter));
     configureButtonBindings();
   }
 
@@ -57,6 +57,10 @@ public class RobotContainer {
 
   public CommandGroupBase getAutonomousCommand(){
     return m_AutoGroup;
+  }
+
+  public static boolean getShooterButton(){
+    return rightJoystick.getRawButton(1);
   }
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

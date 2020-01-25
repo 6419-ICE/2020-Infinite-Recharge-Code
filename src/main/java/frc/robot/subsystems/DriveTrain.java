@@ -4,15 +4,20 @@ import com.analog.adis16448.frc.ADIS16448_IMU;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 
 import frc.robot.Constants;
 
-public class DriveTrain extends SubsystemBase{
+public class DriveTrain extends PIDSubsystem{
 
     public ADIS16448_IMU imu;
+
+    public static double kI, kP, kD, kF;
 
     private CANSparkMax left1, left2, left3, right1, right2, right3;
     public CANEncoder   motorEncoderL1,
@@ -20,12 +25,20 @@ public class DriveTrain extends SubsystemBase{
                         motorEncoderL3,
                         motorEncoderR1,
                         motorEncoderR2,
-                        motorEncoderR3;
+                        motorEncoderR3;    
+
     
+    private double rotations = .204;
+    private double InchesPerRotation = 6 * Math.PI * rotations;
+    private double rotationsPerInch = 1.0/InchesPerRotation;
+
     public CANPIDController leftController,
                             rightController;
     
     public DriveTrain(){
+        super(new PIDController(0.04, 0, 0.08, 0));
+        getController().setTolerance(0.1);
+        enable();
         imu = new ADIS16448_IMU();
         imu.calibrate();
 
@@ -42,6 +55,13 @@ public class DriveTrain extends SubsystemBase{
         motorEncoderR1 = right1.getEncoder();
         motorEncoderR2 = right2.getEncoder();
         motorEncoderR3 = right3.getEncoder();
+
+        leftController = left1.getPIDController();
+        rightController = right1.getPIDController();
+
+        leftController.setOutputRange(-1, 1);
+        rightController.setOutputRange(-1, 1);
+        
         
         left2.follow(left1);
         left3.follow(left1);
@@ -56,8 +76,8 @@ public class DriveTrain extends SubsystemBase{
     }
         
     public void drive(double l, double r) {
-        left1.set(l * 0.5);
-        right1.set(-r * 0.5);
+        left1.set(l * 0.8);
+        right1.set(-r * 0.8);
     }
 
     public void arcadeDrive(double x, double y) {
@@ -71,4 +91,39 @@ public class DriveTrain extends SubsystemBase{
         left1.set(0.0);
         right1.set(0.0);
     }
+
+
+
+    @Override
+    protected double getMeasurement() {
+        return motorEncoderL1.getPosition() * InchesPerRotation;
+    }
+
+    @Override
+    protected void useOutput(double output, double setpoint) {
+        SmartDashboard.putNumber("PID Output", output);
+        drive(output*.5, -output*.5);
+    }
+
+    public void setSetpoints(double left, double right){
+        leftController.setReference(left, ControlType.kPosition);
+        rightController.setReference(right, ControlType.kPosition);
+    }
+
+    public void enablePID (boolean enabled){
+        if(enabled){
+            enable();
+        } else if(!enabled){
+            disable();
+        }
+    }
+
+    public void setHeadingTarget(double target){
+        getController().setSetpoint(target);
+    }
+
+    public double getHeadingTarget(){
+        return getController().getSetpoint();
+    }
+
 }

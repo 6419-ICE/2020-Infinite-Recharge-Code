@@ -9,11 +9,8 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.controller.PIDController;
-import edu.wpi.first.wpilibj.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
-import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -128,7 +125,7 @@ public class DriveTrain extends SubsystemBase {
 
     public void arcadeDrive(double p, double t) {
         double powValue = p * -1;
-        double turnValue = t ; // Do not need to invert input
+        double turnValue = t ; // Do not need to invert turn input
         left1.set((turnValue + powValue) * 0.8);
         right1.set((turnValue - powValue) * 0.8);
     }

@@ -2,7 +2,6 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-import com.analog.adis16448.frc.ADIS16448_IMU;
 import frc.robot.RobotContainer;
 
 import static frc.robot.RobotContainer.drivetrain;

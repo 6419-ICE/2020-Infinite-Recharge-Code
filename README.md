@@ -2,7 +2,10 @@
 Code for ICE Robotics FRC Team 6419 Infinite Recharge Season
 
 # Accomplishments:
-- N/A
+- Tank and Arcade Drive modes
+- PID and Encoder Drive for Autonomous
+- Successful Trench Run Autonomous
+- Simultaneous drive and turret control (2 drivers)
 
 # Goals:
 - Collect/Dispense Power Cells

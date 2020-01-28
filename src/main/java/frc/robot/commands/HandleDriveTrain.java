@@ -27,10 +27,12 @@ public class HandleDriveTrain extends CommandBase{
     @Override
     public void execute() {
         double power = RobotContainer.getLeftJoy().getY();
+        double turn = RobotContainer.getRightJoy().getX();
         power = Math.copySign(Math.abs(Math.pow(power, 2)), power);
         SmartDashboard.putNumber("Power", power);
+        SmartDashboard.putNumber("Turn", turn);
         // RobotContainer.drivetrain.drive(RobotContainer.getLeftJoy().getRawAxis(1), RobotContainer.getRightJoy().getRawAxis(1));
-        RobotContainer.drivetrain.arcadeDrive(power, RobotContainer.getRightJoy().getX());
+        RobotContainer.drivetrain.arcadeDrive(power, turn);
         super.execute();
     }
 

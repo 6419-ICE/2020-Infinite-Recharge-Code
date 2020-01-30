@@ -11,11 +11,13 @@ public class DriveByEncoder extends CommandBase{
     private CANEncoder leftEncoder, rightEncoder;
 
     private double distance;
+    private final double inchesPerRotation = 50.0 / 13.0;
 
     public DriveByEncoder(double d) {
         addRequirements(RobotContainer.drivetrain);
         leftEncoder = RobotContainer.drivetrain.motorEncoderL1;
         rightEncoder = RobotContainer.drivetrain.motorEncoderR1;
+
         distance = d;
       }
 
@@ -35,8 +37,7 @@ public class DriveByEncoder extends CommandBase{
     public void execute() {
         SmartDashboard.putNumber("Left Encoder", leftEncoder.getPosition());
         SmartDashboard.putNumber("Right Encoder", rightEncoder.getPosition());
-        
-        
+    
         /* Drive to set number of inches 
         if (leftEncoder.getPosition() * inchesPerRotation < distance && rightEncoder.getPosition() * -inchesPerRotation < distance){
             RobotContainer.drivetrain.drive(0.5, 0.5);
@@ -65,7 +66,7 @@ public class DriveByEncoder extends CommandBase{
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        return false;
+        return leftEncoder.getPosition() > distance / inchesPerRotation || Math.abs(rightEncoder.getPosition()) > distance / inchesPerRotation;
     }
 
 

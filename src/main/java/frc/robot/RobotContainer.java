@@ -26,7 +26,7 @@ public class RobotContainer {
   public static final Shooter shooter = new Shooter();
   private static Joystick leftJoystick;
   private static Joystick rightJoystick;
-  public final CommandGroupBase m_AutoGroup = new AutoGroup();
+  public final CommandGroupBase m_AutoGroup = new AutoGroup(2);
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */

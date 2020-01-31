@@ -27,9 +27,7 @@ public final class Constants {
 
     /* Joystick Ports */
     public static final int joy1 = 0,
-                            joy2 = 1,
-                            joy3 = 2,
-                            joy4 = 5; // Button for Limelight
+                            joy2 = 1;
 
     /* Joystick Buttons */
     public static final int shooterButton = 1;

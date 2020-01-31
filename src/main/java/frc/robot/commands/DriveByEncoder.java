@@ -66,7 +66,7 @@ public class DriveByEncoder extends CommandBase{
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        return rightEncoder.getPosition() * inchesPerRotation  >= distance*.95 || leftEncoder.getPosition() * inchesPerRotation  >= distance*.95;
+        return rightEncoder.getPosition() * inchesPerRotation >= distance*.95 || leftEncoder.getPosition() * inchesPerRotation >= distance*.95;
     }
 
 

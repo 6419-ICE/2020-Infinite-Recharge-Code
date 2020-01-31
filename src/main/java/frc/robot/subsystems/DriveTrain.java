@@ -30,7 +30,7 @@ public class DriveTrain extends SubsystemBase {
 
     
     private double rotations = .204;
-    private double InchesPerRotation = 6 * Math.PI * rotations;
+    private final double inchesPerRotation = 6 * Math.PI * rotations;
     //private double rotationsPerInch = 1.0/InchesPerRotation;
 
     public CANPIDController leftController,
@@ -118,6 +118,10 @@ public class DriveTrain extends SubsystemBase {
         }
     }
 
+    public double getInchesPerRotation() {
+        return inchesPerRotation;
+    }
+
     public void drive(double l, double r) {
         left1.set(l);
         right1.set(-r);
@@ -144,8 +148,8 @@ public class DriveTrain extends SubsystemBase {
     }
 
     public void setSetpoints(double left, double right){
-        leftController.setReference(left/InchesPerRotation, ControlType.kPosition);
-        rightController.setReference(-right/InchesPerRotation, ControlType.kPosition);
+        leftController.setReference(left/inchesPerRotation, ControlType.kPosition);
+        rightController.setReference(-right/inchesPerRotation, ControlType.kPosition);
     }
 
     public void setHeadingPidEnabled (boolean enabled){

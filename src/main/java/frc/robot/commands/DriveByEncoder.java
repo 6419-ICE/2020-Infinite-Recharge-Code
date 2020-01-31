@@ -11,7 +11,7 @@ public class DriveByEncoder extends CommandBase{
     private CANEncoder leftEncoder, rightEncoder;
 
     private double distance;
-    private final double inchesPerRotation = 50.0 / 13.0;
+    private final double inchesPerRotation = RobotContainer.drivetrain.getInchesPerRotation();
 
     public DriveByEncoder(double d) {
         addRequirements(RobotContainer.drivetrain);

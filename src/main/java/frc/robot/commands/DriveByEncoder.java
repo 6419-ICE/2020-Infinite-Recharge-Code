@@ -54,7 +54,7 @@ public class DriveByEncoder extends CommandBase{
             RobotContainer.drivetrain.drive(0.5, 0.25);
         }
         */        
-
+        
     }
 
     // Called once the command ends or is interrupted.
@@ -66,7 +66,7 @@ public class DriveByEncoder extends CommandBase{
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        return leftEncoder.getPosition() > distance / inchesPerRotation || Math.abs(rightEncoder.getPosition()) > distance / inchesPerRotation;
+        return rightEncoder.getPosition() * inchesPerRotation  >= distance*.95 || leftEncoder.getPosition() * inchesPerRotation  >= distance*.95;
     }
 
 

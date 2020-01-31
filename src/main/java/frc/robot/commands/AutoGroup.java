@@ -28,7 +28,10 @@ public class AutoGroup extends SequentialCommandGroup {
             /* Left to Mid */
             case "AUTO_3": 
                 addCommands(
-                    new DriveToPoint(0, 0)
+                    new DriveToPoint(0, -150),
+                    new DriveToPoint(10, -50),
+                    new DriveToPoint(-50, 36),
+                    new DriveToPoint(90, 0)
                 );
                 break;
             default:

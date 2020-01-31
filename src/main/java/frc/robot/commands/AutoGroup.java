@@ -26,10 +26,17 @@ public class AutoGroup extends SequentialCommandGroup {
                 );
                 break;
             /* Left to Mid */
-            // case "AUTO_3": addCommands(
-                // new DriveToPoint(0, -115),
-                // new DriveToPoint(0, -115)
-            // );
+            case "AUTO_3": 
+                addCommands(
+                    new DriveToPoint(0, 0)
+                );
+                break;
+            default:
+                addCommands(
+                    new DriveToPoint(0, -216),
+                    new DriveToPoint(0, -216)
+                );
+                break;
         }
     
     }

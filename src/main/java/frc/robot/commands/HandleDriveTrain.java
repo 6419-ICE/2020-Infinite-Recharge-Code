@@ -3,7 +3,6 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
-import frc.robot.subsystems.DriveTrain;
 
 public class HandleDriveTrain extends CommandBase{
     @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
@@ -11,10 +10,9 @@ public class HandleDriveTrain extends CommandBase{
     /**
      * Creates a new HandleDriveTrain Command.
      *
-     * @param subsystem The subsystem used by this command.
      */
-    public HandleDriveTrain(DriveTrain drive) {
-        addRequirements(drive);
+    public HandleDriveTrain() {
+        addRequirements(RobotContainer.drivetrain);
       }
 
         // Called when the command is initially scheduled.
@@ -31,7 +29,7 @@ public class HandleDriveTrain extends CommandBase{
         power = Math.copySign(Math.abs(Math.pow(power, 2)), power);
         SmartDashboard.putNumber("Power", power);
         SmartDashboard.putNumber("Turn", turn);
-        // RobotContainer.drivetrain.drive(RobotContainer.getLeftJoy().getRawAxis(1), RobotContainer.getRightJoy().getRawAxis(1));
+
         RobotContainer.drivetrain.arcadeDrive(power, turn);
         super.execute();
     }

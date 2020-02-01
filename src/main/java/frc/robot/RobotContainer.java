@@ -39,8 +39,8 @@ public class RobotContainer {
    */
   public RobotContainer() {
     // Configure the button bindings
-    drivetrain.setDefaultCommand(new HandleDriveTrain(drivetrain));
-    shooter.setDefaultCommand(new HandleShooter(shooter));
+    drivetrain.setDefaultCommand(new HandleDriveTrain());
+    shooter.setDefaultCommand(new HandleShooter());
 
     /* Multiple Autonomous Selections */
     aChooser = new SendableChooser<>();

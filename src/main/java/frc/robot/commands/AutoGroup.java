@@ -13,25 +13,31 @@ public class AutoGroup extends SequentialCommandGroup {
             /* Trench Run */
             case "AUTO_1": 
                 addCommands(
+                    new DeliverPowerCell(),
                     new DriveToPoint(0, -216),
-                    new DriveToPoint(0, -216)
+                    new DriveToPoint(0, -216),
+                    new DeliverPowerCell()
                 );
                 break;
             /* Center to Mid */
             case "AUTO_2": 
                 addCommands(
+                    new DeliverPowerCell(),
                     new DriveToPoint(0, -105),
                     new DriveToPoint(-72, 0),
-                    new DriveToPoint(-105, 0)
+                    new DriveToPoint(-105, 0),
+                    new DeliverPowerCell()
                 );
                 break;
             /* Left to Mid */
             case "AUTO_3": 
                 addCommands(
+                    new DeliverPowerCell(),
                     new DriveToPoint(0, -150),
                     new DriveToPoint(10, -50),
                     new DriveToPoint(-50, 36),
-                    new DriveToPoint(90, 0)
+                    new DriveToPoint(90, 0),
+                    new DeliverPowerCell()
                 );
                 break;
             default:

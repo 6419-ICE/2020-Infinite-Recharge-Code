@@ -23,7 +23,7 @@ public class DriveBySeconds extends CommandBase{
     public void initialize() {
         done = false;
         timer.reset();
-        RobotContainer.drivetrain.drive(0, 0); // Don't move on init
+        RobotContainer.drivetrain.stop(); // Don't move on init
         timer.start();
     }
 
@@ -31,14 +31,14 @@ public class DriveBySeconds extends CommandBase{
     @Override
     public void execute() {
         if (timer.get() > timeLimit) {
-            RobotContainer.drivetrain.drive(0.0, 0.0);
+            RobotContainer.drivetrain.stop();
             
             done = true;
         } else {
             if (backwards) {
-                RobotContainer.drivetrain.drive(-0.25, -0.25);
+                RobotContainer.drivetrain.drive(-1, -1);
             } else {
-                RobotContainer.drivetrain.drive(0.25, 0.25);
+                RobotContainer.drivetrain.drive(1, 1);
             }
         }
         super.execute();

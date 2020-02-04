@@ -123,15 +123,14 @@ public class DriveTrain extends SubsystemBase {
     }
 
     public void drive(double l, double r) {
-        left1.set(l);
-        right1.set(-r);
+        left1.set(l * Constants.speedLmt);
+        right1.set(-r * Constants.speedLmt);
     }
 
     public void arcadeDrive(double p, double t) {
         double powValue = p * -1;
         double turnValue = t ; // Do not need to invert turn input
-        left1.set((turnValue + powValue) * 0.5);
-        right1.set((turnValue - powValue) * 0.5);
+        drive(Constants.speedLmt * (turnValue + powValue), -Constants.speedLmt * (turnValue - powValue));
     }
 
     public void stop() {

@@ -28,7 +28,7 @@ public class DriveByEncoder extends CommandBase{
 
         leftEncoder.setPosition(0.0);
         rightEncoder.setPosition(0.0);
-        RobotContainer.drivetrain.drive(0, 0); // Don't move on init
+        RobotContainer.drivetrain.stop(); // Don't move on init
         RobotContainer.drivetrain.setSetpoints(distance, distance);
     }
 

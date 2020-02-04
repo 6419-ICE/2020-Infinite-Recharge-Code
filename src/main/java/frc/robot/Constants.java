@@ -42,4 +42,7 @@ public final class Constants {
 
     /* Hall Effect Sensor Port */
     public static final int sensorPrt = 0;
+
+    /* Universal Motor Speed Limit */
+    public static final double speedLmt = 0.65;
 }

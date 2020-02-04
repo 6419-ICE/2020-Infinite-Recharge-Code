@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -14,19 +15,26 @@ import edu.wpi.first.wpilibj2.command.CommandGroupBase;
 import frc.robot.subsystems.*;
 import frc.robot.commands.*;
 
+
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
  * periodic methods (other than the scheduler calls).  Instead, the structure of the robot
  * (including subsystems, commands, and button mappings) should be declared here.
  */
+
 public class RobotContainer {
+
   // The robot's subsystems and commands are defined here...
   public static final DriveTrain drivetrain = new DriveTrain();
   public static final Shooter shooter = new Shooter();
   private static Joystick leftJoystick;
   private static Joystick rightJoystick;
   public final CommandGroupBase m_AutoGroup = new AutoGroup();
+  public static final AnalogInput ultrasonic = new AnalogInput(0);
+
+  
+
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */

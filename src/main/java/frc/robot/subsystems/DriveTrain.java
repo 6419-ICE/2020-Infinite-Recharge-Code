@@ -30,7 +30,7 @@ public class DriveTrain extends SubsystemBase {
 
     
     private double rotations = .204;
-    private double InchesPerRotation = 6 * Math.PI * rotations;
+    private final double inchesPerRotation = 6 * Math.PI * rotations;
     //private double rotationsPerInch = 1.0/InchesPerRotation;
 
     public CANPIDController leftController,
@@ -67,7 +67,7 @@ public class DriveTrain extends SubsystemBase {
         kI = 0;
         kD = 0.35;
         kF = 0;
-        
+
         leftController.setP(kP);
         leftController.setI(kI);
         leftController.setD(kD);
@@ -85,7 +85,7 @@ public class DriveTrain extends SubsystemBase {
         rightController.setSmartMotionMaxAccel(3000, 0);
         rightController.setSmartMotionMaxVelocity(5000, 0);
         rightController.setSmartMotionMinOutputVelocity(60, 0);
-
+        
         
         left2.follow(left1);
         left3.follow(left1);
@@ -118,6 +118,10 @@ public class DriveTrain extends SubsystemBase {
         }
     }
 
+    public double getInchesPerRotation() {
+        return inchesPerRotation;
+    }
+
     public void drive(double l, double r) {
         left1.set(l);
         right1.set(-r);
@@ -126,8 +130,8 @@ public class DriveTrain extends SubsystemBase {
     public void arcadeDrive(double p, double t) {
         double powValue = p * -1;
         double turnValue = t ; // Do not need to invert turn input
-        left1.set((turnValue + powValue) * 0.8);
-        right1.set((turnValue - powValue) * 0.8);
+        left1.set((turnValue + powValue) * 0.5);
+        right1.set((turnValue - powValue) * 0.5);
     }
 
     public void stop() {
@@ -144,8 +148,8 @@ public class DriveTrain extends SubsystemBase {
     }
 
     public void setSetpoints(double left, double right){
-        leftController.setReference(left/InchesPerRotation, ControlType.kPosition);
-        rightController.setReference(-right/InchesPerRotation, ControlType.kPosition);
+        leftController.setReference(left/inchesPerRotation, ControlType.kPosition);
+        rightController.setReference(-right/inchesPerRotation, ControlType.kPosition);
     }
 
     public void setHeadingPidEnabled (boolean enabled){

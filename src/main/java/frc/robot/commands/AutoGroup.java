@@ -4,19 +4,49 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 public class AutoGroup extends SequentialCommandGroup {
     @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
+    private String selection;
 
-    /**
-     * Creates a new HandleDriveTrain Command.
-     *
-     * @param subsystem The subsystem used by this command.
-     */
-    public AutoGroup() {
-        /* Trench Run */
-        //addCommands(new Turn(180));
-        //addCommands(new DriveByEncoder(200));
-        //addCommands(new DriveByEncoder(-20));
-        //addCommands(new Turn(160));
-        
-        addCommands(new DriveToPoint(0, -200));
+    public AutoGroup(String name) {
+        this.selection = name;
+
+        switch (this.selection) {
+            /* Trench Run */
+            case "AUTO_1": 
+                addCommands(
+                    new DeliverPowerCell(),
+                    new DriveToPoint(0, -216),
+                    new DriveToPoint(0, -216),
+                    new DeliverPowerCell()
+                );
+                break;
+            /* Center to Mid */
+            case "AUTO_2": 
+                addCommands(
+                    new DeliverPowerCell(),
+                    new DriveToPoint(0, -105),
+                    new DriveToPoint(-72, 0),
+                    new DriveToPoint(-105, 0),
+                    new DeliverPowerCell()
+                );
+                break;
+            /* Left to Mid */
+            case "AUTO_3": 
+                addCommands(
+                    new DeliverPowerCell(),
+                    new DriveToPoint(0, -150),
+                    new DriveToPoint(10, -50),
+                    new DriveToPoint(-50, 36),
+                    new DriveToPoint(90, 0),
+                    new DeliverPowerCell()
+                );
+                break;
+            default:
+                addCommands(
+                    new DriveToPoint(0, -216),
+                    new DriveToPoint(0, -216)
+                );
+                break;
+        }
+    
     }
 }

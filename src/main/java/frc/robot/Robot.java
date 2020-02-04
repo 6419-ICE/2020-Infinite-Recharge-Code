@@ -10,6 +10,8 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.CommandGroupBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.RobotContainer.*;
+import frc.robot.commands.AutoGroup;
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
  * each mode, as described in the TimedRobot documentation. If you change the name of this class or
@@ -63,11 +65,25 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    autoCommand = m_robotContainer.getAutonomousCommand();
-    //driveByEncoder = new DriveBySeconds(RobotContainer.drivetrain, 10);
-    // schedule the autonomous command (example)
-    if (autoCommand != null) {
-      autoCommand.schedule();
+    // Enum in RobotContainer
+    final autoSelections selectedAuto = m_robotContainer.getSelectedAuto();
+
+    // Schedule the autonomous command selected in the SendableChooser
+    if (selectedAuto != null) {
+      switch (selectedAuto) {
+        case AUTO_1:
+          autoCommand = new AutoGroup(selectedAuto.toString());
+          break;
+        case AUTO_2:
+          autoCommand = new AutoGroup(selectedAuto.toString());
+          break;
+        case AUTO_3:
+          autoCommand = new AutoGroup(selectedAuto.toString());
+      }
+
+      if (autoCommand != null) {
+        autoCommand.schedule();
+      }
     }
   }
 

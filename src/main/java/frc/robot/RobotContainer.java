@@ -10,11 +10,10 @@ package frc.robot;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.CommandGroupBase;
 import frc.robot.subsystems.*;
 import frc.robot.commands.*;
-
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -30,20 +29,35 @@ public class RobotContainer {
   public static final Shooter shooter = new Shooter();
   private static Joystick leftJoystick;
   private static Joystick rightJoystick;
-  public final CommandGroupBase m_AutoGroup = new AutoGroup();
   public static final AnalogInput ultrasonic = new AnalogInput(0);
 
   
+
+  /* Required selections for the SendableChooser */
+  public enum autoSelections {
+    AUTO_1, AUTO_2, AUTO_3;
+  }
+
+  private static SendableChooser<autoSelections> aChooser;
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
     // Configure the button bindings
-    drivetrain.setDefaultCommand(new HandleDriveTrain(drivetrain));
-    shooter.setDefaultCommand(new HandleShooter(shooter));
+    drivetrain.setDefaultCommand(new HandleDriveTrain());
+    shooter.setDefaultCommand(new HandleShooter());
+
+    /* Multiple Autonomous Selections */
+    aChooser = new SendableChooser<>();
+    aChooser.setDefaultOption("Default Auto", autoSelections.AUTO_1);
+    aChooser.addOption("Auto 1", autoSelections.AUTO_1);
+    aChooser.addOption("Auto 2", autoSelections.AUTO_2);
+    aChooser.addOption("Auto 3", autoSelections.AUTO_3);
+
     configureButtonBindings();
 
+    SmartDashboard.putData("Auto Selector", aChooser);
     SmartDashboard.putData(new syncPID());
   }
 
@@ -66,12 +80,12 @@ public class RobotContainer {
     return rightJoystick;
   }
 
-  public CommandGroupBase getAutonomousCommand(){
-    return m_AutoGroup;
+  public RobotContainer.autoSelections getSelectedAuto(){
+    return aChooser.getSelected();
   }
 
   public static boolean getShooterButton(){
-    return rightJoystick.getRawButton(1);
+    return rightJoystick.getRawButton(Constants.shooterButton);
   }
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

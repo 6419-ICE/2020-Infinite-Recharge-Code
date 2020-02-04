@@ -44,5 +44,5 @@ public final class Constants {
     public static final int sensorPrt = 0;
 
     /* Universal Motor Speed Limit */
-    public static final double speedLmt = 0.65;
+    public static final double speedLmt = 0.74;
 }

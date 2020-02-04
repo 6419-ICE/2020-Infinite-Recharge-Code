@@ -13,20 +13,26 @@ import frc.robot.RobotContainer;
 
 public class UltrasonicAuto extends CommandBase {
 
+  // -------------------------------------------------------------------
+  //The following items are for ultrasonic sensor and for testing purposes only
+  // The section will end with a dotted line
+  // feel free to comment all of this out
+  //distance in inches the robot wants to stay away from an object
   private static final double kHoldDistance = 12.0;
   //factor to convert sensor values to a distance in inches
   private static final double kValueToInches = 0.125;
 
   private static final int kUltrasonicPort = 0;
+  // --------------------------------------------------------------------
 
-  private AnalogInput Ultrasonic;
+  private AnalogInput m_ultrasonic;
 
   //private final 
   /**
    * Creates a new UltrasonicAuto.
    */
   public UltrasonicAuto() {
-    Ultrasonic = RobotContainer.ultrasonic;
+    m_ultrasonic = RobotContainer.ultrasonic;
     // Use addRequirements() here to declare subsystem dependencies.
   }
 

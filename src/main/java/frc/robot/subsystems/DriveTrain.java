@@ -29,7 +29,7 @@ public class DriveTrain extends SubsystemBase {
                         motorEncoderR3;    
 
     
-    private double rotations = .204;
+    private double rotations = .115;
     private final double inchesPerRotation = 6 * Math.PI * rotations;
     //private double rotationsPerInch = 1.0/InchesPerRotation;
 
@@ -60,8 +60,8 @@ public class DriveTrain extends SubsystemBase {
         leftController = left1.getPIDController();
         rightController = right1.getPIDController();
 
-        leftController.setOutputRange(-0.2, 0.2);
-        rightController.setOutputRange(-0.2, 0.2);
+        leftController.setOutputRange(-0.5, 0.5);
+        rightController.setOutputRange(-0.5, 0.5);
 
         kP = 0.05;
         kI = 0;
@@ -96,14 +96,14 @@ public class DriveTrain extends SubsystemBase {
         Preferences prefs = Preferences.getInstance();
 
         if (!prefs.containsKey("Heading P")) {
-            prefs.putDouble("Heading P", 0.015);
+            prefs.putDouble("Heading P", 0.045);
         }
         if (!prefs.containsKey("Heading D")) {
             prefs.putDouble("Heading D", 0);
         }
 
         headingPidController = new PIDController(
-            prefs.getDouble("Heading P", 0.015),
+            prefs.getDouble("Heading P", 0.045),
             0,
             prefs.getDouble("Heading D", 0));
         headingPidController.setTolerance(8);

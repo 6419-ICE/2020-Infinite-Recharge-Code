@@ -26,7 +26,7 @@ public class Turn extends CommandBase{
 
         drivetrain.setHeadingTarget(desiredAngle);
         drivetrain.setHeadingPidEnabled(true);
-        drivetrain.drive(0, 0); // Don't move on init
+        drivetrain.stop(); // Don't move on init
     }
 
     // Called every time the scheduler runs while the command is scheduled.

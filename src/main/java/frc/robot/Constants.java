@@ -45,4 +45,9 @@ public final class Constants {
 
     /* Universal Motor Speed Limit */
     public static final double speedLmt = 0.74;
+
+    /* Encoder Values */
+    public static final double rotations = .115;
+    public static final double inchesPerRotation = 6 * Math.PI * rotations;
+    //public static final double rotationsPerInch = 1.0/InchesPerRotation;
 }

@@ -1,11 +1,13 @@
 package frc.robot.subsystems;
 
 import com.analog.adis16448.frc.ADIS16448_IMU;
+
+import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
+
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANPIDController;
-import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.controller.PIDController;
@@ -20,7 +22,7 @@ public class DriveTrain extends SubsystemBase {
 
     public static double kI, kP, kD, kF;
 
-    private CANSparkMax left1, left2, left3, right1, right2, right3;
+    private TalonFX left1, left2, left3, right1, right2, right3;
     public CANEncoder   motorEncoderL1,
                         motorEncoderL2,
                         motorEncoderL3,
@@ -29,9 +31,7 @@ public class DriveTrain extends SubsystemBase {
                         motorEncoderR3;    
 
     
-    private double rotations = .115;
-    private final double inchesPerRotation = 6 * Math.PI * rotations;
-    //private double rotationsPerInch = 1.0/InchesPerRotation;
+
 
     public CANPIDController leftController,
                             rightController;
@@ -43,14 +43,24 @@ public class DriveTrain extends SubsystemBase {
         imu = new ADIS16448_IMU();
         imu.calibrate();
 
-        left1 = new CANSparkMax(Constants.FRONT_ONE_PIN, MotorType.kBrushless);
-        left2 = new CANSparkMax(Constants.FRONT_TWO_PIN, MotorType.kBrushless);
-        left3 = new CANSparkMax(Constants.FRONT_THREE_PIN, MotorType.kBrushless);
-        right1 = new CANSparkMax(Constants.BACK_ONE_PIN, MotorType.kBrushless);
-        right2 = new CANSparkMax(Constants.BACK_TWO_PIN, MotorType.kBrushless);
-        right3 = new CANSparkMax(Constants.BACK_THREE_PIN, MotorType.kBrushless);
+        left1 = new TalonFX(Constants.FRONT_ONE_PIN);
+        left2 = new TalonFX(Constants.FRONT_TWO_PIN);
+        left3 = new TalonFX(Constants.FRONT_THREE_PIN);
+        right1 = new TalonFX(Constants.BACK_ONE_PIN);
+        right2 = new TalonFX(Constants.BACK_TWO_PIN);
+        right3 = new TalonFX(Constants.BACK_THREE_PIN);
 
-        motorEncoderL1 = left1.getEncoder();
+        /* CHANGES WITH TALONFX:
+
+        Gets the position of the encoder:
+        left1.getSelectedSensorPosition();
+
+        Set the target position for the PID controller
+        left1.set(ControlMode.Position, target);
+
+        */
+
+        /*motorEncoderL1 = left1
         motorEncoderL2 = left2.getEncoder();
         motorEncoderL3 = left3.getEncoder();
         motorEncoderR1 = right1.getEncoder();
@@ -85,7 +95,7 @@ public class DriveTrain extends SubsystemBase {
         rightController.setSmartMotionMaxAccel(3000, 0);
         rightController.setSmartMotionMaxVelocity(5000, 0);
         rightController.setSmartMotionMinOutputVelocity(60, 0);
-        
+        */
         
         left2.follow(left1);
         left3.follow(left1);
@@ -119,12 +129,12 @@ public class DriveTrain extends SubsystemBase {
     }
 
     public double getInchesPerRotation() {
-        return inchesPerRotation;
+        return Constants.inchesPerRotation;
     }
 
     public void drive(double l, double r) {
-        left1.set(l * Constants.speedLmt);
-        right1.set(-r * Constants.speedLmt);
+        left1.set(TalonFXControlMode.PercentOutput, l * Constants.speedLmt);
+        right1.set(TalonFXControlMode.PercentOutput,-r * Constants.speedLmt);
     }
 
     public void arcadeDrive(double p, double t) {
@@ -134,8 +144,8 @@ public class DriveTrain extends SubsystemBase {
     }
 
     public void stop() {
-        left1.set(0.0);
-        right1.set(0.0);
+        left1.set(TalonFXControlMode.PercentOutput, 0.0);
+        right1.set(TalonFXControlMode.PercentOutput, 0.0);
     }
 
     public void syncPIDTunings() {
@@ -147,8 +157,8 @@ public class DriveTrain extends SubsystemBase {
     }
 
     public void setSetpoints(double left, double right){
-        leftController.setReference(left/inchesPerRotation, ControlType.kPosition);
-        rightController.setReference(-right/inchesPerRotation, ControlType.kPosition);
+        leftController.setReference(left/Constants.inchesPerRotation, ControlType.kPosition);
+        rightController.setReference(-right/Constants.inchesPerRotation, ControlType.kPosition);
     }
 
     public void setHeadingPidEnabled (boolean enabled){

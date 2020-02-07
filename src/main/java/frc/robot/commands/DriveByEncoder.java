@@ -4,19 +4,19 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 
-import com.revrobotics.CANEncoder;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 public class DriveByEncoder extends CommandBase{
     @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-    private CANEncoder leftEncoder, rightEncoder;
+    private TalonFX leftEncoder, rightEncoder;
 
     private double distance;
     private final double inchesPerRotation = RobotContainer.drivetrain.getInchesPerRotation();
 
     public DriveByEncoder(double d) {
         addRequirements(RobotContainer.drivetrain);
-        leftEncoder = RobotContainer.drivetrain.motorEncoderL1;
-        rightEncoder = RobotContainer.drivetrain.motorEncoderR1;
+        leftEncoder = RobotContainer.drivetrain.getLeftMotors();
+        rightEncoder = RobotContainer.drivetrain.getRightMotors();
 
         distance = d;
       }
@@ -26,8 +26,8 @@ public class DriveByEncoder extends CommandBase{
     public void initialize() {
         System.out.println("Driving");
 
-        leftEncoder.setPosition(0.0);
-        rightEncoder.setPosition(0.0);
+        leftEncoder.setSelectedSensorPosition(0);
+        rightEncoder.setSelectedSensorPosition(0);
         RobotContainer.drivetrain.stop(); // Don't move on init
         RobotContainer.drivetrain.setSetpoints(distance, distance);
     }
@@ -35,8 +35,8 @@ public class DriveByEncoder extends CommandBase{
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        SmartDashboard.putNumber("Left Encoder", leftEncoder.getPosition());
-        SmartDashboard.putNumber("Right Encoder", rightEncoder.getPosition());
+        SmartDashboard.putNumber("Left Encoder", leftEncoder.getSelectedSensorPosition());
+        SmartDashboard.putNumber("Right Encoder", rightEncoder.getSelectedSensorPosition());
     
         /* Drive to set number of inches 
         if (leftEncoder.getPosition() * inchesPerRotation < distance && rightEncoder.getPosition() * -inchesPerRotation < distance){
@@ -66,8 +66,6 @@ public class DriveByEncoder extends CommandBase{
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        return rightEncoder.getPosition() * inchesPerRotation >= distance*.95 || leftEncoder.getPosition() * inchesPerRotation >= distance*.95;
+        return rightEncoder.getSelectedSensorPosition() * inchesPerRotation >= distance*.95 || leftEncoder.getSelectedSensorPosition() * inchesPerRotation >= distance*.95;
     }
-
-
 }

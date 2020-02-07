@@ -2,12 +2,8 @@ package frc.robot.subsystems;
 
 import com.analog.adis16448.frc.ADIS16448_IMU;
 
-import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
-
-import com.revrobotics.CANEncoder;
-import com.revrobotics.CANPIDController;
-import com.revrobotics.ControlType;
+import com.ctre.phoenix.motorcontrol.*;
+import com.ctre.phoenix.motorcontrol.can.*;
 
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.controller.PIDController;
@@ -23,18 +19,6 @@ public class DriveTrain extends SubsystemBase {
     public static double kI, kP, kD, kF;
 
     private TalonFX left1, left2, left3, right1, right2, right3;
-    public CANEncoder   motorEncoderL1,
-                        motorEncoderL2,
-                        motorEncoderL3,
-                        motorEncoderR1,
-                        motorEncoderR2,
-                        motorEncoderR3;    
-
-    
-
-
-    public CANPIDController leftController,
-                            rightController;
 
     private PIDController headingPidController;
     private boolean headingPidEnabled;
@@ -50,44 +34,34 @@ public class DriveTrain extends SubsystemBase {
         right2 = new TalonFX(Constants.BACK_TWO_PIN);
         right3 = new TalonFX(Constants.BACK_THREE_PIN);
 
-        /* CHANGES WITH TALONFX:
+        left2.follow(left1);
+        left3.follow(left1);
 
-        Gets the position of the encoder:
-        left1.getSelectedSensorPosition();
-
-        Set the target position for the PID controller
-        left1.set(ControlMode.Position, target);
-
-        */
-
-        /*motorEncoderL1 = left1
-        motorEncoderL2 = left2.getEncoder();
-        motorEncoderL3 = left3.getEncoder();
-        motorEncoderR1 = right1.getEncoder();
-        motorEncoderR2 = right2.getEncoder();
-        motorEncoderR3 = right3.getEncoder();
-
-        leftController = left1.getPIDController();
-        rightController = right1.getPIDController();
-
-        leftController.setOutputRange(-0.5, 0.5);
-        rightController.setOutputRange(-0.5, 0.5);
+        right2.follow(right1);
+        right3.follow(right1);
 
         kP = 0.05;
         kI = 0;
         kD = 0.35;
         kF = 0;
 
-        leftController.setP(kP);
-        leftController.setI(kI);
-        leftController.setD(kD);
-        leftController.setFF(kF);
+        /* Config PID values: Config 0 */
+        left1.config_kP(0, kP); // 0 is the slot index for this current PID config
+        left1.config_kI(0, kI);
+        left1.config_kD(0, kD);
+        left1.config_kF(0, kF);
 
-        rightController.setP(kP);
-        rightController.setI(kI);
-        rightController.setD(kD);
-        rightController.setFF(kF);
-        
+        right1.config_kP(0, kP); // 0 is the slot index for this current PID config
+        right1.config_kI(0, kI);
+        right1.config_kD(0, kD);
+        right1.config_kF(0, kF);
+
+        /* CHANGES WITH TALONFX:
+
+        Gets the position of the encoder:
+        left1.getSelectedSensorPosition();
+
+        /* For conversion when using Motion Profiling:
         leftController.setSmartMotionMaxAccel(3000, 0);
         leftController.setSmartMotionMaxVelocity(5000, 0);
         leftController.setSmartMotionMinOutputVelocity(60, 0);
@@ -96,12 +70,6 @@ public class DriveTrain extends SubsystemBase {
         rightController.setSmartMotionMaxVelocity(5000, 0);
         rightController.setSmartMotionMinOutputVelocity(60, 0);
         */
-        
-        left2.follow(left1);
-        left3.follow(left1);
-
-        right2.follow(right1);
-        right3.follow(right1);
 
         Preferences prefs = Preferences.getInstance();
 
@@ -128,6 +96,14 @@ public class DriveTrain extends SubsystemBase {
         }
     }
 
+    public TalonFX getLeftMotors() {
+        return left1;
+    }
+
+    public TalonFX getRightMotors() {
+        return right1;
+    }
+ 
     public double getInchesPerRotation() {
         return Constants.inchesPerRotation;
     }
@@ -157,8 +133,8 @@ public class DriveTrain extends SubsystemBase {
     }
 
     public void setSetpoints(double left, double right){
-        leftController.setReference(left/Constants.inchesPerRotation, ControlType.kPosition);
-        rightController.setReference(-right/Constants.inchesPerRotation, ControlType.kPosition);
+        left1.set(ControlMode.Position, left/Constants.inchesPerRotation);
+        right1.set(ControlMode.Position, -right/Constants.inchesPerRotation);
     }
 
     public void setHeadingPidEnabled (boolean enabled){

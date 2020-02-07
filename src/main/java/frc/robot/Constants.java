@@ -23,7 +23,9 @@ public final class Constants {
                             FRONT_THREE_PIN = 3,
                             BACK_ONE_PIN = 4,
                             BACK_TWO_PIN = 5,                   
-                            BACK_THREE_PIN = 6;
+                            BACK_THREE_PIN = 6,
+                            SHOOTER_ONE_PIN = 0,
+                            SHOOTER_TWO_PIN = 1;
 
     /* Joystick Ports */
     public static final int joy1 = 0,

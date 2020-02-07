@@ -7,18 +7,22 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.PWMVictorSPX;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class Shooter extends SubsystemBase {
-  private PWMVictorSPX shooterMotor1;
-  //private PWMVictorSPX shooterMotor2;
+  private CANSparkMax shooterMotorRight;
+  private CANSparkMax shooterMotorLeft; // Left requires negative power
   
   /**
    * Creates a new Shooter.
    */
   public Shooter() {
-    shooterMotor1 = new PWMVictorSPX(0);
+    shooterMotorLeft = new CANSparkMax(Constants.SHOOTER_TWO_PIN, MotorType.kBrushless);
+    shooterMotorRight = new CANSparkMax(Constants.SHOOTER_ONE_PIN, MotorType.kBrushless);
   }
 
   @Override
@@ -27,6 +31,7 @@ public class Shooter extends SubsystemBase {
   }
 
   public void shoot(double p){
-    shooterMotor1.set(p);
+    shooterMotorLeft.set(-p);
+    shooterMotorRight.set(p);
   }
 }

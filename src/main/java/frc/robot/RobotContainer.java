@@ -8,6 +8,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -30,6 +31,7 @@ public class RobotContainer {
   private static Joystick leftJoystick;
   private static Joystick rightJoystick;
   public static final AnalogInput ultrasonic = new AnalogInput(0);
+  public static final DigitalInput hallEffect = new DigitalInput(1);
 
   
 

@@ -48,7 +48,7 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     drivetrain.setDefaultCommand(new HandleDriveTrain());
-    shooter.setDefaultCommand(new HandleShooter());
+    shooter.setDefaultCommand(new ShooterDefault());
 
     /* Multiple Autonomous Selections */
     aChooser = new SendableChooser<>();
@@ -74,7 +74,7 @@ public class RobotContainer {
     rightJoystick = new Joystick(Constants.joy2);
 
     JoystickButton shooter = new JoystickButton(rightJoystick, 1); // 1 is always trigger
-    shooter.whenHeld(new HandleDriveTrain());
+    shooter.whenHeld(new HandleShooter());
   }
 
   public static Joystick getLeftJoy() {

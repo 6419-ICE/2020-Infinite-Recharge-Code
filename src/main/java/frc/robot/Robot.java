@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.CommandGroupBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.RobotContainer.*;
 import frc.robot.commands.AutoGroup;
+import frc.robot.subsystems.Limelight;
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
  * each mode, as described in the TimedRobot documentation. If you change the name of this class or
@@ -58,6 +59,9 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledPeriodic() {
+    
+    RobotContainer.limelight.setCameraMode(Limelight.CameraMode.VISION);
+    RobotContainer.limelight.setLightMode(Limelight.LightMode.ON);
   }
 
   /**
@@ -65,6 +69,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
+
 
     // Enum in RobotContainer
     final autoSelections selectedAuto = m_robotContainer.getSelectedAuto();

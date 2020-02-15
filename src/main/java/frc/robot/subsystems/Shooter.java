@@ -1,10 +1,5 @@
 package frc.robot.subsystems;
 
-// Turret - Part of FRC 6419's 2020 codebase
-// Generated 20200204:0902 [2/4/2020:09:02]
-// by fortr.
-// (c) 2020 FRC 6419 "ICE", all rights reserved.
-
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.revrobotics.*;
@@ -66,9 +61,9 @@ public class Shooter extends SubsystemBase {
             traverse.configReverseSoftLimitEnable(true);
         }
 
-        kP = 0.0;
+        kP = 0.05;
         kI = 0.0;
-        kD = 0.0;
+        kD = 0.01;
 
         // x input is from -27 to +27.
         traverseController = new PIDController(kP, kI, kD);

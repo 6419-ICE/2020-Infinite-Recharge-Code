@@ -131,7 +131,7 @@ public class Limelight extends SubsystemBase {
 
     @Override
     public void periodic() {
-        if (lightModeSendableChooser != null) {
+        /*if (lightModeSendableChooser != null) {
             int mode = lightModeSendableChooser.getSelected().ordinal();
             if (!ledMode.getNumber(0).equals(mode)) {
                 ledMode.setNumber(mode);
@@ -142,7 +142,7 @@ public class Limelight extends SubsystemBase {
             if (!camMode.getNumber(0).equals(mode)) {
                 camMode.setNumber(mode);
             }
-        }
+        }*/
     }
 
     @Override

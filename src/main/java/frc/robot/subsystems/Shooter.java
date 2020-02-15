@@ -5,7 +5,6 @@ package frc.robot.subsystems;
 // by fortr.
 // (c) 2020 FRC 6419 "ICE", all rights reserved.
 
-import com.ctre.phoenix.Util;
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.revrobotics.*;

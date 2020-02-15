@@ -2,16 +2,17 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.RobotContainer;
 
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
-public class DriveByEncoder extends CommandBase{
-    @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
+public class DriveByEncoder extends CommandBase {
+    @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
     private TalonFX leftEncoder, rightEncoder;
 
     private double distance;
-    private final double inchesPerRotation = RobotContainer.drivetrain.getInchesPerRotation();
+    private final double inchesPerRotation = Constants.inchesPerRotation;
 
     public DriveByEncoder(double d) {
         addRequirements(RobotContainer.drivetrain);
@@ -19,9 +20,9 @@ public class DriveByEncoder extends CommandBase{
         rightEncoder = RobotContainer.drivetrain.getRightMotors();
 
         distance = d;
-      }
+    }
 
-        // Called when the command is initially scheduled.
+    // Called when the command is initially scheduled.
     @Override
     public void initialize() {
         System.out.println("Driving");
@@ -37,24 +38,20 @@ public class DriveByEncoder extends CommandBase{
     public void execute() {
         SmartDashboard.putNumber("Left Encoder", leftEncoder.getSelectedSensorPosition());
         SmartDashboard.putNumber("Right Encoder", rightEncoder.getSelectedSensorPosition());
-    
-        /* Drive to set number of inches 
-        if (leftEncoder.getPosition() * inchesPerRotation < distance && rightEncoder.getPosition() * -inchesPerRotation < distance){
-            RobotContainer.drivetrain.drive(0.5, 0.5);
-        } else {
-            RobotContainer.drivetrain.drive(0, 0);
-            done = true;
-        }
-        */
 
-        /* Stay in a straight line
-        if (imu.getAngle() >= originalHeader + buffer){
-            RobotContainer.drivetrain.drive(0.25, 0.5);
-        } else if (imu.getAngle() <= originalHeader - buffer){
-            RobotContainer.drivetrain.drive(0.5, 0.25);
-        }
-        */        
-        
+        /*
+         * Drive to set number of inches if (leftEncoder.getPosition() *
+         * inchesPerRotation < distance && rightEncoder.getPosition() *
+         * -inchesPerRotation < distance){ RobotContainer.drivetrain.drive(0.5, 0.5); }
+         * else { RobotContainer.drivetrain.drive(0, 0); done = true; }
+         */
+
+        /*
+         * Stay in a straight line if (imu.getAngle() >= originalHeader + buffer){
+         * RobotContainer.drivetrain.drive(0.25, 0.5); } else if (imu.getAngle() <=
+         * originalHeader - buffer){ RobotContainer.drivetrain.drive(0.5, 0.25); }
+         */
+
     }
 
     // Called once the command ends or is interrupted.
@@ -66,6 +63,7 @@ public class DriveByEncoder extends CommandBase{
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        return rightEncoder.getSelectedSensorPosition() * inchesPerRotation >= distance*.95 || leftEncoder.getSelectedSensorPosition() * inchesPerRotation >= distance*.95;
+        return rightEncoder.getSelectedSensorPosition() * inchesPerRotation >= distance * .95
+                || leftEncoder.getSelectedSensorPosition() * inchesPerRotation >= distance * .95;
     }
 }

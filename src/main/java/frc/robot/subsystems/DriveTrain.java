@@ -103,10 +103,6 @@ public class DriveTrain extends SubsystemBase {
     public TalonFX getRightMotors() {
         return right1;
     }
- 
-    public double getInchesPerRotation() {
-        return Constants.inchesPerRotation;
-    }
 
     public void drive(double l, double r) {
         left1.set(TalonFXControlMode.PercentOutput, l * Constants.speedLmt);

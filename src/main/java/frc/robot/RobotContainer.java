@@ -8,11 +8,11 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.subsystems.*;
 import frc.robot.commands.*;
 
@@ -28,12 +28,12 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   public static final DriveTrain drivetrain = new DriveTrain();
   public static final Shooter shooter = new Shooter();
+  public static final AnalogInput ultrasonic = new AnalogInput(0);
+  public static final Limelight limelight = new Limelight();
+  // public static final DigitalInput hallEffect = new DigitalInput(1);
+
   private static Joystick leftJoystick;
   private static Joystick rightJoystick;
-  public static final AnalogInput ultrasonic = new AnalogInput(0);
-  public static final DigitalInput hallEffect = new DigitalInput(1);
-
-  
 
   /* Required selections for the SendableChooser */
   public enum autoSelections {
@@ -72,6 +72,9 @@ public class RobotContainer {
   private void configureButtonBindings() {
     leftJoystick = new Joystick(Constants.joy1);
     rightJoystick = new Joystick(Constants.joy2);
+
+    JoystickButton shooter = new JoystickButton(rightJoystick, 1); // 1 is always trigger
+    shooter.whenHeld(new HandleDriveTrain());
   }
 
   public static Joystick getLeftJoy() {
@@ -85,10 +88,7 @@ public class RobotContainer {
   public RobotContainer.autoSelections getSelectedAuto(){
     return aChooser.getSelected();
   }
-
-  public static boolean getShooterButton(){
-    return rightJoystick.getRawButton(Constants.shooterButton);
-  }
+  
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *

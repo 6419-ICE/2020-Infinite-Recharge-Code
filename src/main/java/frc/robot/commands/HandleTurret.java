@@ -10,16 +10,19 @@ package frc.robot.commands;
 import static frc.robot.RobotContainer.shooter;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-public class HandleShooter extends CommandBase {
+/** Vision Tracking is found in the Turret subsystem, however firing Power Cells is handled here */
+public class HandleTurret extends CommandBase {
   /**
-   * Creates a new HandleShooter.
+   * Creates a new HandleTurret.
    */
-  public HandleShooter() {
+  public HandleTurret() {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(shooter);
   }
 
-  // Called when the command is initially scheduled.
+  /** Initially spool up. 
+  * This will only be executed when an input is recieved from RobotContainer.configButtonBindings()
+  */
   @Override
   public void initialize() {
     shooter.spoolUp();
@@ -30,13 +33,13 @@ public class HandleShooter extends CommandBase {
   public void execute() {
   }
 
-  // Called once the command ends or is interrupted.
+  /** Stop when trigger in RobotContainer is released */
   @Override
   public void end(boolean interrupted) {
     shooter.spoolDown();
   }
 
-  // Returns true when the command should end.
+  // Not used, as the command is cancelled by the user
   @Override
   public boolean isFinished() {
     return false;

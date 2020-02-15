@@ -1,9 +1,11 @@
-package frc.robot.subsystems;
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2017-2019 FIRST. All Rights Reserved.                        */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
 
-// Limelight - Part of FRC 6419's 2020 codebase
-// Generated 20200110:1237 [1/10/2020:12:37]
-// by fortr.
-// (c) 2020 FRC 6419 "ICE", all rights reserved.
+package frc.robot.subsystems;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -15,6 +17,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
 public class Limelight extends SubsystemBase {
 
+    /** Handles the light mode */
     public enum LightMode {
         DEFAULT, OFF, BLINK, ON;
 
@@ -33,6 +36,7 @@ public class Limelight extends SubsystemBase {
             }
         }
 
+        /** Set the light mode */
         public static LightMode forIndex(int index) {
             switch (index) {
             case 0:
@@ -48,6 +52,7 @@ public class Limelight extends SubsystemBase {
         }
     }
 
+    /** Handles the camera mode */
     public enum CameraMode {
         VISION, DRIVER_CAMERA;
 
@@ -62,6 +67,7 @@ public class Limelight extends SubsystemBase {
             }
         }
 
+        /** Set the camera mode */
         public static CameraMode forIndex(int index) {
             switch (index) {
             case 0:
@@ -73,12 +79,14 @@ public class Limelight extends SubsystemBase {
         }
     }
 
+    /* Manage the limelight on Shuffleboard */
     private NetworkTableEntry horizontalAngle, verticalAngle;
     private NetworkTableEntry ledMode, camMode, tv, ta;
 
     private SendableChooser<LightMode> lightModeSendableChooser;
     private SendableChooser<CameraMode> cameraModeSendableChooser;
 
+    /** Construct a Limelight subsystem */
     public Limelight() {
         NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
 
@@ -95,36 +103,46 @@ public class Limelight extends SubsystemBase {
         setLightMode(LightMode.ON);
     }
 
-    /** Returns an angle from -27 to 27 between the target and the camera */
+    /** @return a horizontal angle from -27 to 27 between the target and the camera */
     public double getHorizontalAngle() {
         return horizontalAngle.getDouble(0);
     }
 
+    /** @return a vertical angle from -27 to 27 between the target and the camera */
     public double getVerticalAngle() {
         return verticalAngle.getDouble(0);
     }
 
+    /** @return If the limelight has found a target */
     public boolean canSeeTarget() {
         return tv.getNumber(0).intValue() > 0;
     }
 
-    /** Returns how big the target is relative to the camera frame */
+    /** @return how big the target is relative to the camera frame */
     public double getTargetArea() {
         return ta.getNumber(0).doubleValue() / 100;
     }
 
+    /** Set the light mode of the camera using the enum
+     * @param mode
+     */
     public void setLightMode(LightMode mode) {
         ledMode.setNumber(mode.ordinal());
     }
 
+    /** @return the current light mode */
     public LightMode getLightMode() {
         return LightMode.forIndex(ledMode.getNumber(0).intValue());
     }
 
+    /** Set the camera mode with the above enum
+     * @param mode
+    */
     public void setCameraMode(CameraMode mode) {
         ledMode.setNumber(mode.ordinal());
     }
 
+    /** Return the current camera mode */
     public CameraMode getCameraMode() {
         return CameraMode.forIndex(camMode.getNumber(0).intValue());
     }
@@ -145,6 +163,9 @@ public class Limelight extends SubsystemBase {
         }*/
     }
 
+    /** Build the Shuffleboard Choosers
+     * @param builder
+     */
     @Override
     public void initSendable(SendableBuilder builder) {
         setName("Limelight");

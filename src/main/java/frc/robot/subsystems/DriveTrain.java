@@ -24,9 +24,11 @@ public class DriveTrain extends SubsystemBase {
     private boolean headingPidEnabled;
     
     public DriveTrain(){
+        /* Reset the Accelerometer/Gyro/etc. */
         imu = new ADIS16448_IMU();
         imu.calibrate();
 
+        /* Six-motor Falcon 500 Drivetrain */
         left1 = new TalonFX(Constants.FRONT_ONE_PIN);
         left2 = new TalonFX(Constants.FRONT_TWO_PIN);
         left3 = new TalonFX(Constants.FRONT_THREE_PIN);
@@ -40,6 +42,7 @@ public class DriveTrain extends SubsystemBase {
         right2.follow(right1);
         right3.follow(right1);
 
+        /* PID Constants */
         kP = 0.05;
         kI = 0;
         kD = 0.35;
@@ -71,6 +74,7 @@ public class DriveTrain extends SubsystemBase {
         rightController.setSmartMotionMinOutputVelocity(60, 0);
         */
 
+        /* Change PID in Shuffleboard */
         Preferences prefs = Preferences.getInstance();
 
         if (!prefs.containsKey("Heading P")) {
@@ -87,6 +91,7 @@ public class DriveTrain extends SubsystemBase {
         headingPidController.setTolerance(8);
     }
 
+    /* Drive based on the PID settings */
     @Override
     public void periodic() {
         if (headingPidEnabled) {
@@ -96,30 +101,43 @@ public class DriveTrain extends SubsystemBase {
         }
     }
 
+    /** @return left motors for use in Autonomous commands */
     public TalonFX getLeftMotors() {
         return left1;
     }
 
+    /** @return right motors for use in Autonomous commands */
     public TalonFX getRightMotors() {
         return right1;
     }
 
+    /** Set each set of motors to a given power percentage 
+     * @param l - Left Power
+     * @param r - Right Power
+    */
     public void drive(double l, double r) {
-        left1.set(TalonFXControlMode.PercentOutput, l * Constants.speedLmt);
-        right1.set(TalonFXControlMode.PercentOutput,-r * Constants.speedLmt);
+        left1.set(TalonFXControlMode.PercentOutput, l * Constants.Drivetrain.speedLmt);
+        right1.set(TalonFXControlMode.PercentOutput,-r * Constants.Drivetrain.speedLmt);
     }
 
+    /** Set each set of motors to a given power percentage based on Joystick axes 
+     * This is strictly used to set motors during Teleop
+     * @param p - Left joystick input (throttle power)
+     * @param t - Right joystick input (turn power)
+    */
     public void arcadeDrive(double p, double t) {
         double powValue = p * -1;
         double turnValue = t ; // Do not need to invert turn input
-        drive(Constants.speedLmt * (turnValue + powValue), -Constants.speedLmt * (turnValue - powValue));
+        drive(Constants.Drivetrain.speedLmt * (turnValue + powValue), -Constants.Drivetrain.speedLmt * (turnValue - powValue));
     }
 
+    /** Stop the motors entirely */
     public void stop() {
         left1.set(TalonFXControlMode.PercentOutput, 0.0);
         right1.set(TalonFXControlMode.PercentOutput, 0.0);
     }
 
+    /** Refresh PID with Shuffleboard tunings */
     public void syncPIDTunings() {
         Preferences prefs = Preferences.getInstance();
         headingPidController.setPID(
@@ -128,31 +146,47 @@ public class DriveTrain extends SubsystemBase {
             prefs.getDouble("Heading D", 0));
     }
 
+    /** Drive to a set of points by Encoder Drive
+     * @param left - Left point
+     * @param right - Right point
+     */
     public void setSetpoints(double left, double right){
-        left1.set(ControlMode.Position, left/Constants.inchesPerRotation);
-        right1.set(ControlMode.Position, -right/Constants.inchesPerRotation);
+        left1.set(ControlMode.Position, left/Constants.Drivetrain.inchesPerRotation);
+        right1.set(ControlMode.Position, -right/Constants.Drivetrain.inchesPerRotation);
     }
 
+    /** Specify wether to enable or disable headingPID
+     * @param enabled - Enable or disable
+     */
     public void setHeadingPidEnabled (boolean enabled){
         headingPidEnabled = enabled;
     }
 
+    /** Set the target heading to turn to
+     * @param target - The specified target heading
+     */
     public void setHeadingTarget(double target){
         headingPidController.setSetpoint(target);
     }
 
+    /** @return the target heading */
     public double getHeadingTarget(){
         return headingPidController.getSetpoint();
     }
 
+    /** @return if the target heading has been reached */
     public boolean atHeadingTarget() {
         return headingPidController.atSetpoint();
     }
 
+    /** @return the current heading from the IMU */
     public double getHeading() {
         return imu.getAngle();
     }
 
+    /** Build the Shuffleboard Choosers
+     * @param builder
+     */
     @Override
     public void initSendable(SendableBuilder builder) {
         builder.addDoubleProperty("Heading", this::getHeading, null);

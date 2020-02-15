@@ -10,11 +10,12 @@ package frc.robot.commands;
 import static frc.robot.RobotContainer.shooter;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-public class ShooterDefault extends CommandBase {
+/** Simply used to turn off the spool and as a default command for the Turret subsystem */
+public class TurretDefault extends CommandBase {
   /**
    * Creates a new HandleShooter.
    */
-  public ShooterDefault() {
+  public TurretDefault() {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(shooter);
   }

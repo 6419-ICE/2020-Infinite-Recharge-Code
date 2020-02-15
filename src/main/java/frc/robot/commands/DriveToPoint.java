@@ -9,17 +9,17 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
-// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
-// information, see:
-// https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
+/** Drive to an x-y position based on a plane mapped by the encoders */
 public class DriveToPoint extends SequentialCommandGroup {
   /**
    * Creates a new DriveToPoint.
    */
   public DriveToPoint(double x, double y) {
+    /* calculate the position in encoder and angle values */
     double heading = Math.toDegrees(Math.atan2(y, x));
     double distance = Math.hypot(x, y);
 
+    /* Use Turn and DriveByEncoder commands with specified headings and distances */
     addCommands(
       new Turn(-heading + 90),
       new DriveByEncoder(distance)

@@ -1,9 +1,16 @@
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
+
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
-import frc.robot.RobotContainer;
+import static frc.robot.RobotContainer.drivetrain;
 
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
@@ -12,28 +19,32 @@ public class DriveByEncoder extends CommandBase {
     private TalonFX leftEncoder, rightEncoder;
 
     private double distance;
-    private final double inchesPerRotation = Constants.inchesPerRotation;
+    private final double inchesPerRotation = Constants.Drivetrain.inchesPerRotation;
 
+    /** Get the motors from drivetrain and set the new distance
+     * @param d - The desired distance to travel by encoders
+     */
     public DriveByEncoder(double d) {
-        addRequirements(RobotContainer.drivetrain);
-        leftEncoder = RobotContainer.drivetrain.getLeftMotors();
-        rightEncoder = RobotContainer.drivetrain.getRightMotors();
+        addRequirements(drivetrain);
+        
+        leftEncoder = drivetrain.getLeftMotors();
+        rightEncoder = drivetrain.getRightMotors();
 
         distance = d;
     }
 
-    // Called when the command is initially scheduled.
+    /** Reset the encoders and set the new position to drive to */
     @Override
     public void initialize() {
         System.out.println("Driving");
 
         leftEncoder.setSelectedSensorPosition(0);
         rightEncoder.setSelectedSensorPosition(0);
-        RobotContainer.drivetrain.stop(); // Don't move on init
-        RobotContainer.drivetrain.setSetpoints(distance, distance);
+        drivetrain.stop(); // Don't move on init
+        drivetrain.setSetpoints(distance, distance);
     }
 
-    // Called every time the scheduler runs while the command is scheduled.
+    /** Report to Shuffleboard of the current encoder position */
     @Override
     public void execute() {
         SmartDashboard.putNumber("Left Encoder", leftEncoder.getSelectedSensorPosition());
@@ -60,7 +71,7 @@ public class DriveByEncoder extends CommandBase {
 
     }
 
-    // Returns true when the command should end.
+    /** @return if the encoders have reached the desired position */
     @Override
     public boolean isFinished() {
         return rightEncoder.getSelectedSensorPosition() * inchesPerRotation >= distance * .95

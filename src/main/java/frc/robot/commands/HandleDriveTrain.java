@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 
+/** Handle the Drivetrain in Teleop */
 public class HandleDriveTrain extends CommandBase{
     @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
 
@@ -15,13 +16,13 @@ public class HandleDriveTrain extends CommandBase{
         addRequirements(RobotContainer.drivetrain);
       }
 
-        // Called when the command is initially scheduled.
+    // When in doubt, stop the motors
     @Override
     public void initialize() {
         RobotContainer.drivetrain.stop(); // Don't move on init
     }
 
-    // Called every time the scheduler runs while the command is scheduled.
+    // Used for Teleop control and displaying power values
     @Override
     public void execute() {
         double power = RobotContainer.getLeftJoy().getY();

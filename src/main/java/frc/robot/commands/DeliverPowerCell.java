@@ -12,19 +12,19 @@ import static frc.robot.RobotContainer.shooter;
 
 public class DeliverPowerCell extends CommandBase {
   
+  /* TODO: Implement DeliverPowerCell for Auto */
   public DeliverPowerCell() {
     addRequirements(shooter);
   }
 
-  // Called when the command is initially scheduled.
+  // Spool up on start of Auto
   @Override
   public void initialize() {
     shooter.spoolUp();
   }
 
-  // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
+  public void execute() { 
 
   }
 

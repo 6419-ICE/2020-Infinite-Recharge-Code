@@ -11,7 +11,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 import frc.robot.RobotContainer;
 import frc.robot.Utilities;
 
-public class Shooter extends SubsystemBase {
+/** Turret Subsystem */
+public class Turret extends SubsystemBase {
 
   private CANSparkMax shooter0, shooter1;
 
@@ -23,7 +24,7 @@ public class Shooter extends SubsystemBase {
 
   private PIDController traverseController;
 
-  public Shooter() {
+  public Turret() {
         shooter0 = new CANSparkMax(Constants.Turret.SHOOTER0, CANSparkMaxLowLevel.MotorType.kBrushless);
         shooter1 = new CANSparkMax(Constants.Turret.SHOOTER1, CANSparkMaxLowLevel.MotorType.kBrushless);
 
@@ -40,6 +41,7 @@ public class Shooter extends SubsystemBase {
 
         traverse = new TalonSRX(Constants.Turret.TRAVERSE);
 
+        /* Make traverse motor have restricted movements with a home position */
         traverse.setNeutralMode(NeutralMode.Brake);
         traverse.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 30);
         traverse.configNominalOutputForward(0.05);
@@ -61,6 +63,7 @@ public class Shooter extends SubsystemBase {
             traverse.configReverseSoftLimitEnable(true);
         }
 
+        /* PID Constants */
         kP = 0.05;
         kI = 0.0;
         kD = 0.01;
@@ -71,6 +74,9 @@ public class Shooter extends SubsystemBase {
         traverseController.setSetpoint(0);
     }
 
+  /** Continuously uses Limelight to check for a vision target
+   * If found, the traverse motor will engage to meet the same positional angle as the target
+   */
   @Override
   public void periodic() {
     if (lockAcquired()) {
@@ -80,58 +86,76 @@ public class Shooter extends SubsystemBase {
     }
   }
 
+  /** Engages the turret spool */
   public void spoolUp() {
     shooterController.setReference(1, ControlType.kDutyCycle);
   }
 
+  /** Disengages the turret spool */
   public void spoolDown() {
     shooterController.setReference(0, ControlType.kDutyCycle);
   }
 
+  /** @return if the turret has reach max spool speed */
   public boolean readyToFire() {
     return shooterEncoder.getVelocity() >= Constants.Turret.FIRING_SPEED;
   }
 
+  /** @return spool motor 0's temperature */
   public double getShooter0Temperature() {
     return shooter0.getMotorTemperature();
   }
 
+  /** @return spool motor 1's temperature */
   public double getShooter1Temperature() {
     return shooter1.getMotorTemperature();
   }
 
+  /** @return the current angle of the turret */
   public double getAngle() {
     return encoder2Angle(traverse.getSelectedSensorPosition());
   }
 
+  /** Set the power of the traverse motor 
+   * @param power
+  */
   public void setTraversePower(double power) {
     traverse.set(ControlMode.PercentOutput, power);
   }
 
+  /** Set the target angle for the traverse to "drive" to
+   * This feature uses encoders to track the current angle
+   * @param angle
+   */
   public void setTraverseTargetAngle(double angle) {
     traverse.set(ControlMode.Position, angle2Encoder(angle));
   }
 
+  /** @return if the Limelight has found a vision target */
   public boolean lockAcquired() {
     return RobotContainer.limelight.canSeeTarget();
   }
 
+  /** Set the traverse's current position as the "home" or central position */
   public void homeEncoder() {
     traverse.setSelectedSensorPosition((int) Constants.Turret.TRAVERSE_SOFT_LIMIT);
   }
 
-  /** Returns the inverse of angle2Encoder() */
+  /** @return the inverse of angle2Encoder() */
   private double encoder2Angle(int encoder) {
     return Utilities.map(encoder, 0, 2 * Constants.Turret.TRAVERSE_SOFT_LIMIT, -Constants.Turret.TRAVERSE_LIMIT_ANGLE,
         Constants.Turret.TRAVERSE_LIMIT_ANGLE);
   }
 
-  /** Returns an encoder target from a given angle relative to the robot from -90 to 90 */
+  /** @return an encoder target from a given angle relative to the robot from -90 to 90 */
   private int angle2Encoder(double angle) {
     return (int) Utilities.map(angle, -Constants.Turret.TRAVERSE_LIMIT_ANGLE, Constants.Turret.TRAVERSE_LIMIT_ANGLE, 0,
         2 * Constants.Turret.TRAVERSE_SOFT_LIMIT);
   }
 
+  /** Build the Shuffleboard Choosers
+   * @param builder
+   */
   @Override
   public void initSendable(SendableBuilder builder) {
     setName("Turret");

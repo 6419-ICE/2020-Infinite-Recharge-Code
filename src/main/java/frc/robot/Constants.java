@@ -49,6 +49,15 @@ public final class Constants {
 
     /* Hall Effect Sensor Port */
     public static final int sensorPrt = 0;
+    
+    /* Loader Motor Port*/
+    public static final int LOADER = 10;
+
+    /* Intake Motor Port */
+    public static final int INTAKE = 11;
+    
+    /* Intake Motor Port */
+    public static final int INDEXER = 12;
 
     /** Constants for the Turret */
     public static class Turret {

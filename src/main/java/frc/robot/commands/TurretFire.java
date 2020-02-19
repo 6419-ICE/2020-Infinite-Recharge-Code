@@ -8,16 +8,18 @@
 package frc.robot.commands;
 
 import static frc.robot.RobotContainer.shooter;
+import static frc.robot.RobotContainer.loader;
+import static frc.robot.RobotContainer.indexer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** Vision Tracking is found in the Turret subsystem, however firing Power Cells is handled here */
-public class HandleTurret extends CommandBase {
+public class TurretFire extends CommandBase {
   /**
    * Creates a new HandleTurret.
    */
-  public HandleTurret() {
+  public TurretFire() {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(shooter);
+    addRequirements(shooter, loader, indexer);
   }
 
   /** Initially spool up. 
@@ -31,6 +33,10 @@ public class HandleTurret extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    if (shooter.readyToFire() == true){
+      loader.runLoader();
+      indexer.runIndexer();
+    }
   }
 
   /** Stop when trigger in RobotContainer is released */

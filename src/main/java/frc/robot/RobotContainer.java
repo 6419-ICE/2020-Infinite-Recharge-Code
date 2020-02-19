@@ -26,10 +26,14 @@ public class RobotContainer {
   public static final Turret shooter = new Turret();
   public static final AnalogInput ultrasonic = new AnalogInput(0);
   public static final Limelight limelight = new Limelight();
+  public static final Loader loader = new Loader();
+  public static final Intake intake = new Intake();
+  public static final Indexer indexer = new Indexer();
   // public static final DigitalInput hallEffect = new DigitalInput(1);
 
   private static Joystick leftJoystick;
   private static Joystick rightJoystick;
+
 
   /* Required selections for the SendableChooser */
   public enum autoSelections {
@@ -46,6 +50,8 @@ public class RobotContainer {
     // Default Commands
     drivetrain.setDefaultCommand(new HandleDriveTrain());
     shooter.setDefaultCommand(new TurretDefault());
+    intake.setDefaultCommand(new HandleIntake());
+    indexer.setDefaultCommand(new HandleIndexer());
 
     /* Multiple Autonomous Selections */
     aChooser = new SendableChooser<>();
@@ -77,8 +83,8 @@ public class RobotContainer {
     leftJoystick = new Joystick(Constants.joy1);
     rightJoystick = new Joystick(Constants.joy2);
 
-    JoystickButton shooter = new JoystickButton(rightJoystick, 1); // 1 = Joystick Trigger
-    shooter.whenHeld(new HandleTurret()); // Run the turret ONLY when pressed, otherwise cancel
+    JoystickButton shooterButton = new JoystickButton(rightJoystick, 1); // 1 = Joystick Trigger
+    shooterButton.whenHeld(new TurretFire()); // Run the turret ONLY when pressed, otherwise cancel
   }
 
   /** Return the left Joystick */
@@ -90,6 +96,8 @@ public class RobotContainer {
   public static Joystick getRightJoy() {
     return rightJoystick;
   }
+
+
 
   /** Return the selected autonomous command  */
   public RobotContainer.autoSelections getSelectedAuto(){

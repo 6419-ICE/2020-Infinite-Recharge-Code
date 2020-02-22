@@ -31,7 +31,7 @@ public class Loader extends SubsystemBase {
   }
 
   public void runLoader(){
-    loaderMotor.set(ControlMode.PercentOutput, .2);
+    loaderMotor.set(ControlMode.PercentOutput, 1);
   }
 
   public void stopLoader(){

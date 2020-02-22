@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.CommandGroupBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.RobotContainer.*;
 import frc.robot.commands.AutoGroup;
+import frc.robot.commands.HomeTurret;
 import frc.robot.subsystems.Limelight;
 
 /** Hey look its a robot */
@@ -89,6 +90,7 @@ public class Robot extends TimedRobot { // CommandRobot
     if (autoCommand != null) {
       autoCommand.cancel();
     }
+    new HomeTurret().schedule();
   }
 
   /** Called periodically during operator control */

@@ -28,8 +28,10 @@ public class HandleIntake extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (RobotContainer.getRightJoy().getRawButton(1) == true){
+    if (RobotContainer.getLeftJoy().getRawButton(1)){
       intake.runIntake();
+    } else {
+      intake.stopIntake();
     }
   }
 

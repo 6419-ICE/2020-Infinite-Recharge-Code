@@ -63,19 +63,20 @@ public final class Constants {
     public static class Turret {
         public static final int SHOOTER0 = 7, 
                                 SHOOTER1 = 8, 
-                                TRAVERSE = 9;
+                                TRAVERSE = 9,
+                                HOMING_SWITCH = 0;
 
         public static final double FIRING_SPEED = 5000, 
                                     SLEW_SPROCKET_TEETH = 112, 
                                     PINION_SPROCKET_TEETH = 12,
                                     ENCODER_TICKS_PER_REV = 4096,
-                // How far the turret can traverse, in degrees, from *center*
+                                    // How far the turret can traverse, in degrees, from *center*
                                     TRAVERSE_LIMIT_ANGLE = 90, 
                                     // limit in revolutions of the turret
                                     TRAVERSE_SOFT_LIMIT = (TRAVERSE_LIMIT_ANGLE / 360.0)
-                        // limit in revolutions of the pinion
-                        * (SLEW_SPROCKET_TEETH / PINION_SPROCKET_TEETH)
-                        * ENCODER_TICKS_PER_REV; // limit in ticks
+                                    // limit in revolutions of the pinion
+                                    * (SLEW_SPROCKET_TEETH / PINION_SPROCKET_TEETH)
+                                    * ENCODER_TICKS_PER_REV; // limit in ticks
 
         public static final boolean ENABLE_LIMITS = false;
     }

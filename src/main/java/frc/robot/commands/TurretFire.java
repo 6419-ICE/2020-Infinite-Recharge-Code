@@ -33,7 +33,7 @@ public class TurretFire extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (shooter.readyToFire() == true){
+    if (shooter.readyToFire()){
       loader.runLoader();
       indexer.runIndexer();
     }

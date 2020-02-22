@@ -36,6 +36,13 @@ public class DriveTrain extends SubsystemBase {
         right2 = new TalonFX(Constants.BACK_TWO_PIN);
         right3 = new TalonFX(Constants.BACK_THREE_PIN);
 
+        left1.setNeutralMode(NeutralMode.Brake);
+        left2.setNeutralMode(NeutralMode.Brake);
+        left3.setNeutralMode(NeutralMode.Brake);
+        right1.setNeutralMode(NeutralMode.Brake);
+        right2.setNeutralMode(NeutralMode.Brake);
+        right3.setNeutralMode(NeutralMode.Brake);
+
         left2.follow(left1);
         left3.follow(left1);
 

@@ -52,6 +52,7 @@ public class RobotContainer {
     shooter.setDefaultCommand(new TurretDefault());
     intake.setDefaultCommand(new HandleIntake());
     indexer.setDefaultCommand(new HandleIndexer());
+    loader.setDefaultCommand(new LoaderDefault());
 
     /* Multiple Autonomous Selections */
     aChooser = new SendableChooser<>();
@@ -65,17 +66,19 @@ public class RobotContainer {
 
     SmartDashboard.putData("Auto Selector", aChooser);
     SmartDashboard.putData(new syncPID());
+    SmartDashboard.putData(new HomeTurret());
   }
 
   /*----------------------------------------------------------------------------*/
   /* ICE 6419 BUTTON MAPPINGS                                                   */
   /*                                                                            */
   /* Moving the Robot:                                                          */
-  /* Left Joystick - Move Forward/Backward                                      */
-  /* Right Joystick - Turn Left/Right                                           */
+  /* Right Joystick - Move Forward/Backward                                     */
+  /* Left Joystick - Turn Left/Right                                            */
   /*                                                                            */
   /* Actions:                                                                   */
   /* Left Trigger - Spool Up Intake (Inject Power cells into indexer)           */
+  /* Right Thumb Button - Run Indexer                                           */
   /* Right Trigger - Spool Up Turret (Shoot Power Cell)                         */
   /* Right Hatswitch - Up / Raise Generator Arm | Down / Lower Arm              */
   /*----------------------------------------------------------------------------*/
@@ -85,6 +88,9 @@ public class RobotContainer {
 
     JoystickButton shooterButton = new JoystickButton(rightJoystick, 1); // 1 = Joystick Trigger
     shooterButton.whenHeld(new TurretFire()); // Run the turret ONLY when pressed, otherwise cancel
+
+    JoystickButton homeTurret = new JoystickButton(leftJoystick, 11);
+    homeTurret.whenPressed(new HomeTurret());
   }
 
   /** Return the left Joystick */

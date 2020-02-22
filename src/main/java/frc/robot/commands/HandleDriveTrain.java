@@ -25,8 +25,8 @@ public class HandleDriveTrain extends CommandBase{
     // Used for Teleop control and displaying power values
     @Override
     public void execute() {
-        double power = RobotContainer.getLeftJoy().getY();
-        double turn = RobotContainer.getRightJoy().getX();
+        double power = RobotContainer.getRightJoy().getY();
+        double turn = RobotContainer.getLeftJoy().getX();
         power = Math.copySign(Math.abs(Math.pow(power, 2)), power);
         SmartDashboard.putNumber("Power", power);
         SmartDashboard.putNumber("Turn", turn);

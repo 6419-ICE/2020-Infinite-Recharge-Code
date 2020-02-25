@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.subsystems.*;
 import frc.robot.commands.*;
@@ -33,15 +35,16 @@ public class RobotContainer {
 
   private static Joystick leftJoystick;
   private static Joystick rightJoystick;
+  private static Joystick mechanismJoystick;
 
 
   /* Required selections for the SendableChooser */
-  public enum autoSelections {
-    AUTO_1, AUTO_2, AUTO_3;
-  }
+  /*public enum autoSelections {
+    AUTO_1, AUTO_2, AUTO_3, SHOOT_AUTO;
+  }*/
 
   // Select an autonomous command via Shuffleboard
-  private static SendableChooser<autoSelections> aChooser;
+  private static SendableChooser<CommandBase> aChooser;
 
   /**
    * Set default commands and construct SendableChooser for autonomous command selection
@@ -56,10 +59,12 @@ public class RobotContainer {
 
     /* Multiple Autonomous Selections */
     aChooser = new SendableChooser<>();
-    aChooser.setDefaultOption("Default Auto", autoSelections.AUTO_1);
-    aChooser.addOption("Auto 1", autoSelections.AUTO_1);
-    aChooser.addOption("Auto 2", autoSelections.AUTO_2);
-    aChooser.addOption("Auto 3", autoSelections.AUTO_3);
+    aChooser.setDefaultOption("None", null);
+    aChooser.addOption("Trench Run", new TrenchRunAuto());
+    aChooser.addOption("Center To Mid", new CenterToMidAuto());
+    aChooser.addOption("Left To Mid", new LeftToMidAuto());
+    aChooser.addOption("Shoot", new ShootAuto());
+    aChooser.addOption("Turn", new Turn(180));
 
     // Set button binding instances
     configureButtonBindings();
@@ -85,12 +90,31 @@ public class RobotContainer {
   private void configureButtonBindings() {
     leftJoystick = new Joystick(Constants.joy1);
     rightJoystick = new Joystick(Constants.joy2);
+    mechanismJoystick = new Joystick(2);
 
-    JoystickButton shooterButton = new JoystickButton(rightJoystick, 1); // 1 = Joystick Trigger
+    JoystickButton shooterButton = new JoystickButton(mechanismJoystick, 1); // 1 = Joystick Trigger
     shooterButton.whenHeld(new TurretFire()); // Run the turret ONLY when pressed, otherwise cancel
 
-    JoystickButton homeTurret = new JoystickButton(leftJoystick, 11);
-    homeTurret.whenPressed(new HomeTurret());
+    //JoystickButton homeTurret = new JoystickButton(mechanismJoystick, 11);
+    //homeTurret.whenPressed(new HomeTurret());
+
+    JoystickButton intakeAndIndex = new JoystickButton(mechanismJoystick, 2);
+    intakeAndIndex.whenHeld(new ParallelCommandGroup(new SetIndexerPower(-1), new SetIntakePower(1)));
+
+    JoystickButton intake = new JoystickButton(mechanismJoystick, 5);
+    intake.whenHeld(new SetIntakePower(1));
+
+    JoystickButton driverIntake = new JoystickButton(rightJoystick, 1);
+    driverIntake.whenHeld(new SetIntakePower(1));
+
+    JoystickButton outtake = new JoystickButton(mechanismJoystick, 3);
+    outtake.whenHeld(new SetIntakePower(-1));
+
+    JoystickButton forwardIndex = new JoystickButton(mechanismJoystick, 11);
+    forwardIndex.whenHeld(new SetIndexerPower(-1));
+
+    JoystickButton reverseIndex = new JoystickButton(mechanismJoystick, 12);
+    reverseIndex.whenHeld(new ParallelCommandGroup(new SetIndexerPower(1), new SetLoaderPower(-1)));
   }
 
   /** Return the left Joystick */
@@ -103,10 +127,12 @@ public class RobotContainer {
     return rightJoystick;
   }
 
-
+  public static Joystick getMechanismJoystick() {
+    return mechanismJoystick;
+  }
 
   /** Return the selected autonomous command  */
-  public RobotContainer.autoSelections getSelectedAuto(){
+  public CommandBase getSelectedAuto(){
     return aChooser.getSelected();
   }
 }

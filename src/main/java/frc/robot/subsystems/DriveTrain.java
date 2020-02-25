@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Utilities;
 
 public class DriveTrain extends SubsystemBase {
 
@@ -26,6 +27,7 @@ public class DriveTrain extends SubsystemBase {
     public DriveTrain(){
         /* Reset the Accelerometer/Gyro/etc. */
         imu = new ADIS16448_IMU();
+        imu.setYawAxis(ADIS16448_IMU.IMUAxis.kX);
         imu.calibrate();
 
         /* Six-motor Falcon 500 Drivetrain */
@@ -50,7 +52,7 @@ public class DriveTrain extends SubsystemBase {
         right3.follow(right1);
 
         /* PID Constants */
-        kP = 0.05;
+        kP = 0.5;//0.05;
         kI = 0;
         kD = 0.35;
         kF = 0;
@@ -65,6 +67,16 @@ public class DriveTrain extends SubsystemBase {
         right1.config_kI(0, kI);
         right1.config_kD(0, kD);
         right1.config_kF(0, kF);
+
+        /*left1.configPeakOutputForward(1);
+        left1.configPeakOutputReverse(-1);
+        left1.configNominalOutputForward(0.1);
+        left1.configNominalOutputReverse(-0.1);
+
+        right1.configPeakOutputForward(1);
+        right1.configPeakOutputReverse(-1);
+        right1.configNominalOutputForward(0.1);
+        right1.configNominalOutputReverse(-0.1);*/
 
         /* CHANGES WITH TALONFX:
 
@@ -92,9 +104,9 @@ public class DriveTrain extends SubsystemBase {
         }
 
         headingPidController = new PIDController(
-            prefs.getDouble("Heading P", 0.045),
+            0.0055,
             0,
-            prefs.getDouble("Heading D", 0));
+            0.0001);
         headingPidController.setTolerance(8);
     }
 
@@ -103,6 +115,11 @@ public class DriveTrain extends SubsystemBase {
     public void periodic() {
         if (headingPidEnabled) {
             double output = headingPidController.calculate(getHeading());
+            if (output < -0.7) {
+                output = -0.7;
+            } else if (output > 0.7) {
+                output = 0.7;
+            }
             SmartDashboard.putNumber("PID Output", output);
             drive(output, -output);
         }

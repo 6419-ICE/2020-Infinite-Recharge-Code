@@ -8,4 +8,12 @@ public class Utilities {
     public static double map(double x, double inputMin, double inputMax, double outputMin, double outputMax) {
         return ((outputMax - outputMin) / (inputMax - inputMin)) * (x - inputMin) + outputMin;
     }
+
+    public static double applyDeadband(double input, double threshold) {
+        if (Math.abs(input) < threshold) {
+            return 0;
+        } else {
+            return input;
+        }
+    }
 }

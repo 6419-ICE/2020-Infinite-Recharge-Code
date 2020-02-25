@@ -1,7 +1,7 @@
 package frc.robot.commands;
 
-// LoaderDefault - Part of FRC 6419's 2020 codebase
-// Generated 20200221:2130 [2/21/2020:21:30]
+// SetIndexerPower - Part of FRC 6419's 2020 codebase
+// Generated 20200222:1120 [2/22/2020:11:20]
 // by fortr.
 // (c) 2020 FRC 6419 "ICE", all rights reserved.
 
@@ -11,26 +11,25 @@ import frc.robot.RobotContainer;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-import static frc.robot.RobotContainer.loader;
+import static frc.robot.RobotContainer.indexer;
 
-public class LoaderDefault extends CommandBase {
+public class SetIndexerPower extends CommandBase {
 
-    public LoaderDefault() {
-        addRequirements(loader);
+    private double power;
+
+    public SetIndexerPower(double power) {
+        this.power = power;
+        addRequirements(indexer);
     }
 
     @Override
     public void initialize() {
-        loader.stopLoader();
+        indexer.setPower(power);
     }
 
     @Override
     public void execute() {
-        /*if (RobotContainer.getLeftJoy().getRawButton(7)) {
-            loader.runLoader();
-        } else {
-            loader.stopLoader();
-        }*/
+
     }
 
     @Override

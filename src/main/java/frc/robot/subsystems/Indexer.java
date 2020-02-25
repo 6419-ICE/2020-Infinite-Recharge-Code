@@ -33,8 +33,16 @@ public class Indexer extends SubsystemBase {
     return indexingMotor;
   }
 
+  public void setPower(double power) {
+    indexingMotor.set(ControlMode.PercentOutput, power);
+  }
+
   public void runIndexer(){
     indexingMotor.set(ControlMode.PercentOutput, -1);
+  }
+
+  public void reverseIndexer(){
+    indexingMotor.set(ControlMode.PercentOutput, 1);
   }
 
   public void stopIndexer(){

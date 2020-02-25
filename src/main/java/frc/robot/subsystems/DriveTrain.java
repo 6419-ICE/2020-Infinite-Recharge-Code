@@ -50,10 +50,29 @@ public class DriveTrain extends SubsystemBase {
         right3.follow(right1);
 
         /* PID Constants */
-        kP = 0.05;
+        kP = 0.03;
         kI = 0;
-        kD = 0.35;
+        kD = 0.0;
         kF = 0;
+
+        left1.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 30);// Try Absolute instead of relative
+        right1.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 30);
+        
+        left1.setSensorPhase(true);
+        right1.setSensorPhase(true);
+        
+		left1.configNominalOutputForward(0, 30);
+		left1.configNominalOutputReverse(0, 30);
+		left1.configPeakOutputForward(.5, 30);
+        left1.configPeakOutputReverse(-.5, 30);
+                
+		right1.configNominalOutputForward(0, 30);
+		right1.configNominalOutputReverse(0, 30);
+		right1.configPeakOutputForward(.5, 30);
+        right1.configPeakOutputReverse(-.5, 30);
+        
+        left1.configAllowableClosedloopError(0, 0, 30);
+        right1.configAllowableClosedloopError(0, 0, 30);
 
         /* Config PID values: Config 0 */
         left1.config_kP(0, kP); // 0 is the slot index for this current PID config
@@ -65,6 +84,8 @@ public class DriveTrain extends SubsystemBase {
         right1.config_kI(0, kI);
         right1.config_kD(0, kD);
         right1.config_kF(0, kF);
+
+        
 
         /* CHANGES WITH TALONFX:
 
@@ -158,8 +179,11 @@ public class DriveTrain extends SubsystemBase {
      * @param right - Right point
      */
     public void setSetpoints(double left, double right){
-        left1.set(ControlMode.Position, left/Constants.Drivetrain.inchesPerRotation);
-        right1.set(ControlMode.Position, -right/Constants.Drivetrain.inchesPerRotation);
+        /*left1.set(ControlMode.Position, left/Constants.Drivetrain.inchesPerRotation );
+        right1.set(ControlMode.Position, -right/Constants.Drivetrain.inchesPerRotation  );*/
+        left1.set(ControlMode.Position, 23.07763157);
+        right1.set(ControlMode.Position, 23.07763157);
+
     }
 
     /** Specify wether to enable or disable headingPID

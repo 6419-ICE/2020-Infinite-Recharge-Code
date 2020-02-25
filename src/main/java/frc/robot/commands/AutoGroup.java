@@ -26,10 +26,10 @@ public class AutoGroup extends SequentialCommandGroup {
         /* Trench Run */
         case "AUTO_1":
             addCommands(
-                new DeliverPowerCell(), 
-                new DriveToPoint(0, -216), 
-                new DriveToPoint(0, -216),
-                new DeliverPowerCell());
+                //new DeliverPowerCell(), 
+                new DriveByEncoder(50)); 
+                //new DriveToPoint(0, -216),
+                //new DeliverPowerCell());
             break;
         /* Center to Mid */
         case "AUTO_2":

@@ -1,7 +1,7 @@
 package frc.robot.commands;
 
-// LoaderDefault - Part of FRC 6419's 2020 codebase
-// Generated 20200221:2130 [2/21/2020:21:30]
+// SetIntakePower - Part of FRC 6419's 2020 codebase
+// Generated 20200222:1118 [2/22/2020:11:18]
 // by fortr.
 // (c) 2020 FRC 6419 "ICE", all rights reserved.
 
@@ -11,26 +11,25 @@ import frc.robot.RobotContainer;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-import static frc.robot.RobotContainer.loader;
+import static frc.robot.RobotContainer.intake;
 
-public class LoaderDefault extends CommandBase {
+public class SetIntakePower extends CommandBase {
 
-    public LoaderDefault() {
-        addRequirements(loader);
+    private double power;
+
+    public SetIntakePower(double power) {
+        this.power = power;
+        addRequirements(intake);
     }
 
     @Override
     public void initialize() {
-        loader.stopLoader();
+        intake.setIntakePower(power);
     }
 
     @Override
     public void execute() {
-        /*if (RobotContainer.getLeftJoy().getRawButton(7)) {
-            loader.runLoader();
-        } else {
-            loader.stopLoader();
-        }*/
+
     }
 
     @Override

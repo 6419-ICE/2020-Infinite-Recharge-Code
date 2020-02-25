@@ -21,6 +21,8 @@ public class DriveByEncoder extends CommandBase {
     private double distance;
     private final double inchesPerRotation = Constants.Drivetrain.inchesPerRotation;
 
+    private double leftStart, rightStart;
+
     /** Get the motors from drivetrain and set the new distance
      * @param d - The desired distance to travel by encoders
      */
@@ -38,10 +40,12 @@ public class DriveByEncoder extends CommandBase {
     public void initialize() {
         System.out.println("Driving");
 
-        leftEncoder.setSelectedSensorPosition(0);
-        rightEncoder.setSelectedSensorPosition(0);
-        drivetrain.stop(); // Don't move on init
-        drivetrain.setSetpoints(distance, distance);
+        drivetrain.drive(1, 1);
+
+        leftStart = leftEncoder.getSelectedSensorPosition();
+        rightStart = rightEncoder.getSelectedSensorPosition();
+        //drivetrain.stop(); // Don't move on init
+        //drivetrain.setSetpoints(distance, distance);
     }
 
     /** Report to Shuffleboard of the current encoder position */
@@ -68,13 +72,14 @@ public class DriveByEncoder extends CommandBase {
     // Called once the command ends or is interrupted.
     @Override
     public void end(final boolean interrupted) {
-
+        System.out.println(String.format("Drive Complete: interrupted: %s", interrupted ? "yes" : "no"));
+        drivetrain.stop();
     }
 
     /** @return if the encoders have reached the desired position */
     @Override
     public boolean isFinished() {
-        return rightEncoder.getSelectedSensorPosition() * inchesPerRotation >= distance * .95
-                || leftEncoder.getSelectedSensorPosition() * inchesPerRotation >= distance * .95;
+        return Math.abs((rightEncoder.getSelectedSensorPosition() - rightStart) * inchesPerRotation) >= distance * .95
+                || Math.abs((leftEncoder.getSelectedSensorPosition() - leftStart) * inchesPerRotation) >= distance * .95;
     }
 }

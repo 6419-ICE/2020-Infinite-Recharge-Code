@@ -30,6 +30,10 @@ public class Loader extends SubsystemBase {
     return loaderMotor;
   }
 
+  public void setPower(double power) {
+    loaderMotor.set(ControlMode.PercentOutput, power);
+  }
+
   public void runLoader(){
     loaderMotor.set(ControlMode.PercentOutput, 1);
   }

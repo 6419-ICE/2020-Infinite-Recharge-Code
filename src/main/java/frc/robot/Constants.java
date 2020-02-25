@@ -15,7 +15,7 @@ public final class Constants {
     /** Constants for the Drivetrain */
     public static class Drivetrain {
         /* Universal Motor Speed Limit */
-        public static final double speedLmt = 0.74;
+        public static final double speedLmt = 1;
 
         /* Drive Train Encoder Values */
         public static final double rotations = .115;

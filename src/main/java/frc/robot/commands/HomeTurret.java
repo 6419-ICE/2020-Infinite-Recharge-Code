@@ -22,6 +22,7 @@ public class HomeTurret extends CommandBase {
     @Override
     public void initialize() {
         shooter.setTrackingEnabled(false);
+        shooter.disableLimits();
         shooter.setTraversePower(0.3);
     }
 
@@ -33,6 +34,7 @@ public class HomeTurret extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         shooter.setTraversePower(0);
+        shooter.enableLimits();
         if (!interrupted) {
             shooter.setEncoderPosition(2 * (int) Constants.Turret.TRAVERSE_SOFT_LIMIT);
         }

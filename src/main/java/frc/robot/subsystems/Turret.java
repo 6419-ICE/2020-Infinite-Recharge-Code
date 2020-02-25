@@ -4,7 +4,10 @@ import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.revrobotics.*;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -57,6 +60,8 @@ public class Turret extends SubsystemBase {
         traverse.configPeakOutputReverse(-1);
         traverse.setSelectedSensorPosition((int) Constants.Turret.TRAVERSE_SOFT_LIMIT);
 
+        traverse.config_kP(0, 0.12);
+
         if (Constants.Turret.ENABLE_LIMITS) {
             traverse.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyClosed);
             traverse.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyClosed);
@@ -95,7 +100,13 @@ public class Turret extends SubsystemBase {
             if (lockAcquired()) {
                 setTraversePower(-traverseController.calculate(RobotContainer.limelight.getHorizontalAngle()));
             } else {
-                setTraversePower(0);
+                if (DriverStation.getInstance().isAutonomous()) {
+                    traverse.set(ControlMode.Position, angle2Encoder(0));
+                } else {
+                    double angleTarget = 85 * Math.sin((Math.PI * Timer.getFPGATimestamp()) / 2) - 2;
+                    SmartDashboard.putNumber("Turret Target", angleTarget);
+                    traverse.set(ControlMode.Position, angle2Encoder(angleTarget));
+                }
             }
         }
     }
@@ -209,6 +220,16 @@ public class Turret extends SubsystemBase {
 
     public boolean isHomingSwitchPressed() {
         return homingSwitch.get();
+    }
+
+    public void disableLimits() {
+        traverse.configForwardSoftLimitEnable(false);
+        traverse.configReverseSoftLimitEnable(false);
+    }
+
+    public void enableLimits() {
+        traverse.configForwardSoftLimitEnable(true);
+        traverse.configReverseSoftLimitEnable(true);
     }
 
     /**

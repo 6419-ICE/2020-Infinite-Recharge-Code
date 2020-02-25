@@ -52,11 +52,7 @@ public class DriveTrain extends SubsystemBase {
         right3.follow(right1);
 
         /* PID Constants */
-<<<<<<< HEAD
         kP = 0.03;
-=======
-        kP = 0.5;//0.05;
->>>>>>> a65569dfc6f67ba6270c4fab860a3dd14dd34e9b
         kI = 0;
         kD = 0.0;
         kF = 0;
@@ -91,9 +87,6 @@ public class DriveTrain extends SubsystemBase {
         right1.config_kD(0, kD);
         right1.config_kF(0, kF);
 
-<<<<<<< HEAD
-        
-=======
         /*left1.configPeakOutputForward(1);
         left1.configPeakOutputReverse(-1);
         left1.configNominalOutputForward(0.1);
@@ -103,7 +96,6 @@ public class DriveTrain extends SubsystemBase {
         right1.configPeakOutputReverse(-1);
         right1.configNominalOutputForward(0.1);
         right1.configNominalOutputReverse(-0.1);*/
->>>>>>> a65569dfc6f67ba6270c4fab860a3dd14dd34e9b
 
         /* CHANGES WITH TALONFX:
 

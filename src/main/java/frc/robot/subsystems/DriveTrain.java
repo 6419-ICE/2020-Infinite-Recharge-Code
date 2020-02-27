@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.*;
 
 import edu.wpi.first.wpilibj.Preferences;
+import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -52,13 +53,13 @@ public class DriveTrain extends SubsystemBase {
         right3.follow(right1);
 
         /* PID Constants */
-        kP = 0.03;
+        kP = 0.025;
         kI = 0;
-        kD = 0.0;
+        kD = 0.2;
         kF = 0;
 
-        left1.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 30);// Try Absolute instead of relative
-        right1.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 30);
+        left1.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 30);// Try Absolute instead of relative
+        right1.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 30);
         
         left1.setSensorPhase(true);
         right1.setSensorPhase(true);
@@ -87,15 +88,8 @@ public class DriveTrain extends SubsystemBase {
         right1.config_kD(0, kD);
         right1.config_kF(0, kF);
 
-        /*left1.configPeakOutputForward(1);
-        left1.configPeakOutputReverse(-1);
-        left1.configNominalOutputForward(0.1);
-        left1.configNominalOutputReverse(-0.1);
-
-        right1.configPeakOutputForward(1);
-        right1.configPeakOutputReverse(-1);
-        right1.configNominalOutputForward(0.1);
-        right1.configNominalOutputReverse(-0.1);*/
+        left1.setSelectedSensorPosition(0);
+        right1.setSelectedSensorPosition(0);
 
         /* CHANGES WITH TALONFX:
 
@@ -123,7 +117,7 @@ public class DriveTrain extends SubsystemBase {
         }
 
         headingPidController = new PIDController(
-            0.0055,
+            0.0040,
             0,
             0.0001);
         headingPidController.setTolerance(8);
@@ -160,7 +154,7 @@ public class DriveTrain extends SubsystemBase {
     */
     public void drive(double l, double r) {
         left1.set(TalonFXControlMode.PercentOutput, l * Constants.Drivetrain.speedLmt);
-        right1.set(TalonFXControlMode.PercentOutput,-r * Constants.Drivetrain.speedLmt);
+        right1.set(TalonFXControlMode.PercentOutput, -r * Constants.Drivetrain.speedLmt);
     }
 
     /** Set each set of motors to a given power percentage based on Joystick axes 
@@ -194,11 +188,9 @@ public class DriveTrain extends SubsystemBase {
      * @param right - Right point
      */
     public void setSetpoints(double left, double right){
-        /*left1.set(ControlMode.Position, left/Constants.Drivetrain.inchesPerRotation );
-        right1.set(ControlMode.Position, -right/Constants.Drivetrain.inchesPerRotation  );*/
-        left1.set(ControlMode.Position, 23.07763157);
-        right1.set(ControlMode.Position, 23.07763157);
-
+        left1.set(TalonFXControlMode.Position, left/Constants.Drivetrain.inchesPerRotation/2 * 4096);
+        right1.set(TalonFXControlMode.Position, -right/Constants.Drivetrain.inchesPerRotation/2 * 4096);
+        
     }
 
     /** Specify wether to enable or disable headingPID
@@ -238,6 +230,7 @@ public class DriveTrain extends SubsystemBase {
         builder.addDoubleProperty("Heading", this::getHeading, null);
         builder.addDoubleProperty("Target Heading", this::getHeadingTarget, this::setHeadingTarget);
         builder.addBooleanProperty("At Target Heading", this::atHeadingTarget, null);
+        
         super.initSendable(builder);
     }
 }

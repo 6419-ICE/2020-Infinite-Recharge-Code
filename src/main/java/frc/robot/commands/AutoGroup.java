@@ -27,8 +27,8 @@ public class AutoGroup extends SequentialCommandGroup {
         case "AUTO_1":
             addCommands(
                 //new DeliverPowerCell(), 
-                new DriveByEncoder(50)); 
-                //new DriveToPoint(0, -216),
+                //new DriveByEncoder(100)); 
+                new DriveToPoint(0, -216));
                 //new DeliverPowerCell());
             break;
         /* Center to Mid */

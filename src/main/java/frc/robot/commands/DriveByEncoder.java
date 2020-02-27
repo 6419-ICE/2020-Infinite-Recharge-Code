@@ -40,19 +40,18 @@ public class DriveByEncoder extends CommandBase {
     public void initialize() {
         System.out.println("Driving");
 
-        drivetrain.drive(1, 1);
+        leftEncoder.setSelectedSensorPosition(0, 0, 30);
+        rightEncoder.setSelectedSensorPosition(0, 0, 30);
 
-        leftStart = leftEncoder.getSelectedSensorPosition();
-        rightStart = rightEncoder.getSelectedSensorPosition();
-        //drivetrain.stop(); // Don't move on init
-        //drivetrain.setSetpoints(distance, distance);
+        drivetrain.stop(); // Don't move on init
+        drivetrain.setSetpoints(distance, distance);
     }
 
     /** Report to Shuffleboard of the current encoder position */
     @Override
     public void execute() {
-        SmartDashboard.putNumber("Left Encoder", leftEncoder.getSelectedSensorPosition());
-        SmartDashboard.putNumber("Right Encoder", rightEncoder.getSelectedSensorPosition());
+        SmartDashboard.putNumber("Left Encoder", Math.abs((leftEncoder.getSelectedSensorPosition()/4096) * inchesPerRotation));
+        SmartDashboard.putNumber("Right Encoder", Math.abs((rightEncoder.getSelectedSensorPosition()/4096) * inchesPerRotation));
 
         /*
          * Drive to set number of inches if (leftEncoder.getPosition() *
@@ -79,7 +78,7 @@ public class DriveByEncoder extends CommandBase {
     /** @return if the encoders have reached the desired position */
     @Override
     public boolean isFinished() {
-        return Math.abs((rightEncoder.getSelectedSensorPosition() - rightStart) * inchesPerRotation) >= distance * .95
-                || Math.abs((leftEncoder.getSelectedSensorPosition() - leftStart) * inchesPerRotation) >= distance * .95;
+        return Math.abs((rightEncoder.getSelectedSensorPosition()/4096) * inchesPerRotation) >= distance
+                || Math.abs((leftEncoder.getSelectedSensorPosition()/4096) * inchesPerRotation) >= distance;
     }
 }

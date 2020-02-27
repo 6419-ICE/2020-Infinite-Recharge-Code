@@ -45,6 +45,7 @@ public class RobotContainer {
 
   // Select an autonomous command via Shuffleboard
   private static SendableChooser<CommandBase> aChooser;
+  private static SendableChooser<CommandBase> bChooser;
 
   /**
    * Set default commands and construct SendableChooser for autonomous command selection
@@ -66,9 +67,14 @@ public class RobotContainer {
     aChooser.addOption("Shoot", new ShootAuto());
     aChooser.addOption("Turn", new Turn(180));
 
+    bChooser = new SendableChooser<>();
+    bChooser.setDefaultOption("None", null);
+    bChooser.addOption("Auto 1", new AutoGroup("AUTO_1"));
+
     // Set button binding instances
     configureButtonBindings();
 
+    SmartDashboard.putData("Auto Selector2", bChooser);
     SmartDashboard.putData("Auto Selector", aChooser);
     SmartDashboard.putData(new syncPID());
     SmartDashboard.putData(new HomeTurret());

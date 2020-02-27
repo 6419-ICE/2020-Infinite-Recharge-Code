@@ -12,8 +12,10 @@ public class TrenchRunAuto extends SequentialCommandGroup {
                 parallel(
                         new SetIntakePower(1),
                         sequence(
-                                new DriveToPoint(0, -216),
-                                new DriveToPoint(0, -216),
+                                new Turn(180),
+                                new DriveByEncoder(216),
+                                new Turn(180),
+                                new DriveByEncoder(216),
                                 new TurretFire().withTimeout(5)
                         )
                 ));

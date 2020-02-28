@@ -24,12 +24,11 @@ public class SetIntakePower extends CommandBase {
 
     @Override
     public void initialize() {
-        intake.setIntakePower(power);
     }
 
     @Override
     public void execute() {
-
+        intake.setIntakePower(power);
     }
 
     @Override

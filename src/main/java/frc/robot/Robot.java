@@ -8,6 +8,8 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.CommandGroupBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -21,6 +23,7 @@ import frc.robot.subsystems.Limelight;
 public class Robot extends TimedRobot { // CommandRobot
   private CommandBase autoCommand;
   private RobotContainer m_robotContainer; // Replaces OI
+  private Color detected_color;
 
   /** Initialize the RobotContainer with the robot */
   @Override
@@ -36,6 +39,7 @@ public class Robot extends TimedRobot { // CommandRobot
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
+
     CommandScheduler.getInstance().run();
   }
 
@@ -89,6 +93,9 @@ public class Robot extends TimedRobot { // CommandRobot
   /** Called periodically during operator control */
   @Override
   public void teleopPeriodic() {
+    SmartDashboard.putNumber("Red Value", m_robotContainer.m_colorSensor.getColor().red);
+    SmartDashboard.putNumber("Green Value", m_robotContainer.m_colorSensor.getColor().green);
+    SmartDashboard.putNumber("Blue Value", m_robotContainer.m_colorSensor.getColor().blue);
   }
 
   @Override

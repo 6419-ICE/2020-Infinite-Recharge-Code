@@ -66,13 +66,13 @@ public class DriveTrain extends SubsystemBase {
         
 		left1.configNominalOutputForward(0, 30);
 		left1.configNominalOutputReverse(0, 30);
-		left1.configPeakOutputForward(.5, 30);
-        left1.configPeakOutputReverse(-.5, 30);
+		left1.configPeakOutputForward(.25, 30);
+        left1.configPeakOutputReverse(-.25, 30);
                 
 		right1.configNominalOutputForward(0, 30);
 		right1.configNominalOutputReverse(0, 30);
-		right1.configPeakOutputForward(.5, 30);
-        right1.configPeakOutputReverse(-.5, 30);
+		right1.configPeakOutputForward(.25, 30);
+        right1.configPeakOutputReverse(-.25, 30);
         
         left1.configAllowableClosedloopError(0, 0, 30);
         right1.configAllowableClosedloopError(0, 0, 30);
@@ -117,7 +117,7 @@ public class DriveTrain extends SubsystemBase {
         }
 
         headingPidController = new PIDController(
-            0.0040,
+            0.005,
             0,
             0.0001);
         headingPidController.setTolerance(8);

@@ -7,7 +7,10 @@
 
 package frc.robot;
 
+import com.revrobotics.ColorSensorV3;
+
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -36,6 +39,10 @@ public class RobotContainer {
   private static Joystick leftJoystick;
   private static Joystick rightJoystick;
   private static Joystick mechanismJoystick;
+
+  private final I2C.Port i2cPort = I2C.Port.kOnboard;
+  public final ColorSensorV3 m_colorSensor = new ColorSensorV3(i2cPort);
+
 
 
   /* Required selections for the SendableChooser */

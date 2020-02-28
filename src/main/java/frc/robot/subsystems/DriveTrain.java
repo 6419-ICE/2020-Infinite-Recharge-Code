@@ -66,13 +66,13 @@ public class DriveTrain extends SubsystemBase {
         
 		left1.configNominalOutputForward(0, 30);
 		left1.configNominalOutputReverse(0, 30);
-		left1.configPeakOutputForward(.25, 30);
-        left1.configPeakOutputReverse(-.25, 30);
+		left1.configPeakOutputForward(.5, 30);
+        left1.configPeakOutputReverse(-.5, 30);
                 
 		right1.configNominalOutputForward(0, 30);
 		right1.configNominalOutputReverse(0, 30);
-		right1.configPeakOutputForward(.25, 30);
-        right1.configPeakOutputReverse(-.25, 30);
+		right1.configPeakOutputForward(.5, 30);
+        right1.configPeakOutputReverse(-.5, 30);
         
         left1.configAllowableClosedloopError(0, 0, 30);
         right1.configAllowableClosedloopError(0, 0, 30);
@@ -117,12 +117,11 @@ public class DriveTrain extends SubsystemBase {
         }
 
         headingPidController = new PIDController(
-            0.005,
+            0.004,//.004 for 50%, .0061 for 25%
             0,
-            0.0001);
-        headingPidController.setTolerance(8);
+            0.00001);
+        headingPidController.setTolerance(7);
     }
-
     /* Drive based on the PID settings */
     @Override
     public void periodic() {
@@ -220,6 +219,10 @@ public class DriveTrain extends SubsystemBase {
     /** @return the current heading from the IMU */
     public double getHeading() {
         return imu.getAngle();
+    }
+
+    public void resetHeading(){
+        imu.reset();
     }
 
     /** Build the Shuffleboard Choosers

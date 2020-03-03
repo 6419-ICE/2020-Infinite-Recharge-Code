@@ -11,26 +11,25 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.CommandGroupBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.RobotContainer.*;
-import frc.robot.commands.AutoGroup;
 import frc.robot.commands.HomeTurret;
-import frc.robot.commands.ShootAuto;
 import frc.robot.subsystems.Limelight;
+
+import frc.robot.RobotContainer;
 
 /** Hey look its a robot */
 public class Robot extends TimedRobot { // CommandRobot
   private CommandBase autoCommand;
-  private RobotContainer m_robotContainer; // Replaces OI
+  private RobotContainer robotContainer; // Replaces OI
   private Color detected_color;
+  private int distance;
 
   /** Initialize the RobotContainer with the robot */
   @Override
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
-    m_robotContainer = new RobotContainer();
+    robotContainer = new RobotContainer();
   }
 
   @Override
@@ -55,6 +54,7 @@ public class Robot extends TimedRobot { // CommandRobot
     RobotContainer.limelight.setLightMode(Limelight.LightMode.OFF);
     RobotContainer.limelight.setCameraMode(Limelight.CameraMode.VISION);
     //RobotContainer.limelight.setLightMode(Limelight.LightMode.ON);
+
   }
 
   /** Runs an autonomous command selected in a SendableChooser */
@@ -62,7 +62,7 @@ public class Robot extends TimedRobot { // CommandRobot
   public void autonomousInit() {
     RobotContainer.limelight.setLightMode(Limelight.LightMode.ON);
 
-    autoCommand = m_robotContainer.getSelectedAuto();
+    autoCommand = robotContainer.getSelectedAuto();
 
     if (autoCommand != null) {
       autoCommand.schedule();
@@ -93,9 +93,13 @@ public class Robot extends TimedRobot { // CommandRobot
   /** Called periodically during operator control */
   @Override
   public void teleopPeriodic() {
-    SmartDashboard.putNumber("Red Value", m_robotContainer.m_colorSensor.getColor().red);
-    SmartDashboard.putNumber("Green Value", m_robotContainer.m_colorSensor.getColor().green);
-    SmartDashboard.putNumber("Blue Value", m_robotContainer.m_colorSensor.getColor().blue);
+    detected_color = robotContainer.colorSensor.getColor();
+    distance = robotContainer.colorSensor.getProximity();
+
+    SmartDashboard.putNumber("Red", detected_color.red);
+    SmartDashboard.putNumber("Blue", detected_color.blue);
+    SmartDashboard.putNumber("Green", detected_color.green);
+    SmartDashboard.putNumber("Distance to Ball", distance);
   }
 
   @Override

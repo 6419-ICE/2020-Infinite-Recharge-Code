@@ -40,19 +40,18 @@ public class RobotContainer {
   private static Joystick rightJoystick;
   private static Joystick mechanismJoystick;
 
-  private final I2C.Port i2cPort = I2C.Port.kOnboard;
-  public final ColorSensorV3 m_colorSensor = new ColorSensorV3(i2cPort);
+  private static final I2C.Port i2cPort = I2C.Port.kOnboard;
+  public static final ColorSensorV3 colorSensor = new ColorSensorV3(i2cPort);
 
 
 
   /* Required selections for the SendableChooser */
-  /*public enum autoSelections {
+  public enum autoSelections {
     AUTO_1, AUTO_2, AUTO_3, SHOOT_AUTO;
-  }*/
+  }
 
   // Select an autonomous command via Shuffleboard
   private static SendableChooser<CommandBase> aChooser;
-  private static SendableChooser<CommandBase> bChooser;
 
   /**
    * Set default commands and construct SendableChooser for autonomous command selection
@@ -66,23 +65,16 @@ public class RobotContainer {
     loader.setDefaultCommand(new LoaderDefault());
 
     /* Multiple Autonomous Selections */
+
     aChooser = new SendableChooser<>();
     aChooser.setDefaultOption("None", null);
-    aChooser.addOption("Center To Mid", new CenterToMidAuto());
-    aChooser.addOption("Left To Mid", new LeftToMidAuto());
-    aChooser.addOption("Shoot", new ShootAuto());
-    aChooser.addOption("Turn", new Turn(180));
-
-    bChooser = new SendableChooser<>();
-    bChooser.setDefaultOption("None", null);
-    bChooser.addOption("Auto 1", new AutoGroup("AUTO_1"));
-    bChooser.addOption("Auto 2", new AutoGroup("AUTO_2"));
-    bChooser.addOption("Auto 3", new AutoGroup("AUTO_3"));
+    aChooser.addOption("Auto 1", new AutoGroup(autoSelections.AUTO_1.toString()));
+    aChooser.addOption("Auto 2", new AutoGroup(autoSelections.AUTO_2.toString()));
+    aChooser.addOption("Auto 3", new AutoGroup(autoSelections.AUTO_3.toString()));
 
     // Set button binding instances
     configureButtonBindings();
 
-    SmartDashboard.putData("Auto Selector2", bChooser);
     SmartDashboard.putData("Auto Selector", aChooser);
     SmartDashboard.putData(new syncPID());
     SmartDashboard.putData(new HomeTurret());
@@ -148,6 +140,6 @@ public class RobotContainer {
 
   /** Return the selected autonomous command  */
   public CommandBase getSelectedAuto(){
-    return bChooser.getSelected();
+    return aChooser.getSelected();
   }
 }

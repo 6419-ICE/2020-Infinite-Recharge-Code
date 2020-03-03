@@ -24,6 +24,7 @@ public class Turn extends CommandBase{
     /** Set the heading and initialize the gyro's position */
     @Override
     public void initialize() {
+        drivetrain.resetHeading();
         initAngle = drivetrain.getHeading();
         desiredAngle = initAngle + angle;
         System.out.println(String.format("Turning %.2f degrees (from %.2f to %.2f)", angle, initAngle, desiredAngle));

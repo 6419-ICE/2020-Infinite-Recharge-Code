@@ -68,7 +68,6 @@ public class RobotContainer {
     /* Multiple Autonomous Selections */
     aChooser = new SendableChooser<>();
     aChooser.setDefaultOption("None", null);
-    aChooser.addOption("Trench Run", new TrenchRunAuto());
     aChooser.addOption("Center To Mid", new CenterToMidAuto());
     aChooser.addOption("Left To Mid", new LeftToMidAuto());
     aChooser.addOption("Shoot", new ShootAuto());
@@ -77,6 +76,8 @@ public class RobotContainer {
     bChooser = new SendableChooser<>();
     bChooser.setDefaultOption("None", null);
     bChooser.addOption("Auto 1", new AutoGroup("AUTO_1"));
+    bChooser.addOption("Auto 2", new AutoGroup("AUTO_2"));
+    bChooser.addOption("Auto 3", new AutoGroup("AUTO_3"));
 
     // Set button binding instances
     configureButtonBindings();
@@ -147,6 +148,6 @@ public class RobotContainer {
 
   /** Return the selected autonomous command  */
   public CommandBase getSelectedAuto(){
-    return aChooser.getSelected();
+    return bChooser.getSelected();
   }
 }

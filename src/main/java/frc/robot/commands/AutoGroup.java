@@ -7,6 +7,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 public class AutoGroup extends SequentialCommandGroup {
@@ -26,37 +27,39 @@ public class AutoGroup extends SequentialCommandGroup {
         /* Trench Run */
         case "AUTO_1":
             addCommands(
-                //new DeliverPowerCell(), 
-                //new DriveByEncoder(100)); 
-                new DriveToPoint(0, -216));
-                //new DeliverPowerCell());
+                new TurretFire().withTimeout(3),
+                new ParallelCommandGroup(
+                    new SetIntakePower(1),
+                    new SequentialCommandGroup(
+                        new DriveToPoint(0, -170),
+                        new ParallelCommandGroup(
+                            new DriveToPoint(0, -190),
+                            new TurretFire().withTimeout(4)
+                        )
+                    )
+                )
+            );
             break;
         /* Center to Mid */
         case "AUTO_2":
             addCommands(
-                new DeliverPowerCell(), 
                 new DriveToPoint(0, -105), 
                 new DriveToPoint(-72, 0),
-                new DriveToPoint(-105, 0), 
-                new DeliverPowerCell());
+                new DriveToPoint(-105, 0));
             break;
         /* Left to Mid */
         case "AUTO_3":
             addCommands(
-                new DeliverPowerCell(), 
                 new DriveToPoint(0, -150), 
                 new DriveToPoint(10, -50),
                 new DriveToPoint(-50, 36), 
-                new DriveToPoint(90, 0), 
-                new DeliverPowerCell());
+                new DriveToPoint(90, 0));
             break;
         default:
             // Run the Trench Run by default
-            addCommands(
-                new DeliverPowerCell(), 
+            addCommands( 
                 new DriveToPoint(0, -216), 
-                new DriveToPoint(0, -216),
-                new DeliverPowerCell());
+                new DriveToPoint(0, -216));
             break;
         }
 

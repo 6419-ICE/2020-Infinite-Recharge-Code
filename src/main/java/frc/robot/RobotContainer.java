@@ -94,7 +94,8 @@ public class RobotContainer {
   /* Right Joystick - Move Forward/Backward                                     */
   /* Left Joystick - Turn Left/Right                                            */
   /*                                                                            */
-  /* Actions:                                                                   */
+  /* Actions:              
+  */
   /* Left Trigger - Spool Up Intake (Inject Power cells into indexer)           */
   /* Right Thumb Button - Run Indexer                                           */
   /* Right Trigger - Spool Up Turret (Shoot Power Cell)                         */

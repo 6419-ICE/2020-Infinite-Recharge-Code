@@ -40,11 +40,6 @@ public class RobotContainer {
   private static Joystick rightJoystick;
   private static Joystick mechanismJoystick;
 
-  private static final I2C.Port i2cPort = I2C.Port.kOnboard;
-  public static final ColorSensorV3 colorSensor = new ColorSensorV3(i2cPort);
-
-
-
   /* Required selections for the SendableChooser */
   public enum autoSelections {
     AUTO_1, AUTO_2, AUTO_3, SHOOT_AUTO;
@@ -122,6 +117,9 @@ public class RobotContainer {
 
     JoystickButton reverseIndex = new JoystickButton(mechanismJoystick, 12);
     reverseIndex.whenHeld(new ParallelCommandGroup(new SetIndexerPower(1), new SetLoaderPower(-1)));
+
+    JoystickButton centerTurret = new JoystickButton(leftJoystick, 1);
+    centerTurret.whenHeld(new CenterTurret());
   }
 
   /** Return the left Joystick */

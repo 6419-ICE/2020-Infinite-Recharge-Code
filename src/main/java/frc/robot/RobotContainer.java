@@ -115,6 +115,9 @@ public class RobotContainer {
 
     JoystickButton reverseIndex = new JoystickButton(mechanismJoystick, 12);
     reverseIndex.whenHeld(new ParallelCommandGroup(new SetIndexerPower(1), new SetLoaderPower(-1)));
+
+    JoystickButton centerTurret = new JoystickButton(leftJoystick, 1);
+    centerTurret.whenHeld(new CenterTurret());
   }
 
   /** Return the left Joystick */

@@ -21,8 +21,6 @@ import frc.robot.RobotContainer;
 public class Robot extends TimedRobot { // CommandRobot
   private CommandBase autoCommand;
   private RobotContainer robotContainer; // Replaces OI
-  private Color detected_color;
-  private int distance;
 
   /** Initialize the RobotContainer with the robot */
   @Override
@@ -87,19 +85,14 @@ public class Robot extends TimedRobot { // CommandRobot
     if (autoCommand != null) {
       autoCommand.cancel();
     }
+
     new HomeTurret().schedule();
   }
 
   /** Called periodically during operator control */
   @Override
   public void teleopPeriodic() {
-    detected_color = robotContainer.colorSensor.getColor();
-    distance = robotContainer.colorSensor.getProximity();
 
-    SmartDashboard.putNumber("Red", detected_color.red);
-    SmartDashboard.putNumber("Blue", detected_color.blue);
-    SmartDashboard.putNumber("Green", detected_color.green);
-    SmartDashboard.putNumber("Distance to Ball", distance);
   }
 
   @Override

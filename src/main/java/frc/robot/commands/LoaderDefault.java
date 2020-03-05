@@ -6,6 +6,7 @@ package frc.robot.commands;
 // (c) 2020 FRC 6419 "ICE", all rights reserved.
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.RobotContainer;
 
 import static frc.robot.RobotContainer.loader;
 
@@ -22,11 +23,11 @@ public class LoaderDefault extends CommandBase {
 
     @Override
     public void execute() {
-        /*if (RobotContainer.getLeftJoy().getRawButton(7)) {
+        if (RobotContainer.indexer.isLemonPresent()) {
             loader.runLoader();
         } else {
             loader.stopLoader();
-        }*/
+        }
     }
 
     @Override

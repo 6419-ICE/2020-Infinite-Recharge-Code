@@ -33,6 +33,8 @@ public class Turret extends SubsystemBase {
     private PIDController traverseController;
 
     private boolean trackingEnabled;
+    private boolean lastTrackingState;
+    private double scanTimestamp;
 
     public Turret() {
         shooter0 = new CANSparkMax(Constants.Turret.SHOOTER0, CANSparkMaxLowLevel.MotorType.kBrushless);
@@ -69,7 +71,7 @@ public class Turret extends SubsystemBase {
             traverse.configClearPositionOnLimitR(true, 30);
             traverse.configClearPositionOnQuadIdx(false, 30);
         } else {
-            traverse.configForwardSoftLimitThreshold(2 * (int) Constants.Turret.TRAVERSE_SOFT_LIMIT);
+            traverse.configForwardSoftLimitThreshold(angle2Encoder(60));
             traverse.configReverseSoftLimitThreshold(0);
             traverse.configForwardSoftLimitEnable(true);
             traverse.configReverseSoftLimitEnable(true);
@@ -78,16 +80,17 @@ public class Turret extends SubsystemBase {
         homingSwitch = new DigitalInput(Constants.Turret.HOMING_SWITCH);
 
         /* PID Constants */
-        kP = 0.05;
+        kP = 0.04;
         kI = 0.0;
-        kD = 0.01;
+        kD = 120;
 
         // x input is from -27 to +27.
         traverseController = new PIDController(kP, kI, kD);
-        traverseController.setTolerance(1);
+        traverseController.setTolerance(0.5);
         traverseController.setSetpoint(0);
 
         trackingEnabled = true;
+        scanTimestamp = Timer.getFPGATimestamp();
     }
 
     /**
@@ -97,13 +100,27 @@ public class Turret extends SubsystemBase {
     @Override
     public void periodic() {
         if (trackingEnabled) {
+            boolean lockAcquired = lockAcquired();
+            if (lockAcquired && !lastTrackingState) {
+                System.out.println("[Turret] Target Lock!");
+            } else if (!lockAcquired && lastTrackingState) {
+                System.out.println("[Turret] Target Lost!");
+                scanTimestamp = Timer.getFPGATimestamp();
+            }
+            lastTrackingState = lockAcquired;
             if (lockAcquired()) {
                 setTraversePower(-traverseController.calculate(RobotContainer.limelight.getHorizontalAngle()));
             } else {
                 if (DriverStation.getInstance().isAutonomous()) {
                     traverse.set(ControlMode.Position, angle2Encoder(0));
                 } else {
-                    double angleTarget = 85 * Math.sin((Math.PI * Timer.getFPGATimestamp()) / 2) - 2;
+                    double timestamp = Timer.getFPGATimestamp() - scanTimestamp;
+                    double angleTarget = Utilities.map(
+                            Math.sin((Math.PI * timestamp) / 2),
+                            -1,
+                            1,
+                            -87,
+                            60);
                     SmartDashboard.putNumber("Turret Target", angleTarget);
                     traverse.set(ControlMode.Position, angle2Encoder(angleTarget));
                 }
@@ -180,7 +197,7 @@ public class Turret extends SubsystemBase {
      * @return if the Limelight has found a vision target
      */
     public boolean lockAcquired() {
-        return RobotContainer.limelight.canSeeTarget();
+        return RobotContainer.limelight.canSeeTarget() && RobotContainer.limelight.getTargetArea() > 0.008;
     }
 
     /**

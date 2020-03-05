@@ -16,4 +16,9 @@ public class Utilities {
             return input;
         }
     }
+
+    // linear interpolate
+    public static double lerp(double a, double b, double t) {
+        return (1 - t) * a + t * b;
+    }
 }

@@ -28,13 +28,11 @@ public class HandleIndexer extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    /*if (RobotContainer.getMechanismJoystick().getRawButton(11)){
+    if (indexer.isLemonPresent()) {
       indexer.runIndexer();
-    } else if (RobotContainer.getMechanismJoystick().getRawButton(12)){
-      indexer.reverseIndexer();
     } else {
       indexer.stopIndexer();
-    }*/
+    }
   }
 
   // Called once the command ends or is interrupted.

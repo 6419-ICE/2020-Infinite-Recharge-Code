@@ -8,22 +8,20 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.commands.*;
 
-public class TrenchRunAuto extends SequentialCommandGroup {
+public class CenterMidAuto extends SequentialCommandGroup {
     @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
 
-    public TrenchRunAuto() {
+    public CenterMidAuto() {
         addCommands(
-            new TurretFire().withTimeout(3),
+            new TurretFire().withTimeout(5),
             parallel(
-                new SetIntakePower(1), 
+            new SetIntakePower(1),
                 sequence(
-                    new DriveToPoint(0, -170),
-                    parallel(
-                        new DriveToPoint(0, -190), 
-                        new TurretFire().withTimeout(4)
-                    )
+                    new DriveToPoint(0, -105),
+                    new DriveToPoint(-72, 0),
+                    new DriveToPoint(-105, 0),
+                    new TurretFire().withTimeout(5)
                 )
             )
         );

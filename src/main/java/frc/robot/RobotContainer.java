@@ -40,10 +40,8 @@ public class RobotContainer {
   private static Joystick rightJoystick;
   private static Joystick mechanismJoystick;
 
-  /* Required selections for the SendableChooser */
-  public enum autoSelections {
-    AUTO_1, AUTO_2, AUTO_3, SHOOT_AUTO;
-  }
+  private static final I2C.Port i2cPort = I2C.Port.kOnboard;
+  public static final ColorSensorV3 colorSensor = new ColorSensorV3(i2cPort);
 
   // Select an autonomous command via Shuffleboard
   private static SendableChooser<CommandBase> aChooser;
@@ -63,14 +61,14 @@ public class RobotContainer {
 
     aChooser = new SendableChooser<>();
     aChooser.setDefaultOption("None", null);
-    aChooser.addOption("Auto 1", new AutoGroup(autoSelections.AUTO_1.toString()));
-    aChooser.addOption("Auto 2", new AutoGroup(autoSelections.AUTO_2.toString()));
-    aChooser.addOption("Auto 3", new AutoGroup(autoSelections.AUTO_3.toString()));
+    aChooser.addOption("Trench Run", new TrenchRunAuto());
+    aChooser.addOption("Center to Mid", new CenterMidAuto());
+    aChooser.addOption("Left to Mid", new LeftMidAuto());
 
     // Set button binding instances
     configureButtonBindings();
 
-    SmartDashboard.putData("Auto Selector", aChooser);
+    SmartDashboard.putData("Autonomous", aChooser);
     SmartDashboard.putData(new syncPID());
     SmartDashboard.putData(new HomeTurret());
   }

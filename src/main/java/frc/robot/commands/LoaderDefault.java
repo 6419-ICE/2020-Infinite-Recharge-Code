@@ -23,11 +23,7 @@ public class LoaderDefault extends CommandBase {
 
     @Override
     public void execute() {
-        if (RobotContainer.indexer.isLemonPresent()) {
-            loader.runLoader();
-        } else {
-            loader.stopLoader();
-        }
+
     }
 
     @Override

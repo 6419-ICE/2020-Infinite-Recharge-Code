@@ -7,32 +7,65 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 import static frc.robot.RobotContainer.indexer;
+import static frc.robot.RobotContainer.loader;
 
 public class HandleIndexer extends CommandBase {
+
+  private boolean lastLemonState;
+  private double fallingEdgeTimestamp;
+  private double risingEdgeTimestamp;
+  private boolean indexFault;
+
   /**
    * Creates a new HandleIndexer.
    */
   public HandleIndexer() {
-    addRequirements(indexer);
+    addRequirements(indexer, loader);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     indexer.stopIndexer();
+    indexFault = false;
+    lastLemonState = false;
+    risingEdgeTimestamp = fallingEdgeTimestamp = 0;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (indexer.isLemonPresent()) {
-      indexer.runIndexer();
-    } else {
+    if (indexFault) {
       indexer.stopIndexer();
+      loader.stopLoader();
+    } else {
+      if (indexer.isLemonPresent()) {
+        if (!lastLemonState) {
+          risingEdgeTimestamp = Timer.getFPGATimestamp();
+        }
+        if (Timer.getFPGATimestamp() - risingEdgeTimestamp > 5) {
+          DriverStation.reportWarning("Indexer fault detected. Lemon jammed in indexer.", false);
+          indexFault = true;
+        }
+        indexer.runIndexer();
+        loader.runLoader();
+      } else {
+        if (lastLemonState) {
+          fallingEdgeTimestamp = Timer.getFPGATimestamp();
+        }
+        if (Timer.getFPGATimestamp() - fallingEdgeTimestamp > 0.1) {
+          indexer.stopIndexer();
+          loader.stopLoader();
+        }
+      }
     }
+
+    lastLemonState = indexer.isLemonPresent();
   }
 
   // Called once the command ends or is interrupted.

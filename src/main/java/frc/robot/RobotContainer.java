@@ -80,19 +80,21 @@ public class RobotContainer {
   /* Right Joystick - Move Forward/Backward                                     */
   /* Left Joystick - Turn Left/Right                                            */
   /*                                                                            */
-  /* Actions:              
-  */
-  /* Left Trigger - Spool Up Intake (Inject Power cells into indexer)           */
+  /* SPECIALIST ACTIONS:                                                        */
+  /* Trigger - Spool Up Intake (Inject Power cells into indexer)                */
   /* Right Thumb Button - Run Indexer                                           */
   /* Right Trigger - Spool Up Turret (Shoot Power Cell)                         */
   /* Right Hatswitch - Up / Raise Generator Arm | Down / Lower Arm              */
+  /*                                                                            */
+  /* DRIVER ACTIONS:                                                            */
+  /* Center Turret - Right Trigger                                              */
   /*----------------------------------------------------------------------------*/
   private void configureButtonBindings() {
     leftJoystick = new Joystick(Constants.joy1);
     rightJoystick = new Joystick(Constants.joy2);
-    mechanismJoystick = new Joystick(2);
+    mechanismJoystick = new Joystick(Constants.joy3);
 
-    JoystickButton shooterButton = new JoystickButton(mechanismJoystick, 1); // 1 = Joystick Trigger
+    JoystickButton shooterButton = new JoystickButton(mechanismJoystick, Constants.shooterBtn);
     shooterButton.whenHeld(new TurretFire(0)); // Run the turret ONLY when pressed, otherwise cancel
 
     JoystickButton testingShooterButton = new JoystickButton(rightJoystick, 2);
@@ -104,22 +106,22 @@ public class RobotContainer {
     JoystickButton intakeAndIndex = new JoystickButton(mechanismJoystick, 2);
     intakeAndIndex.whenHeld(new ParallelCommandGroup(new SetIndexerPower(-1), new SetIntakePower(1)));
 
-    JoystickButton intake = new JoystickButton(mechanismJoystick, 5);
+    JoystickButton intake = new JoystickButton(mechanismJoystick, Constants.intakeBtn);
     intake.whenHeld(new SetIntakePower(1));
 
-    JoystickButton driverIntake = new JoystickButton(rightJoystick, 1);
+    JoystickButton driverIntake = new JoystickButton(rightJoystick, Constants.intakeBtn);
     driverIntake.whenHeld(new SetIntakePower(1));
 
-    JoystickButton outtake = new JoystickButton(mechanismJoystick, 3);
+    JoystickButton outtake = new JoystickButton(mechanismJoystick, Constants.outtakeBtn);
     outtake.whenHeld(new SetIntakePower(-1));
 
-    JoystickButton forwardIndex = new JoystickButton(mechanismJoystick, 11);
+    JoystickButton forwardIndex = new JoystickButton(mechanismJoystick, Constants.indexForward);
     forwardIndex.whenHeld(new SetIndexerPower(-1));
 
-    JoystickButton reverseIndex = new JoystickButton(mechanismJoystick, 12);
+    JoystickButton reverseIndex = new JoystickButton(mechanismJoystick, Constants.indexReverse);
     reverseIndex.whenHeld(new ParallelCommandGroup(new SetIndexerPower(1), new SetLoaderPower(-1)));
 
-    JoystickButton centerTurret = new JoystickButton(leftJoystick, 1);
+    JoystickButton centerTurret = new JoystickButton(leftJoystick, Constants.shooterBtn);
     centerTurret.whenHeld(new CenterTurret());
   }
 

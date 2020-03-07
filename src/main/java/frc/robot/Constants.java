@@ -37,8 +37,22 @@ public final class Constants {
                             TRAVERSE_PIN = 2;
 
     /* Joystick Ports */
-    public static final int joy1 = 0, joy2 = 1;
+    public static final int joy1 = 0, 
+                            joy2 = 1,
+                            joy3 = 2;
 
+<<<<<<< HEAD
+=======
+    /* Joystick Buttons */
+    public static final int shooterBtn = 1,
+                            intakeBtn = 5,
+                            intakeIndexBtn = 2,
+                            outtakeBtn = 3,
+                            indexBtn = 1,
+                            indexForward = 11,
+                            indexReverse = 12;
+
+>>>>>>> 00bf959cec7704e54f64a48e99a0a7f7afbfc20e
     /* Default Autonomous Values */
     public static final double autoAngle = 90, d1 = 40, d2 = 0;
 

@@ -71,6 +71,24 @@ public class HandleIndexer extends CommandBase {
     lastLemonState = indexer.isLemonPresent();
   }
 
+  /* 
+  if (indexer.isLemonPresent()) {
+      timer.reset();
+      indexer.runIndexer();
+      isRunning = true;
+    } else {
+      if (isRunning) {
+        timer.start();
+        if (timer.get() > 0.1) {
+          indexer.stopIndexer();
+          timer.stop(); 
+          isRunning = false;
+        }
+      }
+    }
+  }
+  */
+
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {

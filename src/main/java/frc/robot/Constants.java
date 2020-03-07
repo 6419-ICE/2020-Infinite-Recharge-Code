@@ -88,4 +88,9 @@ public final class Constants {
 
         public static final boolean ENABLE_LIMITS = false;
     }
+
+    public static class Loader {
+        public static final int LOADER_MOTOR = 10,
+                                LOAD_SENSOR = 3;
+    }
 }

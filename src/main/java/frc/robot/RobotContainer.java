@@ -16,7 +16,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.*;
 import frc.robot.commands.*;
 
@@ -39,9 +41,6 @@ public class RobotContainer {
   private static Joystick leftJoystick;
   private static Joystick rightJoystick;
   private static Joystick mechanismJoystick;
-
-  private static final I2C.Port i2cPort = I2C.Port.kOnboard;
-  public static final ColorSensorV3 colorSensor = new ColorSensorV3(i2cPort);
 
   // Select an autonomous command via Shuffleboard
   private static SendableChooser<CommandBase> aChooser;
@@ -95,10 +94,10 @@ public class RobotContainer {
     mechanismJoystick = new Joystick(Constants.joy3);
 
     JoystickButton shooterButton = new JoystickButton(mechanismJoystick, Constants.shooterBtn);
-    shooterButton.whenHeld(new TurretFire(0)); // Run the turret ONLY when pressed, otherwise cancel
+    shooterButton.whenHeld(new TurretClearAndFire()); // Run the turret ONLY when pressed, otherwise cancel
 
     JoystickButton testingShooterButton = new JoystickButton(rightJoystick, 2);
-    testingShooterButton.whenHeld(new TurretFire(0));
+    testingShooterButton.whenHeld(new TurretClearAndFire());
 
     //JoystickButton homeTurret = new JoystickButton(mechanismJoystick, 11);
     //homeTurret.whenPressed(new HomeTurret());
@@ -107,10 +106,14 @@ public class RobotContainer {
     intakeAndIndex.whenHeld(new ParallelCommandGroup(new SetIndexerPower(-1), new SetIntakePower(1)));
 
     JoystickButton intake = new JoystickButton(mechanismJoystick, Constants.intakeBtn);
-    intake.whenHeld(new SetIntakePower(1));
+    //intake.whenHeld(new SetIntakePower(1));
 
-    JoystickButton driverIntake = new JoystickButton(rightJoystick, Constants.intakeBtn);
-    driverIntake.whenHeld(new SetIntakePower(1));
+    JoystickButton driverIntake = new JoystickButton(rightJoystick, 1);
+    //driverIntake.whenPressed(new PrintCommand("Driver Intake"));
+    //driverIntake.whenHeld(new SetIntakePower(1));
+
+    Trigger intakeTrigger = new Trigger(() -> intake.get() || driverIntake.get());
+    intakeTrigger.whileActiveOnce(new SetIntakePower(1));
 
     JoystickButton outtake = new JoystickButton(mechanismJoystick, Constants.outtakeBtn);
     outtake.whenHeld(new SetIntakePower(-1));
@@ -119,7 +122,7 @@ public class RobotContainer {
     forwardIndex.whenHeld(new SetIndexerPower(-1));
 
     JoystickButton reverseIndex = new JoystickButton(mechanismJoystick, Constants.indexReverse);
-    reverseIndex.whenHeld(new ParallelCommandGroup(new SetIndexerPower(1), new SetLoaderPower(-1)));
+    reverseIndex.whenHeld(new ParallelCommandGroup(new EjectBallFromShooter(), new SetIndexerPower(1), new SetLoaderPower(-1)));
 
     JoystickButton centerTurret = new JoystickButton(leftJoystick, Constants.shooterBtn);
     centerTurret.whenHeld(new CenterTurret());

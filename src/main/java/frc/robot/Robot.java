@@ -58,6 +58,7 @@ public class Robot extends TimedRobot { // CommandRobot
   public void autonomousInit() {
     RobotContainer.limelight.setLightMode(Limelight.LightMode.ON);
 
+    RobotContainer.drivetrain.setMaxMotorSpeed(0.7);
     autoCommand = robotContainer.getSelectedAuto();
 
     if (autoCommand != null) {
@@ -75,6 +76,7 @@ public class Robot extends TimedRobot { // CommandRobot
   public void teleopInit() {
     RobotContainer.limelight.setLightMode(Limelight.LightMode.ON);
 
+    RobotContainer.drivetrain.setMaxMotorSpeed(1);
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove

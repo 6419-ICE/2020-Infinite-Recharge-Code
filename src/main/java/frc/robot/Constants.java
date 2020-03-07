@@ -41,18 +41,14 @@ public final class Constants {
                             joy2 = 1,
                             joy3 = 2;
 
-<<<<<<< HEAD
-=======
     /* Joystick Buttons */
     public static final int shooterBtn = 1,
-                            intakeBtn = 5,
-                            intakeIndexBtn = 2,
+                            intakeBtn = 2,
+                            intakeIndexBtn = 6,
                             outtakeBtn = 3,
-                            indexBtn = 1,
-                            indexForward = 11,
-                            indexReverse = 12;
+                            indexForward = 4,
+                            indexReverse = 5;
 
->>>>>>> 00bf959cec7704e54f64a48e99a0a7f7afbfc20e
     /* Default Autonomous Values */
     public static final double autoAngle = 90, d1 = 40, d2 = 0;
 
@@ -61,8 +57,6 @@ public final class Constants {
 
     /* Hall Effect Sensor Port */
     public static final int sensorPrt = 0;
-
-    
     
     /* Loader Motor Port*/
     public static final int LOADER = 10;

@@ -64,16 +64,19 @@ public class DriveTrain extends SubsystemBase {
         
 		left1.configNominalOutputForward(0, 30);
 		left1.configNominalOutputReverse(0, 30);
-		left1.configPeakOutputForward(.5, 30);
-        left1.configPeakOutputReverse(-.5, 30);
+		left1.configPeakOutputForward(1, 30);
+        left1.configPeakOutputReverse(-1, 30);
                 
 		right1.configNominalOutputForward(0, 30);
 		right1.configNominalOutputReverse(0, 30);
-		right1.configPeakOutputForward(.5, 30);
-        right1.configPeakOutputReverse(-.5, 30);
+		right1.configPeakOutputForward(1, 30);
+        right1.configPeakOutputReverse(-1, 30);
         
         left1.configAllowableClosedloopError(0, 0, 30);
         right1.configAllowableClosedloopError(0, 0, 30);
+
+        left1.configClosedloopRamp(0.1);
+        right1.configClosedloopRamp(0.1);
 
         /* Config PID values: Config 0 */
         left1.config_kP(0, kP); // 0 is the slot index for this current PID config
@@ -115,7 +118,7 @@ public class DriveTrain extends SubsystemBase {
         }
 
         headingPidController = new PIDController(
-            0.004,//.004 for 50%, .0061 for 25%
+            0.005,//.00435 for 50%, .0061 for 25%
             0,
             0.00001);
         headingPidController.setTolerance(Constants.Drivetrain.headingPidTolerance);
@@ -133,6 +136,13 @@ public class DriveTrain extends SubsystemBase {
             SmartDashboard.putNumber("PID Output", output);
             drive(output, -output);
         }
+    }
+
+    public void setMaxMotorSpeed(double speed) {
+        left1.configPeakOutputForward(speed);
+        left1.configPeakOutputReverse(-speed);
+        right1.configPeakOutputForward(speed);
+        right1.configPeakOutputReverse(-speed);
     }
 
     /** @return left motors for use in Autonomous commands */

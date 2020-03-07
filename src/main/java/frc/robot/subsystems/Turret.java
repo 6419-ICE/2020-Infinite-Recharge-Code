@@ -142,6 +142,10 @@ public class Turret extends SubsystemBase {
         shooterController.setReference(0, ControlType.kDutyCycle);
     }
 
+    public void eject() {
+        shooterController.setReference(-0.1, ControlType.kDutyCycle);
+    }
+
     /**
      * @return if the turret has reach max spool speed
      */
@@ -208,6 +212,10 @@ public class Turret extends SubsystemBase {
         return RobotContainer.limelight.canSeeTarget() && RobotContainer.limelight.getTargetArea() > 0.008;
     }
 
+    public boolean onTarget() {
+        return lockAcquired() && Math.abs(RobotContainer.limelight.getHorizontalAngle()) < 1.5;
+    }
+
     /**
      * Set the traverse's current position as the "home" or central position
      */
@@ -272,6 +280,7 @@ public class Turret extends SubsystemBase {
         builder.addBooleanProperty("Ready to Fire", this::readyToFire, null);
         builder.addDoubleProperty("Shooter Speed", shooterEncoder::getVelocity, null);
         builder.addBooleanProperty("Target Lock", this::lockAcquired, null);
+        builder.addBooleanProperty("On Target", this::onTarget, null);
         builder.addBooleanProperty("Homing Switch", this::isHomingSwitchPressed, null);
         builder.addBooleanProperty("Tracking Enabled", this::isTrackingEnabled, this::setTrackingEnabled);
         super.initSendable(builder);

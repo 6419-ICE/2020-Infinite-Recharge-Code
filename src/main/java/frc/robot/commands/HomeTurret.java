@@ -21,7 +21,7 @@ public class HomeTurret extends CommandBase {
     public void initialize() {
         shooter.setTrackingEnabled(false);
         shooter.disableLimits();
-        shooter.setTraversePower(0.1);
+        shooter.setTraversePower(0.16);
     }
 
     @Override

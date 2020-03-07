@@ -42,12 +42,12 @@ public final class Constants {
                             joy3 = 2;
 
     /* Joystick Buttons */
-    public static final int shooterBtn = 1,
-                            intakeBtn = 2,
-                            intakeIndexBtn = 6,
-                            outtakeBtn = 3,
-                            indexForward = 4,
-                            indexReverse = 5;
+    public static final int shooterBtn = 9,
+                            intakeBtn = 1,
+                            intakeIndexBtn = -1,
+                            outtakeBtn = 2,
+                            indexForward = 6,
+                            indexReverse = 7;
 
     /* Default Autonomous Values */
     public static final double autoAngle = 90, d1 = 40, d2 = 0;

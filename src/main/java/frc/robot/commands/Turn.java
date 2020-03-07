@@ -24,6 +24,7 @@ public class Turn extends CommandBase{
     /** Set the heading and initialize the gyro's position */
     @Override
     public void initialize() {
+        System.out.println("Turn initialized.");
         drivetrain.resetHeading();
         initAngle = drivetrain.getHeading();
         desiredAngle = initAngle + angle;

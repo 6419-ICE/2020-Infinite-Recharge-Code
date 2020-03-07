@@ -118,7 +118,7 @@ public class DriveTrain extends SubsystemBase {
             0.004,//.004 for 50%, .0061 for 25%
             0,
             0.00001);
-        headingPidController.setTolerance(7);
+        headingPidController.setTolerance(Constants.Drivetrain.headingPidTolerance);
     }
     /* Drive based on the PID settings */
     @Override

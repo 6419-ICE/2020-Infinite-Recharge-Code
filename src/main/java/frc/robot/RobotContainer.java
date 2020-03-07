@@ -93,10 +93,10 @@ public class RobotContainer {
     mechanismJoystick = new Joystick(2);
 
     JoystickButton shooterButton = new JoystickButton(mechanismJoystick, 1); // 1 = Joystick Trigger
-    shooterButton.whenHeld(new TurretFire()); // Run the turret ONLY when pressed, otherwise cancel
+    shooterButton.whenHeld(new TurretFire(0)); // Run the turret ONLY when pressed, otherwise cancel
 
     JoystickButton testingShooterButton = new JoystickButton(rightJoystick, 2);
-    testingShooterButton.whenHeld(new TurretFire());
+    testingShooterButton.whenHeld(new TurretFire(0));
 
     //JoystickButton homeTurret = new JoystickButton(mechanismJoystick, 11);
     //homeTurret.whenPressed(new HomeTurret());

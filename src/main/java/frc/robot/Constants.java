@@ -21,6 +21,7 @@ public final class Constants {
         public static final double rotations = .115;
         public static final double inchesPerRotation = 6 * Math.PI * rotations;
         // public static final double rotationsPerInch = 1.0/InchesPerRotation;
+        public static final double headingPidTolerance = 3;
 
     }
 
@@ -38,9 +39,6 @@ public final class Constants {
     /* Joystick Ports */
     public static final int joy1 = 0, joy2 = 1;
 
-    /* Joystick Buttons */
-    public static final int shooterButton = 1;
-
     /* Default Autonomous Values */
     public static final double autoAngle = 90, d1 = 40, d2 = 0;
 
@@ -49,6 +47,8 @@ public final class Constants {
 
     /* Hall Effect Sensor Port */
     public static final int sensorPrt = 0;
+
+    
     
     /* Loader Motor Port*/
     public static final int LOADER = 10;

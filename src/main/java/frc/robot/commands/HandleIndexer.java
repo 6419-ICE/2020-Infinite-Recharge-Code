@@ -40,6 +40,9 @@ public class HandleIndexer extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    /* Add a buffer to the lemon sensor so that the indexer runs longer 
+     * even after a lemon is no longer detected
+     */
     if (indexFault) {
       indexer.stopIndexer();
       loader.stopLoader();

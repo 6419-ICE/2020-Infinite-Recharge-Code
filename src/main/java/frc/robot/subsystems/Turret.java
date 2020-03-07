@@ -149,6 +149,14 @@ public class Turret extends SubsystemBase {
         return shooterEncoder.getVelocity() >= Constants.Turret.FIRING_SPEED;
     }
 
+    /** Overload to add a delay before the turret fires
+     * @return if the turret  has reached max spool speed and the delay has passed
+     */
+    public boolean readyToFire(double init, double wait) {
+        double currentTime = Timer.getFPGATimestamp();
+        return (currentTime > init + wait) && shooterEncoder.getVelocity() >= Constants.Turret.FIRING_SPEED;
+    }
+
     /**
      * @return spool motor 0's temperature
      */

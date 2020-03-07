@@ -7,6 +7,6 @@ public class ShootAuto extends SequentialCommandGroup {
     public ShootAuto() {
         addCommands(
                 //new DriveToPoint(0, 24),
-                new TurretFire().withTimeout(7));
+                new TurretFire(0).withTimeout(7));
     }
 }

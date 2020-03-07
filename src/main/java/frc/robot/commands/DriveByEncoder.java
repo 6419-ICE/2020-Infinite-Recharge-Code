@@ -38,7 +38,7 @@ public class DriveByEncoder extends CommandBase {
     /** Reset the encoders and set the new position to drive to */
     @Override
     public void initialize() {
-        System.out.println("Driving");
+        System.out.println("DriveByEncoder Initialized.");
 
         leftEncoder.setSelectedSensorPosition(0, 0, 30);
         rightEncoder.setSelectedSensorPosition(0, 0, 30);

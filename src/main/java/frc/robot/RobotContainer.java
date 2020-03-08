@@ -124,8 +124,14 @@ public class RobotContainer {
     JoystickButton reverseIndex = new JoystickButton(mechanismJoystick, Constants.indexReverse);
     reverseIndex.whenHeld(new ParallelCommandGroup(new EjectBallFromShooter(), new SetIndexerPower(1), new SetLoaderPower(-1)));
 
-    JoystickButton centerTurret = new JoystickButton(leftJoystick, Constants.shooterBtn);
+    JoystickButton centerTurret = new JoystickButton(leftJoystick, 1);
     centerTurret.whenHeld(new CenterTurret());
+
+    JoystickButton leftTurret = new JoystickButton(leftJoystick, 3);
+    leftTurret.whenHeld(new AimTurretLeft());
+
+    JoystickButton rightTurret = new JoystickButton(leftJoystick, 4);
+    rightTurret.whenHeld(new AimTurretRight());
   }
 
   /** Return the left Joystick */

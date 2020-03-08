@@ -52,7 +52,7 @@ public class Indexer extends SubsystemBase {
   }
 
   public boolean isLemonPresent() {
-    return loadSensor.getProximity() > 150;
+    return loadSensor.getProximity() > 200;
   }
 
   @Override

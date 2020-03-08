@@ -51,7 +51,7 @@ public class HandleIndexer extends CommandBase {
         if (!lastLemonState) {
           risingEdgeTimestamp = Timer.getFPGATimestamp();
         }
-        if (Timer.getFPGATimestamp() - risingEdgeTimestamp > 5) {
+        if (Timer.getFPGATimestamp() - risingEdgeTimestamp > 3) {
           DriverStation.reportWarning("Indexer fault detected. Lemon jammed in indexer.", false);
           indexFault = true;
         }

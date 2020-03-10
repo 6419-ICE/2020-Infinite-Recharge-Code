@@ -34,13 +34,16 @@ public class TurretFire extends CommandBase {
   */
   @Override
   public void initialize() {
-    shooter.spoolUp();
+    shooter.startSpoolSequence();
     initTime = Timer.getFPGATimestamp();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    if (shooter.getShooterSpeed() > 3000) {
+      //shooter.spoolUp();
+    }
     if (shooter.readyToFire(initTime, delay)){
       loader.runLoader();
       indexer.runIndexer();

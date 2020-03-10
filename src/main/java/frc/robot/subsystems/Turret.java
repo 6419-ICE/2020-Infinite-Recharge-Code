@@ -46,10 +46,15 @@ public class Turret extends SubsystemBase {
         shooter1.follow(shooter0, true);
 
         shooter0.setOpenLoopRampRate(0.5);
-        shooter0.setClosedLoopRampRate(0.5);
+        shooter0.setClosedLoopRampRate(0);
 
         shooterController = shooter0.getPIDController();
         shooterEncoder = shooter0.getEncoder();
+
+        shooterController.setP(0.00075);
+        shooterController.setI(0.0);
+        shooterController.setD(20);
+        shooterController.setOutputRange(-1, 1);
 
         traverse = new TalonSRX(Constants.Turret.TRAVERSE);
 
@@ -132,6 +137,10 @@ public class Turret extends SubsystemBase {
      * Engages the turret spool
      */
     public void spoolUp() {
+        shooterController.setReference(5000, ControlType.kVelocity);
+    }
+
+    public void startSpoolSequence() {
         shooterController.setReference(1, ControlType.kDutyCycle);
     }
 
@@ -173,6 +182,10 @@ public class Turret extends SubsystemBase {
      */
     public double getShooter1Temperature() {
         return shooter1.getMotorTemperature();
+    }
+
+    public double getShooterSpeed() {
+        return shooterEncoder.getVelocity();
     }
 
     /**

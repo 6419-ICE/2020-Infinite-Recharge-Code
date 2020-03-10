@@ -10,8 +10,10 @@ package frc.robot;
 import com.revrobotics.ColorSensorV3;
 
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -20,6 +22,7 @@ import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.*;
+import frc.robot.Constants.Hanger;
 import frc.robot.commands.*;
 
 /**
@@ -36,11 +39,14 @@ public class RobotContainer {
   public static final Loader loader = new Loader();
   public static final Intake intake = new Intake();
   public static final Indexer indexer = new Indexer();
+  public static final Hanging hanger = new Hanging();
+  public static final Compressor compressor = new Compressor();
   // public static final DigitalInput hallEffect = new DigitalInput(1);
 
   private static Joystick leftJoystick;
   private static Joystick rightJoystick;
   private static Joystick mechanismJoystick;
+  public static JoystickButton hangingButton;
 
   // Select an autonomous command via Shuffleboard
   private static SendableChooser<CommandBase> aChooser;
@@ -55,7 +61,7 @@ public class RobotContainer {
     intake.setDefaultCommand(new HandleIntake());
     indexer.setDefaultCommand(new HandleIndexer());
     loader.setDefaultCommand(new LoaderDefault());
-
+    hanger.setDefaultCommand(new HandleLift());
     /* Multiple Autonomous Selections */
 
     aChooser = new SendableChooser<>();
@@ -124,8 +130,10 @@ public class RobotContainer {
     JoystickButton reverseIndex = new JoystickButton(mechanismJoystick, Constants.indexReverse);
     reverseIndex.whenHeld(new ParallelCommandGroup(new EjectBallFromShooter(), new SetIndexerPower(1), new SetLoaderPower(-1)));
 
-    JoystickButton centerTurret = new JoystickButton(leftJoystick, Constants.shooterBtn);
+    JoystickButton centerTurret = new JoystickButton(leftJoystick, 1);
     centerTurret.whenHeld(new CenterTurret());
+
+    hangingButton = new JoystickButton(mechanismJoystick, Constants.liftingButton);
   }
 
   /** Return the left Joystick */
@@ -140,6 +148,10 @@ public class RobotContainer {
 
   public static Joystick getMechanismJoystick() {
     return mechanismJoystick;
+  }
+
+  public static JoystickButton getHangingButton(){
+    return hangingButton;
   }
 
   /** Return the selected autonomous command  */

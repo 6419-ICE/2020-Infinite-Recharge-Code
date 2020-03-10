@@ -10,6 +10,9 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.revrobotics.*;
+import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
@@ -18,12 +21,12 @@ import frc.robot.Constants;
 
 public class Loader extends SubsystemBase {
   
-  private VictorSPX loaderMotor;
+  private CANSparkMax loaderMotor;
   private AnalogInput loadSensor;
 
   public Loader() {
-    loaderMotor = new VictorSPX(Constants.LOADER);
-    loaderMotor.setNeutralMode(NeutralMode.Brake);
+    loaderMotor = new CANSparkMax(Constants.LOADER, MotorType.kBrushless);
+    loaderMotor.setIdleMode(IdleMode.kBrake);
     loadSensor = new AnalogInput(Constants.Loader.LOAD_SENSOR);
   }
 
@@ -33,15 +36,15 @@ public class Loader extends SubsystemBase {
   }
 
   public void setPower(double power) {
-    loaderMotor.set(ControlMode.PercentOutput, power);
+    loaderMotor.set(power);
   }
 
   public void runLoader(){
-    loaderMotor.set(ControlMode.PercentOutput, 1);
+    loaderMotor.set(1);
   }
 
   public void stopLoader(){
-    loaderMotor.set(ControlMode.PercentOutput, 0);
+    loaderMotor.set(0);
   }
 
   public boolean isLemonPresent() {

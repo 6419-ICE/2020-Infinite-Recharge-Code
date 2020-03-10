@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+
 /**
  * Constants for ICE 6419
  */
@@ -47,7 +48,9 @@ public final class Constants {
                             intakeIndexBtn = -1,
                             outtakeBtn = 2,
                             indexForward = 6,
-                            indexReverse = 7;
+                            indexReverse = 7,
+                            liftPositioningButton = 5,
+                            liftingButton = 4;
 
     /* Default Autonomous Values */
     public static final double autoAngle = 90, d1 = 40, d2 = 0;
@@ -92,5 +95,17 @@ public final class Constants {
     public static class Loader {
         public static final int LOADER_MOTOR = 10,
                                 LOAD_SENSOR = 3;
+    }
+
+    public static class Hanger {
+        public static final int COMPRESSOR = 0,
+                                LEFT_SOLENOID_1 = 0,
+                                LEFT_SOLENOID_2 = 1,
+                                RIGHT_SOLENOID_1 = 2,
+                                RIGHT_SOLENOID_2 = 3,
+                                POSITIONING_SOLENOID_1 = 4,
+                                POSITIONING_SOLENOID_2 = 5;
+
+
     }
 }

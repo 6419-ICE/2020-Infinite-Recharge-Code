@@ -21,7 +21,7 @@ public class DriveByEncoder extends CommandBase {
     private double distance;
     private final double inchesPerRotation = Constants.Drivetrain.inchesPerRotation;
 
-    private double leftStart, rightStart;
+    // private double leftStart, rightStart;
 
     /** Get the motors from drivetrain and set the new distance
      * @param d - The desired distance to travel by encoders

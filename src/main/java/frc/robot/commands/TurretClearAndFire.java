@@ -13,8 +13,6 @@ public class TurretClearAndFire extends SequentialCommandGroup {
                 new SetIndexerPower(1),
                 new SetLoaderPower(-1)
             ).withTimeout(0.2),
-            new InstantCommand(RobotContainer.indexer::stopIndexer, RobotContainer.indexer),
-            new InstantCommand(RobotContainer.loader::stopLoader, RobotContainer.loader),
             new TurretFire(0)
         );
     }

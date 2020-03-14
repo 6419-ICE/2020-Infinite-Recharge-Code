@@ -49,8 +49,8 @@ public final class Constants {
                             outtakeBtn = 2,
                             indexForward = 6,
                             indexReverse = 7,
-                            liftPositioningButton = 5,
-                            liftingButton = 4;
+                            liftingButton = 5;
+
 
     /* Default Autonomous Values */
     public static final double autoAngle = 90, d1 = 40, d2 = 0;

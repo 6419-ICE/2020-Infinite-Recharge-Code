@@ -34,6 +34,8 @@ public class TurretFire extends CommandBase {
   */
   @Override
   public void initialize() {
+    indexer.stopIndexer();
+    loader.stopLoader();
     shooter.startSpoolSequence();
     initTime = Timer.getFPGATimestamp();
   }

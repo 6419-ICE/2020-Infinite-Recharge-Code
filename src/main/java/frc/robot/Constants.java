@@ -94,7 +94,7 @@ public final class Constants {
 
     public static class Loader {
         public static final int LOADER_MOTOR = 10,
-                                LOAD_SENSOR = 3;
+                                LOAD_SENSOR = 1;
     }
 
     public static class Hanger {

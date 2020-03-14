@@ -120,7 +120,7 @@ public class Limelight extends SubsystemBase {
 
     /** @return how big the target is relative to the camera frame */
     public double getTargetArea() {
-        return ta.getNumber(0).doubleValue() / 100;
+        return ta.getNumber(0).doubleValue();
     }
 
     /** Set the light mode of the camera using the enum

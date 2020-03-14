@@ -7,11 +7,14 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.*;
-import com.revrobotics.CANSparkMax.IdleMode;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel;
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -19,12 +22,12 @@ import frc.robot.Constants;
 public class Loader extends SubsystemBase {
   
   private CANSparkMax loaderMotor;
-  private AnalogInput loadSensor;
+  private DigitalInput loadSensor;
 
   public Loader() {
-    loaderMotor = new CANSparkMax(Constants.LOADER, MotorType.kBrushless);
-    loaderMotor.setIdleMode(IdleMode.kBrake);
-    loadSensor = new AnalogInput(Constants.Loader.LOAD_SENSOR);
+    loaderMotor = new CANSparkMax(Constants.LOADER, CANSparkMaxLowLevel.MotorType.kBrushless);
+    loaderMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
+    loadSensor = new DigitalInput(Constants.Loader.LOAD_SENSOR);
   }
 
   @Override
@@ -45,13 +48,12 @@ public class Loader extends SubsystemBase {
   }
 
   public boolean isLemonPresent() {
-    return loadSensor.getVoltage() > 2.5;
+    return !loadSensor.get();
   }
 
   @Override
   public void initSendable(SendableBuilder builder) {
     setName("Loader");
-    builder.addDoubleProperty("Load Sensor Reading", loadSensor::getVoltage, null);
     builder.addBooleanProperty("Lemon Present", this::isLemonPresent, null);
     super.initSendable(builder);
   }

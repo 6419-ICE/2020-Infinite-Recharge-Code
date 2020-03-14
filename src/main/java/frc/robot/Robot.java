@@ -26,7 +26,7 @@ public class Robot extends TimedRobot { // CommandRobot
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     robotContainer = new RobotContainer();
-    RobotContainer.compressor.setClosedLoopControl(true);
+    //RobotContainer.compressor.setClosedLoopControl(true);
   }
 
   @Override

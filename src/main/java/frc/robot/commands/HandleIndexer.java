@@ -47,7 +47,10 @@ public class HandleIndexer extends CommandBase {
       indexer.stopIndexer();
       loader.stopLoader();
     } else {
-      if (indexer.isLemonPresent()) {
+      if (loader.isLemonPresent()) {
+        indexer.stopIndexer();
+        loader.stopLoader();
+      } else if (indexer.isLemonPresent()) {
         if (!lastLemonState) {
           risingEdgeTimestamp = Timer.getFPGATimestamp();
         }

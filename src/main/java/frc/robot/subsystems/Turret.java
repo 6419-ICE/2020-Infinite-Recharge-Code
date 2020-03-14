@@ -222,7 +222,7 @@ public class Turret extends SubsystemBase {
      * @return if the Limelight has found a vision target
      */
     public boolean lockAcquired() {
-        return RobotContainer.limelight.canSeeTarget() && RobotContainer.limelight.getTargetArea() > 0.008;
+        return RobotContainer.limelight.canSeeTarget() && RobotContainer.limelight.getTargetArea() > 0.8;
     }
 
     public boolean onTarget() {
@@ -296,6 +296,7 @@ public class Turret extends SubsystemBase {
         builder.addBooleanProperty("On Target", this::onTarget, null);
         builder.addBooleanProperty("Homing Switch", this::isHomingSwitchPressed, null);
         builder.addBooleanProperty("Tracking Enabled", this::isTrackingEnabled, this::setTrackingEnabled);
+        builder.addDoubleProperty("Target Area", RobotContainer.limelight::getTargetArea, null);
         super.initSendable(builder);
     }
 }

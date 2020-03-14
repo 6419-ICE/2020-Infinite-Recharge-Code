@@ -33,8 +33,8 @@ public class RobotContainer {
   public static final Loader loader = new Loader();
   public static final Intake intake = new Intake();
   public static final Indexer indexer = new Indexer();
-  public static final Hanging hanger = new Hanging();
-  public static final Compressor compressor = new Compressor();
+  public static final Hanging hanger = null;// = new Hanging();
+  public static final Compressor compressor = null;// = new Compressor();
   // public static final DigitalInput hallEffect = new DigitalInput(1);
 
   private static Joystick leftJoystick;
@@ -55,7 +55,7 @@ public class RobotContainer {
     intake.setDefaultCommand(new HandleIntake());
     indexer.setDefaultCommand(new HandleIndexer());
     loader.setDefaultCommand(new LoaderDefault());
-    hanger.setDefaultCommand(new HandleLift());
+    //hanger.setDefaultCommand(new HandleLift());
     /* Multiple Autonomous Selections */
 
     aChooser = new SendableChooser<>();

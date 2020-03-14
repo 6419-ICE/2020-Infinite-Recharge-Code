@@ -26,7 +26,7 @@ public class DriveTrain extends SubsystemBase {
     public DriveTrain(){
         /* Reset the Accelerometer/Gyro/etc. */
         imu = new ADIS16448_IMU();
-        imu.setYawAxis(ADIS16448_IMU.IMUAxis.kX);
+        imu.setYawAxis(ADIS16448_IMU.IMUAxis.kY);
         imu.calibrate();
 
         /* Six-motor Falcon 500 Drivetrain */
@@ -118,7 +118,7 @@ public class DriveTrain extends SubsystemBase {
         }
 
         headingPidController = new PIDController(
-            0.005,//.00435 for 50%, .0061 for 25%
+            0.0061,//.00435 for 50%, .0061 for 25%
             0,
             0.00001);
         headingPidController.setTolerance(Constants.Drivetrain.headingPidTolerance);
@@ -127,11 +127,12 @@ public class DriveTrain extends SubsystemBase {
     @Override
     public void periodic() {
         if (headingPidEnabled) {
-            double output = headingPidController.calculate(getHeading());
-            if (output < -0.7) {
-                output = -0.7;
-            } else if (output > 0.7) {
-                output = 0.7;
+            double output = -headingPidController.calculate(getHeading());
+            double spdLmt = 0.25;
+            if (output < -spdLmt) {
+                output = -spdLmt;
+            } else if (output > spdLmt) {
+                output = spdLmt;
             }
             SmartDashboard.putNumber("PID Output", output);
             drive(output, -output);

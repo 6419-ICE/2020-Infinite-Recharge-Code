@@ -22,7 +22,7 @@ public final class Constants {
         public static final double rotations = .115;
         public static final double inchesPerRotation = 6 * Math.PI * rotations;
         // public static final double rotationsPerInch = 1.0/InchesPerRotation;
-        public static final double headingPidTolerance = 3;
+        public static final double headingPidTolerance = 1.5;
 
     }
 

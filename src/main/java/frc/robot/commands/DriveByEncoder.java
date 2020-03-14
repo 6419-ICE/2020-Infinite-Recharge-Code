@@ -18,16 +18,21 @@ public class DriveByEncoder extends CommandBase {
     @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
     private TalonFX leftEncoder, rightEncoder;
 
-    private double distance;
+    private double distance, speedLimit;
     private final double inchesPerRotation = Constants.Drivetrain.inchesPerRotation;
 
     // private double leftStart, rightStart;
 
+    public DriveByEncoder(double d) {
+        this(d, 1);
+    }
+
     /** Get the motors from drivetrain and set the new distance
      * @param d - The desired distance to travel by encoders
      */
-    public DriveByEncoder(double d) {
+    public DriveByEncoder(double d, double speedLimit) {
         addRequirements(drivetrain);
+        this.speedLimit = speedLimit;
         
         leftEncoder = drivetrain.getLeftMotors();
         rightEncoder = drivetrain.getRightMotors();
@@ -42,6 +47,8 @@ public class DriveByEncoder extends CommandBase {
 
         leftEncoder.setSelectedSensorPosition(0, 0, 30);
         rightEncoder.setSelectedSensorPosition(0, 0, 30);
+
+        drivetrain.setMaxMotorSpeed(speedLimit);
 
         drivetrain.stop(); // Don't move on init
         drivetrain.setSetpoints(distance, distance);
@@ -73,6 +80,7 @@ public class DriveByEncoder extends CommandBase {
     public void end(final boolean interrupted) {
         System.out.println(String.format("Drive Complete: interrupted: %s", interrupted ? "yes" : "no"));
         drivetrain.stop();
+        drivetrain.setMaxMotorSpeed(1);
     }
 
     /** @return if the encoders have reached the desired position */

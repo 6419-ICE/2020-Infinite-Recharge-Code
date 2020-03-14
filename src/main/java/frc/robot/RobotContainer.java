@@ -63,6 +63,7 @@ public class RobotContainer {
     aChooser.addOption("Trench Run", new TrenchRunAuto());
     aChooser.addOption("Center to Mid", new CenterMidAuto());
     aChooser.addOption("Left to Mid", new LeftMidAuto());
+    aChooser.addOption("Test", new Turn(180));
 
     // Set button binding instances
     configureButtonBindings();

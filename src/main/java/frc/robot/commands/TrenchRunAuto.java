@@ -14,13 +14,13 @@ public class TrenchRunAuto extends SequentialCommandGroup {
 
     public TrenchRunAuto() {
         addCommands(
-            new TurretFire(0).withTimeout(3),
+            new TurretFire(0).withTimeout(4),
             parallel(
                 new SetIntakePower(1), 
                 sequence(
-                    new DriveToPoint(0, -170),
+                    new DriveToPoint(-15, -170, 0.17),
                     parallel(
-                        new DriveToPoint(0, -170), 
+                        new DriveToPoint(0, -170, 0.8),
                         new TurretFire(1).withTimeout(4)
                     )
                 )

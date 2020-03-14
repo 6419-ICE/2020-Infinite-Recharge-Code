@@ -25,7 +25,7 @@ public class Turn extends CommandBase{
     @Override
     public void initialize() {
         System.out.println("Turn initialized.");
-        drivetrain.resetHeading();
+        //drivetrain.resetHeading();
         initAngle = drivetrain.getHeading();
         desiredAngle = initAngle + angle;
         System.out.println(String.format("Turning %.2f degrees (from %.2f to %.2f)", angle, initAngle, desiredAngle));

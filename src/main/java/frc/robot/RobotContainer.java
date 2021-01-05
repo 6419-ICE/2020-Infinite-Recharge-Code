@@ -107,17 +107,13 @@ public class RobotContainer {
     //intakeAndIndex.whenHeld(new ParallelCommandGroup(new SetIndexerPower(-1), new SetIntakePower(1)));
 
     JoystickButton intake = new JoystickButton(mechanismJoystick, Constants.intakeBtn);
-    //intake.whenHeld(new SetIntakePower(1));
-
     JoystickButton driverIntake = new JoystickButton(rightJoystick, 1);
-    //driverIntake.whenPressed(new PrintCommand("Driver Intake"));
-    //driverIntake.whenHeld(new SetIntakePower(1));
 
     Trigger intakeTrigger = new Trigger(() -> intake.get() || driverIntake.get());
-    intakeTrigger.whileActiveOnce(new SetIntakePower(1));
+    intakeTrigger.whileActiveOnce(new SetIntakePower(-1));
 
     JoystickButton outtake = new JoystickButton(mechanismJoystick, Constants.outtakeBtn);
-    outtake.whenHeld(new SetIntakePower(-1));
+    outtake.whenHeld(new SetIntakePower(1));
 
     JoystickButton forwardIndex = new JoystickButton(mechanismJoystick, Constants.indexForward);
     forwardIndex.whenHeld(new SetIndexerPower(-1));

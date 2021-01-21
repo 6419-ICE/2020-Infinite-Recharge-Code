@@ -22,7 +22,6 @@ import frc.robot.commands.*;
 /**
  * 6419's RobotContainer of subsystems, commands, and button mappings
  */
-
 public class RobotContainer {
 
   // The robot's subsystems and commands are defined here...
@@ -33,9 +32,8 @@ public class RobotContainer {
   public static final Loader loader = new Loader();
   public static final Intake intake = new Intake();
   public static final Indexer indexer = new Indexer();
-  public static final Hanging hanger = null;// = new Hanging();
-  public static final Compressor compressor = null;// = new Compressor();
-  // public static final DigitalInput hallEffect = new DigitalInput(1);
+  public static final Hanging hanger = null;
+  public static final Compressor compressor = null;
 
   private static Joystick leftJoystick;
   private static Joystick rightJoystick;
@@ -43,7 +41,7 @@ public class RobotContainer {
   public static JoystickButton hangingButton;
 
   // Select an autonomous command via Shuffleboard
-  private static SendableChooser<CommandBase> aChooser;
+  private static SendableChooser<CommandBase> autoChooser;
 
   /**
    * Set default commands and construct SendableChooser for autonomous command selection
@@ -55,40 +53,26 @@ public class RobotContainer {
     intake.setDefaultCommand(new HandleIntake());
     indexer.setDefaultCommand(new HandleIndexer());
     loader.setDefaultCommand(new LoaderDefault());
-    //hanger.setDefaultCommand(new HandleLift());
-    /* Multiple Autonomous Selections */
 
-    aChooser = new SendableChooser<>();
-    aChooser.setDefaultOption("None", null);
+    /* Multiple Autonomous Selections */
+    autoChooser = new SendableChooser<>();
+    autoChooser.setDefaultOption("None", null);
+    autoChooser.addOption("Path A Red", new PathARed());
+    /*
     aChooser.addOption("Trench Run", new TrenchRunAuto());
     aChooser.addOption("Center to Mid", new CenterMidAuto());
     aChooser.addOption("Left to Mid", new LeftMidAuto());
     aChooser.addOption("Test", new Turn(180));
+    */
 
     // Set button binding instances
     configureButtonBindings();
 
-    SmartDashboard.putData("Autonomous", aChooser);
+    SmartDashboard.putData("Autonomous", autoChooser);
     SmartDashboard.putData(new syncPID());
     SmartDashboard.putData(new HomeTurret());
   }
 
-  /*----------------------------------------------------------------------------*/
-  /* ICE 6419 BUTTON MAPPINGS                                                   */
-  /*                                                                            */
-  /* Moving the Robot:                                                          */
-  /* Right Joystick - Move Forward/Backward                                     */
-  /* Left Joystick - Turn Left/Right                                            */
-  /*                                                                            */
-  /* SPECIALIST ACTIONS:                                                        */
-  /* Trigger - Spool Up Intake (Inject Power cells into indexer)                */
-  /* Right Thumb Button - Run Indexer                                           */
-  /* Right Trigger - Spool Up Turret (Shoot Power Cell)                         */
-  /* Right Hatswitch - Up / Raise Generator Arm | Down / Lower Arm              */
-  /*                                                                            */
-  /* DRIVER ACTIONS:                                                            */
-  /* Center Turret - Right Trigger                                              */
-  /*----------------------------------------------------------------------------*/
   private void configureButtonBindings() {
     leftJoystick = new Joystick(Constants.joy1);
     rightJoystick = new Joystick(Constants.joy2);

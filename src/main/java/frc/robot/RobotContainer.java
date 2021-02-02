@@ -131,6 +131,6 @@ public class RobotContainer {
 
   /** Return the selected autonomous command  */
   public CommandBase getSelectedAuto(){
-    return aChooser.getSelected();
+    return autoChooser.getSelected();
   }
 }

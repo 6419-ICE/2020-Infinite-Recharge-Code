@@ -30,7 +30,7 @@ public class PathARed extends CommandBase {
 
   @Override
   public void execute(){
-    drivetrain.arcadeDrive(1, 0);
+    drivetrain.arcadeDrive(.5, 0);
   }
 
   @Override

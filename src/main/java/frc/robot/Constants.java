@@ -20,13 +20,13 @@ public final class Constants {
 
         /* Drive Train Encoder Values */
         public static final double rotations = .115;
-        public static final double inchesPerRotation = 6 * Math.PI * rotations;
+        public static final double inchesPerRotation = 6 * Math.PI * rotations * 0.0254;
         // public static final double rotationsPerInch = 1.0/InchesPerRotation;
         public static final double headingPidTolerance = 1.5;
 
-        public static final double ksVolts = 0.699;
-        public static final double ksVoltsSecondsPerMeter = 0.922;
-        public static final double ksVoltsSecondsSquaredPerMeter = 0.00122;
+        public static final double ksVolts = 0.669;
+        public static final double ksVoltsSecondsPerMeter = 0.878;
+        public static final double ksVoltsSecondsSquaredPerMeter = 0.0777;
 
         // from characterization analyzer Max Acceptable Control Effort (V)
         public static final double kPDriveVel = 7.0;
@@ -36,6 +36,19 @@ public final class Constants {
 
         public static final double kMaxSpeedMetersPerSecond = 5;
         public static final double kMaxAccelerationMetersPerSecondSquared = 3;
+
+        public static final double kRamseteB = 2;
+        public static final double kRamseteZeta = 0.7;
+
+        /*
+        characterization: 
+            Position loop:
+                kP: 0.0152
+                kD: 0.0859
+            Velocity loop: 
+                kP: 0.000556
+                kD: 0
+        */
 
 
 

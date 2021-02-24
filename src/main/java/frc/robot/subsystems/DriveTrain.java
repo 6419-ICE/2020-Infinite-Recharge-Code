@@ -40,7 +40,7 @@ public class DriveTrain extends SubsystemBase {
     public DriveTrain(){
         /* Reset the Accelerometer/Gyro/etc. */
         imu = new ADIS16448_IMU();
-        imu.setYawAxis(ADIS16448_IMU.IMUAxis.kY);
+        imu.setYawAxis(ADIS16448_IMU.IMUAxis.kZ);
         imu.calibrate();
         mGyro = imu;
 
@@ -171,7 +171,7 @@ public class DriveTrain extends SubsystemBase {
     @Override
     public void periodic() {
         drive_odometry.update(mGyro.getRotation2d(), getEncoderDistance(left_encoder), -getEncoderDistance(right_encoder));
-
+/*
         if (headingPidEnabled) {
             double output = -headingPidController.calculate(getHeading());
             double spdLmt = 0.25;
@@ -183,6 +183,7 @@ public class DriveTrain extends SubsystemBase {
             SmartDashboard.putNumber("PID Output", output);
             drive(output, -output);
         }
+        */
     }
 
     public Pose2d getPose(){
@@ -367,9 +368,8 @@ public class DriveTrain extends SubsystemBase {
      */
     @Override
     public void initSendable(SendableBuilder builder) {
-        builder.addDoubleProperty("Heading", this::getHeading, null);
+        builder.addDoubleProperty("Heading", this::getGyroHeading, null);
         builder.addDoubleProperty("Encoder Distance", this::getAverageEncoderDistance, null);
-        
         super.initSendable(builder);
     }
 }   

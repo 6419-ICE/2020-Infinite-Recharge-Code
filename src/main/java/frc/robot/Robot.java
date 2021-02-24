@@ -65,9 +65,7 @@ public class Robot extends TimedRobot { // CommandRobot
     RobotContainer.drivetrain.setMaxMotorSpeed(0.7);
     autoCommand = robotContainer.getSelectedAuto();
 
-    if (autoCommand != null) {
-      autoCommand.schedule();
-    }
+    robotContainer.TrajectoryAttempt().schedule();;
   }
 
   /** Called periodically during autonomous */

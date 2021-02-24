@@ -6,7 +6,7 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot;
-
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 
 /**
  * Constants for ICE 6419
@@ -23,6 +23,22 @@ public final class Constants {
         public static final double inchesPerRotation = 6 * Math.PI * rotations;
         // public static final double rotationsPerInch = 1.0/InchesPerRotation;
         public static final double headingPidTolerance = 1.5;
+
+        public static final double ksVolts = 0.699;
+        public static final double ksVoltsSecondsPerMeter = 0.922;
+        public static final double ksVoltsSecondsSquaredPerMeter = 0.00122;
+
+        // from characterization analyzer Max Acceptable Control Effort (V)
+        public static final double kPDriveVel = 7.0;
+
+        public static final double kTrackWidth = 0.5752;
+        public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(kTrackWidth);
+
+        public static final double kMaxSpeedMetersPerSecond = 5;
+        public static final double kMaxAccelerationMetersPerSecondSquared = 3;
+
+
+
 
     }
 

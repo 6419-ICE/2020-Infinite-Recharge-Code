@@ -20,7 +20,9 @@ public class HandleDriveTrain extends CommandBase{
     // When in doubt, stop the motors
     @Override
     public void initialize() {
-        RobotContainer.drivetrain.stop(); // Don't move on init
+        RobotContainer.drivetrain.diffStop(); // Don't move on init
+        RobotContainer.drivetrain.zeroHeading();
+        RobotContainer.drivetrain.resetEncoders();
     }
 
     // Used for Teleop control and displaying power values

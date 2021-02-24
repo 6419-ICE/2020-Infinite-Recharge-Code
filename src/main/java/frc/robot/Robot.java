@@ -43,24 +43,24 @@ public class Robot extends TimedRobot { // CommandRobot
   /** Called once each time the robot enters Disabled mode */
   @Override
   public void disabledInit() {
-    RobotContainer.limelight.setLightMode(Limelight.LightMode.OFF);
-    RobotContainer.limelight.setCameraMode(Limelight.CameraMode.VISION);
+   /* RobotContainer.limelight.setLightMode(Limelight.LightMode.OFF);
+    RobotContainer.limelight.setCameraMode(Limelight.CameraMode.VISION);*/
   }
 
   @Override
   public void disabledPeriodic() {
-    RobotContainer.limelight.setLightMode(Limelight.LightMode.OFF);
+   /* RobotContainer.limelight.setLightMode(Limelight.LightMode.OFF);
     RobotContainer.limelight.setCameraMode(Limelight.CameraMode.VISION);
     //RobotContainer.limelight.setLightMode(Limelight.LightMode.ON);
     if (RobotController.getUserButton()) {
       RobotContainer.shooter.setEncoderPosition((int) Constants.Turret.TRAVERSE_SOFT_LIMIT);
-    }
+    }*/
   }
 
   /** Runs an autonomous command selected in a SendableChooser */
   @Override
   public void autonomousInit() {
-    RobotContainer.limelight.setLightMode(Limelight.LightMode.ON);
+    //RobotContainer.limelight.setLightMode(Limelight.LightMode.ON);
 
     RobotContainer.drivetrain.setMaxMotorSpeed(0.7);
     autoCommand = robotContainer.getSelectedAuto();
@@ -78,7 +78,7 @@ public class Robot extends TimedRobot { // CommandRobot
 
   @Override
   public void teleopInit() {
-    RobotContainer.limelight.setLightMode(Limelight.LightMode.ON);
+    //RobotContainer.limelight.setLightMode(Limelight.LightMode.ON);
 
     RobotContainer.drivetrain.setMaxMotorSpeed(1);
     // This makes sure that the autonomous stops running when
@@ -90,7 +90,7 @@ public class Robot extends TimedRobot { // CommandRobot
       autoCommand.cancel();
     }
 
-    new HomeTurret().schedule();
+    //new HomeTurret().schedule();
   }
 
   /** Called periodically during operator control */

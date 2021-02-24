@@ -6,7 +6,14 @@ import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.*;
 
 import edu.wpi.first.wpilibj.Preferences;
+import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -19,15 +26,50 @@ public class DriveTrain extends SubsystemBase {
     public static double kI, kP, kD, kF;
 
     private TalonFX left1, left2, left3, right1, right2, right3;
+    private WPI_TalonFX WPI_left1, WPI_left2, WPI_left3, WPI_right1, WPI_right2, WPI_right3;
+    private TalonFXSensorCollection left_encoder, right_encoder;
+
+    private SpeedControllerGroup leftGroup, rightGroup;
+
+    private DifferentialDrive diff_drive;
+    private DifferentialDriveOdometry drive_odometry;
 
     private PIDController headingPidController;
     private boolean headingPidEnabled;
-    
+    private Gyro mGyro;
     public DriveTrain(){
         /* Reset the Accelerometer/Gyro/etc. */
         imu = new ADIS16448_IMU();
         imu.setYawAxis(ADIS16448_IMU.IMUAxis.kY);
         imu.calibrate();
+        mGyro = imu;
+
+
+        WPI_left1 = new WPI_TalonFX(Constants.FRONT_ONE_PIN);
+        WPI_left2 = new WPI_TalonFX(Constants.FRONT_TWO_PIN);
+        WPI_left3 = new WPI_TalonFX(Constants.FRONT_THREE_PIN);
+        WPI_right1 = new WPI_TalonFX(Constants.BACK_ONE_PIN);
+        WPI_right2 = new WPI_TalonFX(Constants.BACK_TWO_PIN);
+        WPI_right3 = new WPI_TalonFX(Constants.BACK_THREE_PIN);
+
+        leftGroup = new SpeedControllerGroup(WPI_left1, WPI_left2, WPI_left3);
+        rightGroup = new SpeedControllerGroup(WPI_right1, WPI_right2, WPI_right3);
+
+        leftGroup.setInverted(false);
+        rightGroup.setInverted(false);
+
+        WPI_left1.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 30);
+        WPI_right1.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 30);
+
+        left_encoder = WPI_left1.getSensorCollection();
+        right_encoder = WPI_right1.getSensorCollection();
+
+        diff_drive = new DifferentialDrive(leftGroup, rightGroup);
+
+        resetEncoders();
+        drive_odometry = new DifferentialDriveOdometry(mGyro.getRotation2d());
+
+
 
         /* Six-motor Falcon 500 Drivetrain */
         left1 = new TalonFX(Constants.FRONT_ONE_PIN);
@@ -59,8 +101,8 @@ public class DriveTrain extends SubsystemBase {
         left1.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 30);// Try Absolute instead of relative
         right1.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 30);
         
-        left1.setSensorPhase(true);
-        right1.setSensorPhase(true);
+        left1.setSensorPhase(false);
+        right1.setSensorPhase(false);
         
 		left1.configNominalOutputForward(0, 30);
 		left1.configNominalOutputReverse(0, 30);
@@ -123,9 +165,13 @@ public class DriveTrain extends SubsystemBase {
             0.00001);
         headingPidController.setTolerance(Constants.Drivetrain.headingPidTolerance);
     }
+
+
     /* Drive based on the PID settings */
     @Override
     public void periodic() {
+        drive_odometry.update(mGyro.getRotation2d(), getEncoderDistance(left_encoder), -getEncoderDistance(right_encoder));
+
         if (headingPidEnabled) {
             double output = -headingPidController.calculate(getHeading());
             double spdLmt = 0.25;
@@ -137,6 +183,23 @@ public class DriveTrain extends SubsystemBase {
             SmartDashboard.putNumber("PID Output", output);
             drive(output, -output);
         }
+    }
+
+    public Pose2d getPose(){
+        return drive_odometry.getPoseMeters();
+    }
+
+    public DifferentialDriveWheelSpeeds getWheelSpeeds(){
+        return new DifferentialDriveWheelSpeeds(getEncoderRate(left_encoder), getEncoderRate(right_encoder));
+    }
+
+    public void resetOdometry(Pose2d pose){
+        resetEncoders();
+        drive_odometry.resetPosition(pose, mGyro.getRotation2d());
+    }
+
+    public void setMaxOutput(double maxOutput){
+        diff_drive.setMaxOutput(maxOutput);
     }
 
     public void setMaxMotorSpeed(double speed) {
@@ -165,21 +228,48 @@ public class DriveTrain extends SubsystemBase {
         right1.set(TalonFXControlMode.PercentOutput, -r * Constants.Drivetrain.speedLmt);
     }
 
-    /** Set each set of motors to a given power percentage based on Joystick axes 
+    /** WPI MOTOR ARCADE DRIVE
+     *  Set each set of motors to a given power percentage based on Joystick axes 
      * This is strictly used to set motors during Teleop
      * @param p - Left joystick input (throttle power)
      * @param t - Right joystick input (turn power)
     */
-    public void arcadeDrive(double p, double t) {
+    public void arcadeDrive(double fwd, double rot){
+        diff_drive.arcadeDrive(fwd, rot);
+    }
+
+    /** WPI MOTOR TANK DRIVE VOLTAGE
+     *  Set each set of motors to a given voltage based on Joystick axes 
+     * This is strictly used to set motors during Teleop
+     * @param p - Left joystick input (throttle power)
+     * @param t - Right joystick input (turn power)
+    */
+    public void tankDriveVolts(double leftVoltage, double rightVoltage){
+        leftGroup.setVoltage(leftVoltage);
+        rightGroup.setVoltage(rightVoltage);
+        diff_drive.feed();
+    }
+
+    /** CTRE MOTOR ARCADE DRIVE
+     *  Set each set of motors to a given power percentage based on Joystick axes 
+     * This is strictly used to set motors during Teleop
+     * @param p - Left joystick input (throttle power)
+     * @param t - Right joystick input (turn power)
+    */
+    /*public void arcadeDrive(double p, double t) {
         double powValue = p * -1;
         double turnValue = t ; // Do not need to invert turn input
         drive(Constants.Drivetrain.speedLmt * (turnValue + powValue), -Constants.Drivetrain.speedLmt * (turnValue - powValue));
-    }
+    }*/
 
     /** Stop the motors entirely */
     public void stop() {
         left1.set(TalonFXControlMode.PercentOutput, 0.0);
         right1.set(TalonFXControlMode.PercentOutput, 0.0);
+    }
+
+    public void diffStop() {
+        diff_drive.arcadeDrive(0, 0);
     }
 
     /** Refresh PID with Shuffleboard tunings */
@@ -230,8 +320,46 @@ public class DriveTrain extends SubsystemBase {
         return imu.getAngle();
     }
 
+    public double getGyroHeading(){
+        return mGyro.getRotation2d().getDegrees();
+    }
+
+    public double getTurnRate(){
+        return -mGyro.getRate();
+    }
+
+    public TalonFXSensorCollection getLeftEncoder(){
+        return left_encoder;
+    }
+
+    public TalonFXSensorCollection getRightEncoder(){
+        return right_encoder;
+    }
+
     public void resetHeading(){
         imu.reset();
+    }
+
+    public void zeroHeading(){
+        imu.reset();
+        mGyro.reset();
+    }
+
+    public void resetEncoders(){
+        left_encoder.setIntegratedSensorPosition(0, 30);
+        right_encoder.setIntegratedSensorPosition(0, 30);
+    }
+
+    public double getEncoderDistance(TalonFXSensorCollection encoder){
+        return encoder.getIntegratedSensorPosition()/2048 * Constants.Drivetrain.inchesPerRotation;
+    }
+
+    public double getAverageEncoderDistance(){
+        return (getEncoderDistance(left_encoder) - getEncoderDistance(right_encoder)) / 2.0;
+    }
+
+    public double getEncoderRate(TalonFXSensorCollection encoder){
+        return encoder.getIntegratedSensorVelocity()/204.8 * Constants.Drivetrain.inchesPerRotation;
     }
 
     /** Build the Shuffleboard Choosers
@@ -240,9 +368,8 @@ public class DriveTrain extends SubsystemBase {
     @Override
     public void initSendable(SendableBuilder builder) {
         builder.addDoubleProperty("Heading", this::getHeading, null);
-        builder.addDoubleProperty("Target Heading", this::getHeadingTarget, this::setHeadingTarget);
-        builder.addBooleanProperty("At Target Heading", this::atHeadingTarget, null);
+        builder.addDoubleProperty("Encoder Distance", this::getAverageEncoderDistance, null);
         
         super.initSendable(builder);
     }
-}
+}   

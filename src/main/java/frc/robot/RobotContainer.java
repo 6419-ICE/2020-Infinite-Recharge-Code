@@ -69,8 +69,8 @@ public class RobotContainer {
     configureButtonBindings();
 
     SmartDashboard.putData("Autonomous", autoChooser);
-    SmartDashboard.putData(new syncPID());
-    SmartDashboard.putData(new HomeTurret());
+    /*SmartDashboard.putData(new syncPID());
+    SmartDashboard.putData(new HomeTurret());*/
   }
 
   private void configureButtonBindings() {

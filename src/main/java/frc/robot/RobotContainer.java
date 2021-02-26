@@ -58,7 +58,8 @@ public class RobotContainer {
   private static SendableChooser<CommandBase> autoChooser;
 
   /**
-   * Set default commands and construct SendableChooser for autonomous command selection
+   * Set default commands and construct SendableChooser for autonomous command
+   * selection
    */
   public RobotContainer() {
     // Default Commands
@@ -73,18 +74,20 @@ public class RobotContainer {
     autoChooser.setDefaultOption("None", null);
     autoChooser.addOption("Path A Red", new PathARed());
     /*
-    aChooser.addOption("Trench Run", new TrenchRunAuto());
-    aChooser.addOption("Center to Mid", new CenterMidAuto());
-    aChooser.addOption("Left to Mid", new LeftMidAuto());
-    aChooser.addOption("Test", new Turn(180));
-    */
+     * aChooser.addOption("Trench Run", new TrenchRunAuto());
+     * aChooser.addOption("Center to Mid", new CenterMidAuto());
+     * aChooser.addOption("Left to Mid", new LeftMidAuto());
+     * aChooser.addOption("Test", new Turn(180));
+     */
 
     // Set button binding instances
     configureButtonBindings();
 
     SmartDashboard.putData("Autonomous", autoChooser);
-    /*SmartDashboard.putData(new syncPID());
-    SmartDashboard.putData(new HomeTurret());*/
+    /*
+     * SmartDashboard.putData(new syncPID()); SmartDashboard.putData(new
+     * HomeTurret());
+     */
   }
 
   private void configureButtonBindings() {
@@ -98,11 +101,12 @@ public class RobotContainer {
     JoystickButton testingShooterButton = new JoystickButton(rightJoystick, 2);
     testingShooterButton.whenHeld(new TurretClearAndFire());
 
-    //JoystickButton homeTurret = new JoystickButton(mechanismJoystick, 11);
-    //homeTurret.whenPressed(new HomeTurret());
+    // JoystickButton homeTurret = new JoystickButton(mechanismJoystick, 11);
+    // homeTurret.whenPressed(new HomeTurret());
 
-    //JoystickButton intakeAndIndex = new JoystickButton(mechanismJoystick, 2);
-    //intakeAndIndex.whenHeld(new ParallelCommandGroup(new SetIndexerPower(-1), new SetIntakePower(1)));
+    // JoystickButton intakeAndIndex = new JoystickButton(mechanismJoystick, 2);
+    // intakeAndIndex.whenHeld(new ParallelCommandGroup(new SetIndexerPower(-1), new
+    // SetIntakePower(1)));
 
     JoystickButton intake = new JoystickButton(mechanismJoystick, Constants.intakeBtn);
     JoystickButton driverIntake = new JoystickButton(rightJoystick, 1);
@@ -117,7 +121,8 @@ public class RobotContainer {
     forwardIndex.whenHeld(new SetIndexerPower(-1));
 
     JoystickButton reverseIndex = new JoystickButton(mechanismJoystick, Constants.indexReverse);
-    reverseIndex.whenHeld(new ParallelCommandGroup(new EjectBallFromShooter(), new SetIndexerPower(1), new SetLoaderPower(-1)));
+    reverseIndex
+        .whenHeld(new ParallelCommandGroup(new EjectBallFromShooter(), new SetIndexerPower(1), new SetLoaderPower(-1)));
 
     JoystickButton centerTurret = new JoystickButton(leftJoystick, 1);
     centerTurret.whenHeld(new CenterTurret());
@@ -139,26 +144,34 @@ public class RobotContainer {
     return mechanismJoystick;
   }
 
-  public static JoystickButton getHangingButton(){
+  public static JoystickButton getHangingButton() {
     return hangingButton;
   }
 
-  /** Return the selected autonomous command  */
-  public CommandBase getSelectedAuto(){
+  /** Return the selected autonomous command */
+  public CommandBase getSelectedAuto() {
     return autoChooser.getSelected();
   }
-  public Command TrajectoryAttempt(){
-    var autoVoltageConstant = new DifferentialDriveVoltageConstraint(new SimpleMotorFeedforward(Constants.Drivetrain.ksVolts, Constants.Drivetrain.ksVoltsSecondsPerMeter, Constants.Drivetrain.ksVoltsSecondsSquaredPerMeter), Constants.Drivetrain.kDriveKinematics, 7);
-    
-    TrajectoryConfig config = new TrajectoryConfig(Constants.Drivetrain.kMaxSpeedMetersPerSecond, Constants.Drivetrain.kMaxAccelerationMetersPerSecondSquared).setKinematics(Constants.Drivetrain.kDriveKinematics).addConstraint(autoVoltageConstant);
 
-    Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(new Pose2d(0, 0, new Rotation2d(0)), List.of(new Translation2d(1, 1), new Translation2d(2, -1)), new Pose2d(3, 0, new Rotation2d(0)), config);
-    
-    RamseteCommand ramseteCommand = new RamseteCommand(exampleTrajectory, drivetrain::getPose, new RamseteController(Constants.Drivetrain.kRamseteB,  Constants.Drivetrain.kRamseteZeta), (new SimpleMotorFeedforward(Constants.Drivetrain.ksVolts, Constants.Drivetrain.ksVoltsSecondsPerMeter, Constants.Drivetrain.ksVoltsSecondsSquaredPerMeter)), Constants.Drivetrain.kDriveKinematics, drivetrain::getWheelSpeeds, new PIDController(Constants.Drivetrain.kPDriveVel, 0, 0), new PIDController(Constants.Drivetrain.kPDriveVel, 0, 0), drivetrain::tankDriveVolts, drivetrain);
+  public Command TrajectoryAttempt() {
+    DifferentialDriveVoltageConstraint autoVoltageConstant = new DifferentialDriveVoltageConstraint(
+        new SimpleMotorFeedforward(Constants.Drivetrain.ksVolts, Constants.Drivetrain.ksVoltsSecondsPerMeter,
+            Constants.Drivetrain.ksVoltsSecondsSquaredPerMeter),
+        Constants.Drivetrain.kDriveKinematics, 7);
+    TrajectoryConfig config = new TrajectoryConfig(Constants.Drivetrain.kMaxSpeedMetersPerSecond,
+        Constants.Drivetrain.kMaxAccelerationMetersPerSecondSquared)
+            .setKinematics(Constants.Drivetrain.kDriveKinematics).addConstraint(autoVoltageConstant);
+    Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(new Pose2d(0, 0, new Rotation2d(0)),
+        List.of(new Translation2d(1, 1), new Translation2d(2, -1)), new Pose2d(-3, 0, new Rotation2d(0)), config);
+    RamseteCommand ramseteCommand = new RamseteCommand(exampleTrajectory, drivetrain::getPose,
+        new RamseteController(Constants.Drivetrain.kRamseteBeta, Constants.Drivetrain.kRamseteZeta),
+        (new SimpleMotorFeedforward(Constants.Drivetrain.ksVolts, Constants.Drivetrain.ksVoltsSecondsPerMeter,
+            Constants.Drivetrain.ksVoltsSecondsSquaredPerMeter)),
+        Constants.Drivetrain.kDriveKinematics, drivetrain::getWheelSpeeds,
+        new PIDController(Constants.Drivetrain.kPDriveVel, 0, 0),
+        new PIDController(Constants.Drivetrain.kPDriveVel, 0, 0), drivetrain::tankDriveVolts, drivetrain);
 
     drivetrain.resetOdometry(exampleTrajectory.getInitialPose());
-
     return ramseteCommand.andThen(() -> drivetrain.tankDriveVolts(0, 0));
   }
 }
-

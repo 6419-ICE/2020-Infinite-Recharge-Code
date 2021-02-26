@@ -6,6 +6,7 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot;
+
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 
 /**
@@ -24,62 +25,35 @@ public final class Constants {
         // public static final double rotationsPerInch = 1.0/InchesPerRotation;
         public static final double headingPidTolerance = 1.5;
 
-        public static final double ksVolts = 0.669;
-        public static final double ksVoltsSecondsPerMeter = 0.878;
-        public static final double ksVoltsSecondsSquaredPerMeter = 0.0777;
+        /*
+         * Trajectory Constants From characterization analyzer Max Acceptable Control
+         * Effort (V)
+         */
+        public static final double ksVolts = 0.669, ksVoltsSecondsPerMeter = 0.878,
+                ksVoltsSecondsSquaredPerMeter = 0.0777, kPDriveVel = 0.000556, kTrackWidth = 0.5752;
 
-        // from characterization analyzer Max Acceptable Control Effort (V)
-        public static final double kPDriveVel = 7.0;
-
-        public static final double kTrackWidth = 0.5752;
         public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(kTrackWidth);
 
-        public static final double kMaxSpeedMetersPerSecond = 5;
-        public static final double kMaxAccelerationMetersPerSecondSquared = 3;
-
-        public static final double kRamseteB = 2;
-        public static final double kRamseteZeta = 0.7;
+        public static final double kMaxSpeedMetersPerSecond = 5, kMaxAccelerationMetersPerSecondSquared = 3;
+        public static final double kRamseteBeta = 2, kRamseteZeta = 0.7;
 
         /*
-        characterization: 
-            Position loop:
-                kP: 0.0152
-                kD: 0.0859
-            Velocity loop: 
-                kP: 0.000556
-                kD: 0
-        */
-
-
-
+         * characterization: Position loop: kP: 0.0152 kD: 0.0859 Velocity loop: kP:
+         * 0.000556 kD: 0
+         */
 
     }
 
     /* Motor Ports */
-    public static final int FRONT_ONE_PIN = 1, 
-                            FRONT_TWO_PIN = 2, 
-                            FRONT_THREE_PIN = 3, 
-                            BACK_ONE_PIN = 4,
-                            BACK_TWO_PIN = 5, 
-                            BACK_THREE_PIN = 6, 
-                            SHOOTER_ONE_PIN = 0, 
-                            SHOOTER_TWO_PIN = 1, 
-                            TRAVERSE_PIN = 2;
+    public static final int FRONT_ONE_PIN = 1, FRONT_TWO_PIN = 2, FRONT_THREE_PIN = 3, BACK_ONE_PIN = 4,
+            BACK_TWO_PIN = 5, BACK_THREE_PIN = 6, SHOOTER_ONE_PIN = 0, SHOOTER_TWO_PIN = 1, TRAVERSE_PIN = 2;
 
     /* Joystick Ports */
-    public static final int joy1 = 0, 
-                            joy2 = 1,
-                            joy3 = 2;
+    public static final int joy1 = 0, joy2 = 1, joy3 = 2;
 
     /* Joystick Buttons */
-    public static final int shooterBtn = 9,
-                            intakeBtn = 1,
-                            intakeIndexBtn = -1,
-                            outtakeBtn = 2,
-                            indexForward = 6,
-                            indexReverse = 7,
-                            liftingButton = 5;
-
+    public static final int shooterBtn = 9, intakeBtn = 1, intakeIndexBtn = -1, outtakeBtn = 2, indexForward = 6,
+            indexReverse = 7, liftingButton = 5;
 
     /* Default Autonomous Values */
     public static final double autoAngle = 90, d1 = 40, d2 = 0;
@@ -89,52 +63,39 @@ public final class Constants {
 
     /* Hall Effect Sensor Port */
     public static final int sensorPrt = 0;
-    
-    /* Loader Motor Port*/
+
+    /* Loader Motor Port */
     public static final int LOADER = 10;
 
     /* Intake Motor Port */
     public static final int INTAKE = 11;
-    
+
     /* Intake Motor Port */
     public static final int INDEXER = 12;
 
     /** Constants for the Turret */
     public static class Turret {
-        public static final int SHOOTER0 = 7, 
-                                SHOOTER1 = 8, 
-                                TRAVERSE = 9,
-                                HOMING_SWITCH = 0;
+        public static final int SHOOTER0 = 7, SHOOTER1 = 8, TRAVERSE = 9, HOMING_SWITCH = 0;
 
-        public static final double FIRING_SPEED = 5000, 
-                                    SLEW_SPROCKET_TEETH = 112, 
-                                    PINION_SPROCKET_TEETH = 12,
-                                    ENCODER_TICKS_PER_REV = 4096,
-                                    // How far the turret can traverse, in degrees, from *center*
-                                    TRAVERSE_LIMIT_ANGLE = 90, 
-                                    // limit in revolutions of the turret
-                                    TRAVERSE_SOFT_LIMIT = (TRAVERSE_LIMIT_ANGLE / 360.0)
-                                    // limit in revolutions of the pinion
-                                    * (SLEW_SPROCKET_TEETH / PINION_SPROCKET_TEETH)
-                                    * ENCODER_TICKS_PER_REV; // limit in ticks
+        public static final double FIRING_SPEED = 5000, SLEW_SPROCKET_TEETH = 112, PINION_SPROCKET_TEETH = 12,
+                ENCODER_TICKS_PER_REV = 4096,
+                // How far the turret can traverse, in degrees, from *center*
+                TRAVERSE_LIMIT_ANGLE = 90,
+                // limit in revolutions of the turret
+                TRAVERSE_SOFT_LIMIT = (TRAVERSE_LIMIT_ANGLE / 360.0)
+                        // limit in revolutions of the pinion
+                        * (SLEW_SPROCKET_TEETH / PINION_SPROCKET_TEETH) * ENCODER_TICKS_PER_REV; // limit in ticks
 
         public static final boolean ENABLE_LIMITS = false;
     }
 
     public static class Loader {
-        public static final int LOADER_MOTOR = 10,
-                                LOAD_SENSOR = 1;
+        public static final int LOADER_MOTOR = 10, LOAD_SENSOR = 1;
     }
 
     public static class Hanger {
-        public static final int COMPRESSOR = 0,
-                                LEFT_SOLENOID_1 = 0,
-                                LEFT_SOLENOID_2 = 1,
-                                RIGHT_SOLENOID_1 = 2,
-                                RIGHT_SOLENOID_2 = 3,
-                                POSITIONING_SOLENOID_1 = 4,
-                                POSITIONING_SOLENOID_2 = 5;
-
+        public static final int COMPRESSOR = 0, LEFT_SOLENOID_1 = 0, LEFT_SOLENOID_2 = 1, RIGHT_SOLENOID_1 = 2,
+                RIGHT_SOLENOID_2 = 3, POSITIONING_SOLENOID_1 = 4, POSITIONING_SOLENOID_2 = 5;
 
     }
 }

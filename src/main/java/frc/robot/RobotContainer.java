@@ -161,7 +161,7 @@ public class RobotContainer {
     DifferentialDriveVoltageConstraint autoVoltageConstant = new DifferentialDriveVoltageConstraint(
         new SimpleMotorFeedforward(Constants.Drivetrain.ksVolts, Constants.Drivetrain.ksVoltsSecondsPerMeter,
             Constants.Drivetrain.ksVoltsSecondsSquaredPerMeter),
-        Constants.Drivetrain.kDriveKinematics, 7);
+        Constants.Drivetrain.kDriveKinematics, 10);
 
     // Create config for Trajectory
     TrajectoryConfig config = new TrajectoryConfig(Constants.Drivetrain.kMaxSpeedMetersPerSecond,
@@ -174,11 +174,11 @@ public class RobotContainer {
     // Create a Trajectory
     Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
         // Start at the origin facing the +X direction
-        new Pose2d(0, 0, new Rotation2d(0)),
+        new Pose2d(0, 0, new Rotation2d(Math.toRadians(0))),
         // Pass through these two interior waypoints, making an 's' curve path
-        List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
+        List.of(new Translation2d(.5, 0)),
         // End 3 meters straight ahead of where we started, facing forward
-        new Pose2d(-3, 0, new Rotation2d(0)),
+        new Pose2d(1, 0, new Rotation2d(Math.toRadians(179))),
         // Pass config
         config);
 
@@ -195,6 +195,6 @@ public class RobotContainer {
 
     // Reset odometry to the starting pose of the trajectory.
     drivetrain.resetOdometry(exampleTrajectory.getInitialPose());
-    return ramseteCommand.andThen(() -> drivetrain.tankDriveVolts(0, 0));
+    return ramseteCommand;
   }
 }

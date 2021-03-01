@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
@@ -67,7 +68,7 @@ public class DriveTrain extends SubsystemBase {
         imu.calibrate();
         m_gyro = imu;
 
-        m_odometry = new DifferentialDriveOdometry(m_gyro.getRotation2d());
+        m_odometry = new DifferentialDriveOdometry(new Rotation2d(Math.toRadians(-getGyroHeading())));
 
         m_leftControllerGroup.setInverted(false);
         m_rightControllerGroup.setInverted(false);
@@ -296,7 +297,7 @@ public class DriveTrain extends SubsystemBase {
     }
 
     public double getGyroHeading() {
-        return m_gyro.getRotation2d().getDegrees() - 180;
+        return (m_gyro.getAngle()/2);
     }
 
     /**
@@ -342,6 +343,12 @@ public class DriveTrain extends SubsystemBase {
         return encoder.getIntegratedSensorPosition() / 2048 * Constants.Drivetrain.inchesPerRotation;
     }
 
+    public double getLeftEncoderDistance() {
+        return m_leftEncoder.getIntegratedSensorPosition() / 2048 * Constants.Drivetrain.inchesPerRotation;
+    }
+    public double getRightEncoderDistance() {
+        return m_rightEncoder.getIntegratedSensorPosition() / 2048 * Constants.Drivetrain.inchesPerRotation;
+    }
     /**
      * Gets the average distance of the two encoders.
      *
@@ -364,6 +371,8 @@ public class DriveTrain extends SubsystemBase {
     public void initSendable(SendableBuilder builder) {
         builder.addDoubleProperty("Heading", this::getGyroHeading, null);
         builder.addDoubleProperty("Encoder Distance", this::getAverageEncoderDistance, null);
+        builder.addDoubleProperty("Left Encoder Distance", this::getLeftEncoderDistance, null);
+        builder.addDoubleProperty("Right Encoder Distance", this::getRightEncoderDistance, null);
         super.initSendable(builder);
     }
 
@@ -372,7 +381,7 @@ public class DriveTrain extends SubsystemBase {
      */
     @Override
     public void periodic() {
-        m_odometry.update(m_gyro.getRotation2d(), getEncoderDistance(m_leftEncoder),
+        m_odometry.update(new Rotation2d(Math.toRadians(-getGyroHeading()/2)), getEncoderDistance(m_leftEncoder),
                 -getEncoderDistance(m_rightEncoder));
         /*
          * if (headingPidEnabled) { double output =
@@ -408,7 +417,8 @@ public class DriveTrain extends SubsystemBase {
      */
     public void resetOdometry(Pose2d pose) {
         resetEncoders();
-        m_odometry.resetPosition(pose, m_gyro.getRotation2d());
+        zeroHeading();
+        m_odometry.resetPosition(pose, new Rotation2d(Math.toRadians(-getGyroHeading())));
     }
 
     /**

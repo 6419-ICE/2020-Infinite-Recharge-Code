@@ -30,7 +30,7 @@ public final class Constants {
                  * Effort (V)
                  */
                 public static final double ksVolts = 0.669, ksVoltsSecondsPerMeter = 0.878,
-                                ksVoltsSecondsSquaredPerMeter = 0.0777, kPDriveVel = 0.0007, kTrackWidth = 0.5752;
+                                ksVoltsSecondsSquaredPerMeter = 0.0777, kPDriveVel = 0.000000184, kTrackWidth = 0.5842 * 2.4;
 
                 public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(
                                 kTrackWidth);

@@ -7,11 +7,15 @@
 
 package frc.robot;
 
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.List;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Ultrasonic.Unit;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.RamseteController;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
@@ -23,7 +27,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint;
+import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
@@ -161,7 +167,7 @@ public class RobotContainer {
     DifferentialDriveVoltageConstraint autoVoltageConstant = new DifferentialDriveVoltageConstraint(
         new SimpleMotorFeedforward(Constants.Drivetrain.ksVolts, Constants.Drivetrain.ksVoltsSecondsPerMeter,
             Constants.Drivetrain.ksVoltsSecondsSquaredPerMeter),
-        Constants.Drivetrain.kDriveKinematics, 10);
+        Constants.Drivetrain.kDriveKinematics, 6);
 
     // Create config for Trajectory
     TrajectoryConfig config = new TrajectoryConfig(Constants.Drivetrain.kMaxSpeedMetersPerSecond,
@@ -176,14 +182,24 @@ public class RobotContainer {
         // Start at the origin facing the +X direction
         new Pose2d(0, 0, new Rotation2d(Math.toRadians(0))),
         // Pass through these two interior waypoints, making an 's' curve path
-        List.of(new Translation2d(.5, 0)),
+        List.of(new Translation2d(Units.feetToMeters(5), Units.feetToMeters(4)), new Translation2d(Units.feetToMeters(15), Units.feetToMeters(4)), new Translation2d(Units.feetToMeters(20), Units.feetToMeters(-1)),  new Translation2d(Units.feetToMeters(22), Units.feetToMeters(2)),new Translation2d(Units.feetToMeters(20), Units.feetToMeters(4)), new Translation2d(Units.feetToMeters(15), Units.feetToMeters(0)), new Translation2d(Units.feetToMeters(5), Units.feetToMeters(0))),
         // End 3 meters straight ahead of where we started, facing forward
-        new Pose2d(1, 0, new Rotation2d(Math.toRadians(179))),
+        new Pose2d(Units.feetToMeters(-2), Units.feetToMeters(5), new Rotation2d(Math.toRadians(180))),
         // Pass config
         config);
 
+    String trajectoryJSON = "paths/SlalomPath.wpilib.json";
+
+    Trajectory trajectory = new Trajectory();
+    try {
+      Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
+      trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+    } catch (IOException ex) {
+      //DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
+    }
+
     // Create a Ramsete Command
-    RamseteCommand ramseteCommand = new RamseteCommand(exampleTrajectory, drivetrain::getPose,
+    RamseteCommand ramseteCommand = new RamseteCommand(trajectory, drivetrain::getPose,
         new RamseteController(Constants.Drivetrain.kRamseteB, Constants.Drivetrain.kRamseteZeta),
         (new SimpleMotorFeedforward(Constants.Drivetrain.ksVolts, Constants.Drivetrain.ksVoltsSecondsPerMeter,
             Constants.Drivetrain.ksVoltsSecondsSquaredPerMeter)),
@@ -192,9 +208,8 @@ public class RobotContainer {
         new PIDController(Constants.Drivetrain.kPDriveVel, 0, 0),
         // RamseteCommand passes volts to the callback
         drivetrain::tankDriveVolts, drivetrain);
-
     // Reset odometry to the starting pose of the trajectory.
-    drivetrain.resetOdometry(exampleTrajectory.getInitialPose());
+    drivetrain.resetOdometry(trajectory.getInitialPose());
     return ramseteCommand;
   }
 }

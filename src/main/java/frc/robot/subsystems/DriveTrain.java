@@ -297,7 +297,7 @@ public class DriveTrain extends SubsystemBase {
     }
 
     public double getGyroHeading() {
-        return (m_gyro.getAngle()/2);
+        return (m_gyro.getAngle()*2);
     }
 
     /**

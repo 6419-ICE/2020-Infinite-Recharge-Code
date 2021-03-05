@@ -153,9 +153,9 @@ public class RobotContainer {
   /**
    * Create an Autonomous Command using Trajectory
    */
-  public Command TrajectoryAttempt() {
+  public Command TrajectoryAttempt(String path) {
     // Create a voltage constraint to ensure we don't accelerate too fast
-    String trajectoryJSON = "paths/BarrelRacing.wpilib.json";
+    String trajectoryJSON = "paths/" + path + ".wpilib.json";
 
     Trajectory trajectory = new Trajectory();
     try {

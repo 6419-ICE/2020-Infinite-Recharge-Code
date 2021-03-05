@@ -9,27 +9,18 @@ package frc.robot;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.List;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.Ultrasonic.Unit;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.RamseteController;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
-import edu.wpi.first.wpilibj.geometry.Pose2d;
-import edu.wpi.first.wpilibj.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
-import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
-import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
-import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint;
-import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
@@ -164,38 +155,15 @@ public class RobotContainer {
    */
   public Command TrajectoryAttempt() {
     // Create a voltage constraint to ensure we don't accelerate too fast
-    DifferentialDriveVoltageConstraint autoVoltageConstant = new DifferentialDriveVoltageConstraint(
-        new SimpleMotorFeedforward(Constants.Drivetrain.ksVolts, Constants.Drivetrain.ksVoltsSecondsPerMeter,
-            Constants.Drivetrain.ksVoltsSecondsSquaredPerMeter),
-        Constants.Drivetrain.kDriveKinematics, 6);
-
-    // Create config for Trajectory
-    TrajectoryConfig config = new TrajectoryConfig(Constants.Drivetrain.kMaxSpeedMetersPerSecond,
-        Constants.Drivetrain.kMaxAccelerationMetersPerSecondSquared)
-            // Add kinematics to ensure max speed is actually obeyed
-            .setKinematics(Constants.Drivetrain.kDriveKinematics)
-            // Apply the voltage constraint
-            .addConstraint(autoVoltageConstant);
-
-    // Create a Trajectory
-    Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
-        // Start at the origin facing the +X direction
-        new Pose2d(0, 0, new Rotation2d(Math.toRadians(0))),
-        // Pass through these two interior waypoints, making an 's' curve path
-        List.of(new Translation2d(Units.feetToMeters(5), Units.feetToMeters(4)), new Translation2d(Units.feetToMeters(15), Units.feetToMeters(4)), new Translation2d(Units.feetToMeters(20), Units.feetToMeters(-1)),  new Translation2d(Units.feetToMeters(22), Units.feetToMeters(2)),new Translation2d(Units.feetToMeters(20), Units.feetToMeters(4)), new Translation2d(Units.feetToMeters(15), Units.feetToMeters(0)), new Translation2d(Units.feetToMeters(5), Units.feetToMeters(0))),
-        // End 3 meters straight ahead of where we started, facing forward
-        new Pose2d(Units.feetToMeters(-2), Units.feetToMeters(5), new Rotation2d(Math.toRadians(180))),
-        // Pass config
-        config);
-
-    String trajectoryJSON = "paths/SlalomPath.wpilib.json";
+    String trajectoryJSON = "paths/BarrelRacing.wpilib.json";
 
     Trajectory trajectory = new Trajectory();
     try {
       Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
       trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
     } catch (IOException ex) {
-      //DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
+      // DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON,
+      // ex.getStackTrace());
     }
 
     // Create a Ramsete Command

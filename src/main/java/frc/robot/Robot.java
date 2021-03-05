@@ -9,8 +9,10 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.HomeTurret;
 import frc.robot.subsystems.Limelight;
 
@@ -65,7 +67,13 @@ public class Robot extends TimedRobot { // CommandRobot
     RobotContainer.drivetrain.setMaxMotorSpeed(0.7);
     autoCommand = robotContainer.getSelectedAuto();
 
-    robotContainer.TrajectoryAttempt().schedule();
+    SequentialCommandGroup commandGroup = new SequentialCommandGroup();
+    for (int i = 0; i < 4; i++) {
+      commandGroup.addCommands(robotContainer.TrajectoryAttempt("BouncePath" + Integer.toString(i + 1)));
+    }
+    commandGroup.schedule();
+    // robotContainer.TrajectoryAttempt("BouncePath1").schedule();
+    
   }
 
   /** Called periodically during autonomous */

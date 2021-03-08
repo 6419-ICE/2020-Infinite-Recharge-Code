@@ -57,8 +57,8 @@ public class DriveByEncoder extends CommandBase {
     /** Report to Shuffleboard of the current encoder position */
     @Override
     public void execute() {
-        SmartDashboard.putNumber("Left Encoder", Math.abs((leftEncoder.getSelectedSensorPosition()/4096 * 2) * inchesPerRotation));
-        SmartDashboard.putNumber("Right Encoder", Math.abs((rightEncoder.getSelectedSensorPosition()/4096 * 2) * inchesPerRotation));
+        // SmartDashboard.putNumber("Left Encoder", Math.abs((leftEncoder.getSelectedSensorPosition()/4096 * 2) * inchesPerRotation));
+        // SmartDashboard.putNumber("Right Encoder", Math.abs((rightEncoder.getSelectedSensorPosition()/4096 * 2) * inchesPerRotation));
 
         /*
          * Drive to set number of inches if (leftEncoder.getPosition() *

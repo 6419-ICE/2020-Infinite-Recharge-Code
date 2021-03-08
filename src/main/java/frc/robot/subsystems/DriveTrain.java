@@ -179,8 +179,8 @@ public class DriveTrain extends SubsystemBase {
     public void setMaxMotorSpeed(double speed) {
         m_leftMotors[0].configPeakOutputForward(speed);
         m_leftMotors[0].configPeakOutputReverse(-speed);
-        m_leftMotors[0].configPeakOutputForward(speed);
-        m_leftMotors[0].configPeakOutputReverse(-speed);
+        m_rightMotors[0].configPeakOutputForward(speed);
+        m_rightMotors[0].configPeakOutputReverse(-speed);
     }
 
     /**
@@ -191,7 +191,7 @@ public class DriveTrain extends SubsystemBase {
      */
     public void drive(double l, double r) {
         m_leftControllerGroup.set(l * Constants.Drivetrain.speedLmt);
-        m_leftControllerGroup.set(-r * Constants.Drivetrain.speedLmt);
+        m_rightControllerGroup.set(-r * Constants.Drivetrain.speedLmt);
     }
 
     /**

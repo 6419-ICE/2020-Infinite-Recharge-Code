@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.RamseteController;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
@@ -25,6 +26,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.*;
@@ -148,6 +150,14 @@ public class RobotContainer {
   /** Return the selected autonomous command */
   public CommandBase getSelectedAuto() {
     return autoChooser.getSelected();
+  }
+
+  public SequentialCommandGroup BouncePath() {
+    SequentialCommandGroup commandGroup = new SequentialCommandGroup();
+    for (int i = 0; i < 4; i++) {
+      commandGroup.addCommands(this.TrajectoryAttempt("BouncePath" + Integer.toString(i + 1)));
+    }
+    return commandGroup;
   }
 
   /**

@@ -67,12 +67,7 @@ public class Robot extends TimedRobot { // CommandRobot
     RobotContainer.drivetrain.setMaxMotorSpeed(0.7);
     autoCommand = robotContainer.getSelectedAuto();
 
-    SequentialCommandGroup commandGroup = new SequentialCommandGroup();
-    for (int i = 0; i < 4; i++) {
-      commandGroup.addCommands(robotContainer.TrajectoryAttempt("BouncePath" + Integer.toString(i + 1)));
-    }
-    commandGroup.schedule();
-    // robotContainer.TrajectoryAttempt("BouncePath1").schedule();
+    robotContainer.TrajectoryAttempt("BouncePath1").schedule();
     
   }
 

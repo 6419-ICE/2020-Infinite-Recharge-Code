@@ -83,10 +83,8 @@ public class RobotContainer {
     configureButtonBindings();
 
     SmartDashboard.putData("Autonomous", autoChooser);
-    /*
-     * SmartDashboard.putData(new syncPID()); SmartDashboard.putData(new
-     * HomeTurret());
-     */
+    SmartDashboard.putData(new syncPID()); SmartDashboard.putData(new HomeTurret());
+
   }
 
   private void configureButtonBindings() {
@@ -100,12 +98,12 @@ public class RobotContainer {
     JoystickButton testingShooterButton = new JoystickButton(rightJoystick, 2);
     testingShooterButton.whenHeld(new TurretClearAndFire());
 
-    // JoystickButton homeTurret = new JoystickButton(mechanismJoystick, 11);
-    // homeTurret.whenPressed(new HomeTurret());
+    JoystickButton homeTurret = new JoystickButton(mechanismJoystick, 11);
+    homeTurret.whenPressed(new HomeTurret());
 
-    // JoystickButton intakeAndIndex = new JoystickButton(mechanismJoystick, 2);
-    // intakeAndIndex.whenHeld(new ParallelCommandGroup(new SetIndexerPower(-1), new
-    // SetIntakePower(1)));
+    JoystickButton intakeAndIndex = new JoystickButton(mechanismJoystick, 2);
+    intakeAndIndex.whenHeld(new ParallelCommandGroup(new SetIndexerPower(-1), new
+    SetIntakePower(1)));
 
     JoystickButton intake = new JoystickButton(mechanismJoystick, Constants.intakeBtn);
     JoystickButton driverIntake = new JoystickButton(rightJoystick, 1);

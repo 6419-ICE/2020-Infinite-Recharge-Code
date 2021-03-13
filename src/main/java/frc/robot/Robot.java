@@ -16,8 +16,8 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.HomeTurret;
 import frc.robot.subsystems.Limelight;
 
-/** 
- * Hey look its a robot 
+/**
+ * Hey look it's a robot
  */
 public class Robot extends TimedRobot { // CommandRobot
   private CommandBase autoCommand;
@@ -26,17 +26,21 @@ public class Robot extends TimedRobot { // CommandRobot
   /** Initialize the RobotContainer with the robot */
   @Override
   public void robotInit() {
-    // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
+    // Instantiate our RobotContainer. This will perform all our button bindings,
+    // and put our
     // autonomous chooser on the dashboard.
     robotContainer = new RobotContainer();
-    //RobotContainer.compressor.setClosedLoopControl(true);
+    // RobotContainer.compressor.setClosedLoopControl(true);
   }
 
   @Override
   public void robotPeriodic() {
-    // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
-    // commands, running already-scheduled commands, removing finished or interrupted commands,
-    // and running subsystem periodic() methods.  This must be called from the robot's periodic
+    // Runs the Scheduler. This is responsible for polling buttons, adding
+    // newly-scheduled
+    // commands, running already-scheduled commands, removing finished or
+    // interrupted commands,
+    // and running subsystem periodic() methods. This must be called from the
+    // robot's periodic
     // block in order for anything in the Command-based framework to work.
 
     CommandScheduler.getInstance().run();
@@ -45,41 +49,41 @@ public class Robot extends TimedRobot { // CommandRobot
   /** Called once each time the robot enters Disabled mode */
   @Override
   public void disabledInit() {
-   /* RobotContainer.limelight.setLightMode(Limelight.LightMode.OFF);
-    RobotContainer.limelight.setCameraMode(Limelight.CameraMode.VISION);*/
+    RobotContainer.limelight.setLightMode(Limelight.LightMode.OFF);
+    RobotContainer.limelight.setCameraMode(Limelight.CameraMode.VISION);
   }
 
   @Override
   public void disabledPeriodic() {
-   /* RobotContainer.limelight.setLightMode(Limelight.LightMode.OFF);
+    RobotContainer.limelight.setLightMode(Limelight.LightMode.OFF);
     RobotContainer.limelight.setCameraMode(Limelight.CameraMode.VISION);
-    //RobotContainer.limelight.setLightMode(Limelight.LightMode.ON);
+    RobotContainer.limelight.setLightMode(Limelight.LightMode.ON);
     if (RobotController.getUserButton()) {
       RobotContainer.shooter.setEncoderPosition((int) Constants.Turret.TRAVERSE_SOFT_LIMIT);
-    }*/
+    }
   }
 
   /** Runs an autonomous command selected in a SendableChooser */
   @Override
   public void autonomousInit() {
-    //RobotContainer.limelight.setLightMode(Limelight.LightMode.ON);
+    // RobotContainer.limelight.setLightMode(Limelight.LightMode.ON);
 
     RobotContainer.drivetrain.setMaxMotorSpeed(0.7);
     autoCommand = robotContainer.getSelectedAuto();
 
     robotContainer.TrajectoryAttempt("BouncePath1").schedule();
-    
+
   }
 
   /** Called periodically during autonomous */
   @Override
   public void autonomousPeriodic() {
-    
+
   }
 
   @Override
   public void teleopInit() {
-    //RobotContainer.limelight.setLightMode(Limelight.LightMode.ON);
+    RobotContainer.limelight.setLightMode(Limelight.LightMode.ON);
 
     RobotContainer.drivetrain.setMaxMotorSpeed(1);
     // This makes sure that the autonomous stops running when
@@ -91,7 +95,7 @@ public class Robot extends TimedRobot { // CommandRobot
       autoCommand.cancel();
     }
 
-    //new HomeTurret().schedule();
+    new HomeTurret().schedule();
   }
 
   /** Called periodically during operator control */

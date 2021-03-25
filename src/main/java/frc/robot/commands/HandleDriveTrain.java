@@ -20,18 +20,20 @@ public class HandleDriveTrain extends CommandBase{
     // When in doubt, stop the motors
     @Override
     public void initialize() {
-        RobotContainer.drivetrain.stop(); // Don't move on init
+        RobotContainer.drivetrain.diffStop(); // Don't move on init
+        RobotContainer.drivetrain.zeroHeading();
+        RobotContainer.drivetrain.resetEncoders();
     }
 
     // Used for Teleop control and displaying power values
     @Override
     public void execute() {
-        double power = Utilities.applyDeadband(RobotContainer.getRightJoy().getY(), 0.03);
+        double power = Utilities.applyDeadband(-RobotContainer.getRightJoy().getY(), 0.03);
         double turn = Utilities.applyDeadband(RobotContainer.getLeftJoy().getX(), 0.03);
         power = Math.copySign(Math.abs(Math.pow(power, 2)), power);
         turn = Math.copySign(Math.abs(Math.pow(turn, 2)), turn);
-        SmartDashboard.putNumber("Power", power);
-        SmartDashboard.putNumber("Turn", turn);
+        // SmartDashboard.putNumber("Power", power);
+        // SmartDashboard.putNumber("Turn", turn);
 
         RobotContainer.drivetrain.arcadeDrive(power, turn);
         super.execute();

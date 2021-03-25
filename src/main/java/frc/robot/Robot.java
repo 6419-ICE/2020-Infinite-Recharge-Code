@@ -9,13 +9,15 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.HomeTurret;
 import frc.robot.subsystems.Limelight;
 
-/** 
- * Hey look its a robot 
+/**
+ * Hey look it's a robot
  */
 public class Robot extends TimedRobot { // CommandRobot
   private CommandBase autoCommand;
@@ -24,17 +26,21 @@ public class Robot extends TimedRobot { // CommandRobot
   /** Initialize the RobotContainer with the robot */
   @Override
   public void robotInit() {
-    // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
+    // Instantiate our RobotContainer. This will perform all our button bindings,
+    // and put our
     // autonomous chooser on the dashboard.
     robotContainer = new RobotContainer();
-    //RobotContainer.compressor.setClosedLoopControl(true);
+    // RobotContainer.compressor.setClosedLoopControl(true);
   }
 
   @Override
   public void robotPeriodic() {
-    // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
-    // commands, running already-scheduled commands, removing finished or interrupted commands,
-    // and running subsystem periodic() methods.  This must be called from the robot's periodic
+    // Runs the Scheduler. This is responsible for polling buttons, adding
+    // newly-scheduled
+    // commands, running already-scheduled commands, removing finished or
+    // interrupted commands,
+    // and running subsystem periodic() methods. This must be called from the
+    // robot's periodic
     // block in order for anything in the Command-based framework to work.
 
     CommandScheduler.getInstance().run();
@@ -51,7 +57,7 @@ public class Robot extends TimedRobot { // CommandRobot
   public void disabledPeriodic() {
     RobotContainer.limelight.setLightMode(Limelight.LightMode.OFF);
     RobotContainer.limelight.setCameraMode(Limelight.CameraMode.VISION);
-    //RobotContainer.limelight.setLightMode(Limelight.LightMode.ON);
+    RobotContainer.limelight.setLightMode(Limelight.LightMode.ON);
     if (RobotController.getUserButton()) {
       RobotContainer.shooter.setEncoderPosition((int) Constants.Turret.TRAVERSE_SOFT_LIMIT);
     }
@@ -60,20 +66,19 @@ public class Robot extends TimedRobot { // CommandRobot
   /** Runs an autonomous command selected in a SendableChooser */
   @Override
   public void autonomousInit() {
-    RobotContainer.limelight.setLightMode(Limelight.LightMode.ON);
+    // RobotContainer.limelight.setLightMode(Limelight.LightMode.ON);
 
     RobotContainer.drivetrain.setMaxMotorSpeed(0.7);
     autoCommand = robotContainer.getSelectedAuto();
 
-    if (autoCommand != null) {
-      autoCommand.schedule();
-    }
+    robotContainer.TrajectoryAttempt("BouncePath1").schedule();
+
   }
 
   /** Called periodically during autonomous */
   @Override
   public void autonomousPeriodic() {
-    
+
   }
 
   @Override

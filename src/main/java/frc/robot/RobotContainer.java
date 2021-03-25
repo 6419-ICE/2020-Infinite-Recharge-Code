@@ -7,13 +7,26 @@
 
 package frc.robot;
 
+import java.io.IOException;
+import java.nio.file.Path;
+
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Sendable;
+import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.controller.RamseteController;
+import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.trajectory.Trajectory;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.RamseteCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.*;
@@ -44,7 +57,8 @@ public class RobotContainer {
   private static SendableChooser<CommandBase> autoChooser;
 
   /**
-   * Set default commands and construct SendableChooser for autonomous command selection
+   * Set default commands and construct SendableChooser for autonomous command
+   * selection
    */
   public RobotContainer() {
     // Default Commands
@@ -59,18 +73,18 @@ public class RobotContainer {
     autoChooser.setDefaultOption("None", null);
     autoChooser.addOption("Path A Red", new PathARed());
     /*
-    aChooser.addOption("Trench Run", new TrenchRunAuto());
-    aChooser.addOption("Center to Mid", new CenterMidAuto());
-    aChooser.addOption("Left to Mid", new LeftMidAuto());
-    aChooser.addOption("Test", new Turn(180));
-    */
+     * aChooser.addOption("Trench Run", new TrenchRunAuto());
+     * aChooser.addOption("Center to Mid", new CenterMidAuto());
+     * aChooser.addOption("Left to Mid", new LeftMidAuto());
+     * aChooser.addOption("Test", new Turn(180));
+     */
 
     // Set button binding instances
     configureButtonBindings();
 
     SmartDashboard.putData("Autonomous", autoChooser);
-    SmartDashboard.putData(new syncPID());
-    SmartDashboard.putData(new HomeTurret());
+    SmartDashboard.putData(new syncPID()); SmartDashboard.putData(new HomeTurret());
+
   }
 
   private void configureButtonBindings() {
@@ -84,11 +98,12 @@ public class RobotContainer {
     JoystickButton testingShooterButton = new JoystickButton(rightJoystick, 2);
     testingShooterButton.whenHeld(new TurretClearAndFire());
 
-    //JoystickButton homeTurret = new JoystickButton(mechanismJoystick, 11);
-    //homeTurret.whenPressed(new HomeTurret());
+    JoystickButton homeTurret = new JoystickButton(mechanismJoystick, 11);
+    homeTurret.whenPressed(new HomeTurret());
 
-    //JoystickButton intakeAndIndex = new JoystickButton(mechanismJoystick, 2);
-    //intakeAndIndex.whenHeld(new ParallelCommandGroup(new SetIndexerPower(-1), new SetIntakePower(1)));
+    JoystickButton intakeAndIndex = new JoystickButton(mechanismJoystick, 2);
+    intakeAndIndex.whenHeld(new ParallelCommandGroup(new SetIndexerPower(-1), new
+    SetIntakePower(1)));
 
     JoystickButton intake = new JoystickButton(mechanismJoystick, Constants.intakeBtn);
     JoystickButton driverIntake = new JoystickButton(rightJoystick, 1);
@@ -103,7 +118,8 @@ public class RobotContainer {
     forwardIndex.whenHeld(new SetIndexerPower(-1));
 
     JoystickButton reverseIndex = new JoystickButton(mechanismJoystick, Constants.indexReverse);
-    reverseIndex.whenHeld(new ParallelCommandGroup(new EjectBallFromShooter(), new SetIndexerPower(1), new SetLoaderPower(-1)));
+    reverseIndex
+        .whenHeld(new ParallelCommandGroup(new EjectBallFromShooter(), new SetIndexerPower(1), new SetLoaderPower(-1)));
 
     JoystickButton centerTurret = new JoystickButton(leftJoystick, 1);
     centerTurret.whenHeld(new CenterTurret());
@@ -125,12 +141,51 @@ public class RobotContainer {
     return mechanismJoystick;
   }
 
-  public static JoystickButton getHangingButton(){
+  public static JoystickButton getHangingButton() {
     return hangingButton;
   }
 
-  /** Return the selected autonomous command  */
-  public CommandBase getSelectedAuto(){
+  /** Return the selected autonomous command */
+  public CommandBase getSelectedAuto() {
     return autoChooser.getSelected();
+  }
+
+  public SequentialCommandGroup BouncePath() {
+    SequentialCommandGroup commandGroup = new SequentialCommandGroup();
+    for (int i = 0; i < 4; i++) {
+      commandGroup.addCommands(this.TrajectoryAttempt("BouncePath" + Integer.toString(i + 1)));
+    }
+    return commandGroup;
+  }
+
+  /**
+   * Create an Autonomous Command using Trajectory
+   */
+  public Command TrajectoryAttempt(String path) {
+    // Create a voltage constraint to ensure we don't accelerate too fast
+    String trajectoryJSON = "paths/" + path + ".wpilib.json";
+
+    Trajectory trajectory = new Trajectory();
+    try {
+      Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
+      trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+    } catch (IOException ex) {
+      // DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON,
+      // ex.getStackTrace());
+    }
+
+    // Create a Ramsete Command
+    RamseteCommand ramseteCommand = new RamseteCommand(trajectory, drivetrain::getPose,
+        new RamseteController(Constants.Drivetrain.kRamseteB, Constants.Drivetrain.kRamseteZeta),
+        (new SimpleMotorFeedforward(Constants.Drivetrain.ksVolts, Constants.Drivetrain.ksVoltsSecondsPerMeter,
+            Constants.Drivetrain.ksVoltsSecondsSquaredPerMeter)),
+        Constants.Drivetrain.kDriveKinematics, drivetrain::getWheelSpeeds,
+        new PIDController(Constants.Drivetrain.kPDriveVel, 0, 0),
+        new PIDController(Constants.Drivetrain.kPDriveVel, 0, 0),
+        // RamseteCommand passes volts to the callback
+        drivetrain::tankDriveVolts, drivetrain);
+    // Reset odometry to the starting pose of the trajectory.
+    drivetrain.resetOdometry(trajectory.getInitialPose());
+    return ramseteCommand;
   }
 }

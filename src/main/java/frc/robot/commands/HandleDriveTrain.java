@@ -28,6 +28,9 @@ public class HandleDriveTrain extends CommandBase{
     // Used for Teleop control and displaying power values
     @Override
     public void execute() {
+        boolean turbo = RobotContainer.getLeftJoy().getTrigger();
+        double multiplier = turbo ? 1.0 : 0.8;
+
         double power = Utilities.applyDeadband(-RobotContainer.getRightJoy().getY(), 0.03);
         double turn = Utilities.applyDeadband(RobotContainer.getLeftJoy().getX(), 0.03);
         power = Math.copySign(Math.abs(Math.pow(power, 2)), power);
@@ -35,7 +38,7 @@ public class HandleDriveTrain extends CommandBase{
         // SmartDashboard.putNumber("Power", power);
         // SmartDashboard.putNumber("Turn", turn);
 
-        RobotContainer.drivetrain.arcadeDrive(power, turn);
+        RobotContainer.drivetrain.arcadeDrive(power*multiplier, turn);
         super.execute();
     }
 

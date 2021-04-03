@@ -74,12 +74,6 @@ public class RobotContainer {
     autoChooser.addOption("Bounce",  new TrajectoryAttempt("BouncePathFull"));
     autoChooser.addOption("Slalom Path", new TrajectoryAttempt("SlalomPath"));
     autoChooser.addOption("Barrel Racing", new TrajectoryAttempt("BarrelRacing"));
-    /*  
-     * aChooser.addOption("Trench Run", new TrenchRunAuto());
-     * aChooser.addOption("Center to Mid", new CenterMidAuto());
-     * aChooser.addOption("Left to Mid", new LeftMidAuto());
-     * aChooser.addOption("Test", new Turn(180)); 
-     */
 
     // Set button binding instances
     configureButtonBindings();

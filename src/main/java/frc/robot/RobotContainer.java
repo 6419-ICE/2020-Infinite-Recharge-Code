@@ -71,12 +71,14 @@ public class RobotContainer {
     /* Multiple Autonomous Selections */
     autoChooser = new SendableChooser<>();
     autoChooser.setDefaultOption("None", null);
-    autoChooser.addOption("Path A Red", new PathARed());
-    /*
+    autoChooser.addOption("Bounce",  new TrajectoryAttempt("BouncePathFull"));
+    autoChooser.addOption("Slalom Path", new TrajectoryAttempt("SlalomPath"));
+    autoChooser.addOption("Barrel Racing", new TrajectoryAttempt("BarrelRacing"));
+    /*  
      * aChooser.addOption("Trench Run", new TrenchRunAuto());
      * aChooser.addOption("Center to Mid", new CenterMidAuto());
      * aChooser.addOption("Left to Mid", new LeftMidAuto());
-     * aChooser.addOption("Test", new Turn(180));
+     * aChooser.addOption("Test", new Turn(180)); 
      */
 
     // Set button binding instances
@@ -153,39 +155,10 @@ public class RobotContainer {
   public SequentialCommandGroup BouncePath() {
     SequentialCommandGroup commandGroup = new SequentialCommandGroup();
     for (int i = 0; i < 4; i++) {
-      commandGroup.addCommands(this.TrajectoryAttempt("BouncePath" + Integer.toString(i + 1)));
+      commandGroup.addCommands(new TrajectoryAttempt("BouncePath" + Integer.toString(i + 1)));
     }
+    commandGroup.schedule();
     return commandGroup;
   }
 
-  /**
-   * Create an Autonomous Command using Trajectory
-   */
-  public Command TrajectoryAttempt(String path) {
-    // Create a voltage constraint to ensure we don't accelerate too fast
-    String trajectoryJSON = "paths/" + path + ".wpilib.json";
-
-    Trajectory trajectory = new Trajectory();
-    try {
-      Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
-      trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
-    } catch (IOException ex) {
-      // DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON,
-      // ex.getStackTrace());
-    }
-
-    // Create a Ramsete Command
-    RamseteCommand ramseteCommand = new RamseteCommand(trajectory, drivetrain::getPose,
-        new RamseteController(Constants.Drivetrain.kRamseteB, Constants.Drivetrain.kRamseteZeta),
-        (new SimpleMotorFeedforward(Constants.Drivetrain.ksVolts, Constants.Drivetrain.ksVoltsSecondsPerMeter,
-            Constants.Drivetrain.ksVoltsSecondsSquaredPerMeter)),
-        Constants.Drivetrain.kDriveKinematics, drivetrain::getWheelSpeeds,
-        new PIDController(Constants.Drivetrain.kPDriveVel, 0, 0),
-        new PIDController(Constants.Drivetrain.kPDriveVel, 0, 0),
-        // RamseteCommand passes volts to the callback
-        drivetrain::tankDriveVolts, drivetrain);
-    // Reset odometry to the starting pose of the trajectory.
-    drivetrain.resetOdometry(trajectory.getInitialPose());
-    return ramseteCommand;
-  }
 }

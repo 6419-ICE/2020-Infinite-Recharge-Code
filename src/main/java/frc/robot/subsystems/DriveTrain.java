@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.commands.HandleDriveTrain;
 
 public class DriveTrain extends SubsystemBase {
 
@@ -159,6 +160,9 @@ public class DriveTrain extends SubsystemBase {
         }
         if (!prefs.containsKey("Heading D")) {
             prefs.putDouble("Heading D", 0);
+        }
+        if (!prefs.containsKey("Turbo Speed")) {
+            prefs.putDouble("Turbo Speed", 0.6);
         }
 
         headingPidController = new PIDController(0.0061, // .00435 for 50%, .0061 for 25%

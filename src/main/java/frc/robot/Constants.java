@@ -30,7 +30,7 @@ public final class Constants {
                  * Effort (V)
                  */
                 public static final double ksVolts = 0.598, ksVoltsSecondsPerMeter = 0.929,
-                                ksVoltsSecondsSquaredPerMeter = 0.0564, kPDriveVel = 0.00000465, kTrackWidth = 0.5842;
+                                ksVoltsSecondsSquaredPerMeter = 0.0564, kPDriveVel = 0.00000465, kTrackWidth = 0.8304242384791596;
 
                 public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(
                                 kTrackWidth);
@@ -40,7 +40,7 @@ public final class Constants {
 
                 // Larger values of b make convergence more aggressive like a proportional term
                 // whereas larger values of zeta provide more damping in the response.
-                public static final double kRamseteB = 2, kRamseteZeta = 0.7;
+                public static final double kRamseteB = .8, kRamseteZeta = 1.4;
 
                 /*
                  * characterization: Position loop: kP: 0.0152 kD: 0.0859 Velocity loop: kP:

@@ -70,9 +70,7 @@ public class Robot extends TimedRobot { // CommandRobot
 
     RobotContainer.drivetrain.setMaxMotorSpeed(0.7);
     autoCommand = robotContainer.getSelectedAuto();
-
-    robotContainer.TrajectoryAttempt("BouncePath1").schedule();
-
+    autoCommand.schedule();
   }
 
   /** Called periodically during autonomous */

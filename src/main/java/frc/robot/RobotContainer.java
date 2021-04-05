@@ -74,6 +74,8 @@ public class RobotContainer {
     autoChooser.addOption("Bounce",  new TrajectoryAttempt("BouncePathFull"));
     autoChooser.addOption("Slalom Path", new TrajectoryAttempt("SlalomPath"));
     autoChooser.addOption("Barrel Racing", new TrajectoryAttempt("BarrelRacing"));
+    autoChooser.addOption("Galactic Search A", new GalacticSearch("A"));
+    autoChooser.addOption("Galactic Search B", new GalacticSearch("B"));
 
     // Set button binding instances
     configureButtonBindings();

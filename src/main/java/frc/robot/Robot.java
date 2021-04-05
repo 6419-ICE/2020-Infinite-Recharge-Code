@@ -49,15 +49,12 @@ public class Robot extends TimedRobot { // CommandRobot
   /** Called once each time the robot enters Disabled mode */
   @Override
   public void disabledInit() {
-    RobotContainer.limelight.setLightMode(Limelight.LightMode.OFF);
-    RobotContainer.limelight.setCameraMode(Limelight.CameraMode.VISION);
+
   }
 
   @Override
   public void disabledPeriodic() {
-    RobotContainer.limelight.setLightMode(Limelight.LightMode.OFF);
-    RobotContainer.limelight.setCameraMode(Limelight.CameraMode.VISION);
-    RobotContainer.limelight.setLightMode(Limelight.LightMode.ON);
+
     if (RobotController.getUserButton()) {
       RobotContainer.shooter.setEncoderPosition((int) Constants.Turret.TRAVERSE_SOFT_LIMIT);
     }

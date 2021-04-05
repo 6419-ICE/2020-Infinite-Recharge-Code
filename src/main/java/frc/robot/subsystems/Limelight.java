@@ -11,7 +11,7 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
@@ -83,8 +83,8 @@ public class Limelight extends SubsystemBase {
     private NetworkTableEntry horizontalAngle, verticalAngle;
     private NetworkTableEntry ledMode, camMode, tv, ta;
 
-    private SendableChooser<LightMode> lightModeSendableChooser;
-    private SendableChooser<CameraMode> cameraModeSendableChooser;
+    public SendableChooser<LightMode> lightModeSendableChooser;
+    public SendableChooser<CameraMode> cameraModeSendableChooser;
 
     /** Construct a Limelight subsystem */
     public Limelight() {
@@ -149,7 +149,8 @@ public class Limelight extends SubsystemBase {
 
     @Override
     public void periodic() {
-        /*if (lightModeSendableChooser != null) {
+        
+        if (lightModeSendableChooser != null) {
             int mode = lightModeSendableChooser.getSelected().ordinal();
             if (!ledMode.getNumber(0).equals(mode)) {
                 ledMode.setNumber(mode);
@@ -160,7 +161,8 @@ public class Limelight extends SubsystemBase {
             if (!camMode.getNumber(0).equals(mode)) {
                 camMode.setNumber(mode);
             }
-        }*/
+        }
+        
     }
 
     /** Build the Shuffleboard Choosers
@@ -185,6 +187,9 @@ public class Limelight extends SubsystemBase {
 
         cameraModeSendableChooser.setDefaultOption(CameraMode.DRIVER_CAMERA.toString(), CameraMode.DRIVER_CAMERA);
         cameraModeSendableChooser.addOption(CameraMode.VISION.toString(), CameraMode.VISION);
+
+        SmartDashboard.putData("Light Mode", lightModeSendableChooser);
+        SmartDashboard.putData("Camera Mode", cameraModeSendableChooser);
 
         super.initSendable(builder);
     }

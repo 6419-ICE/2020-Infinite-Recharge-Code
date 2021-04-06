@@ -1,9 +1,9 @@
 {
   "lengthUnit": "Meter",
   "exportUnit": "Always Meters",
-  "maxVelocity": 6.0,
-  "maxAcceleration": 2.0,
+  "maxVelocity": 5.0,
+  "maxAcceleration": 2.5,
   "wheelBase": 0.83,
-  "gameName": "Galactic Search A",
+  "gameName": "Slalom Path",
   "outputDir": ".."
 }

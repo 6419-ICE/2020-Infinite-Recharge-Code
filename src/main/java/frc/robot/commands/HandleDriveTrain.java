@@ -8,6 +8,9 @@ import frc.robot.Utilities;
 
 /** Handle the Drivetrain in Teleop */
 public class HandleDriveTrain extends CommandBase{
+
+    private static final String SPEED_LIMIT_KEY = "Speed Limit";
+
     @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
     Preferences prefs;
     /**
@@ -25,13 +28,14 @@ public class HandleDriveTrain extends CommandBase{
         RobotContainer.drivetrain.zeroHeading();
         RobotContainer.drivetrain.resetEncoders();
         prefs = Preferences.getInstance();
+        prefs.initDouble(SPEED_LIMIT_KEY, 0.6);
     }
 
     // Used for Teleop control and displaying power values
     @Override
     public void execute() {
         boolean turbo = RobotContainer.getLeftJoy().getTrigger();
-        double multiplier = turbo ? 1.0 : prefs.getDouble("Turbo Speed", 0.6);
+        double multiplier = turbo ? 1.0 : prefs.getDouble(SPEED_LIMIT_KEY, 0.6);
 
         double power = Utilities.applyDeadband(-RobotContainer.getRightJoy().getY(), 0.03);
         double turn = Utilities.applyDeadband(RobotContainer.getLeftJoy().getX(), 0.03);

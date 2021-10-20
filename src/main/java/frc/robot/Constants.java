@@ -94,6 +94,8 @@ public final class Constants {
                                                                                                                          // in
                                                                                                                          // ticks
 
+                // note: this enables *hardware* limits. if this is false, the turret uses encoder limits.
+                // keep this set to false.
                 public static final boolean ENABLE_LIMITS = false;
         }
 

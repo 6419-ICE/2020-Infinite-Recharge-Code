@@ -65,7 +65,7 @@ public class DriveTrain extends SubsystemBase {
         resetEncoders();
 
         /* Reset the Accelerometer/Gyro/etc. */
-        imu.setYawAxis(ADIS16448_IMU.IMUAxis.kZ);
+        imu.setYawAxis(ADIS16448_IMU.IMUAxis.kX);
         imu.calibrate();
         m_gyro = imu;
 
@@ -165,7 +165,7 @@ public class DriveTrain extends SubsystemBase {
             prefs.putDouble("Turbo Speed", 0.6);
         }
 
-        headingPidController = new PIDController(0.0061, // .00435 for 50%, .0061 for 25%
+        headingPidController = new PIDController(0.00525, // .00435 for 50%, .0061 for 25%
                 0, 0.00001);
         headingPidController.setTolerance(Constants.Drivetrain.headingPidTolerance);
     }
@@ -247,6 +247,7 @@ public class DriveTrain extends SubsystemBase {
     /** Refresh PID with Shuffleboard tunings */
     public void syncPIDTunings() {
         Preferences prefs = Preferences.getInstance();
+        
         headingPidController.setPID(prefs.getDouble("Heading P", 0.015), 0, prefs.getDouble("Heading D", 0));
     }
 
@@ -300,8 +301,16 @@ public class DriveTrain extends SubsystemBase {
         return headingPidController.atSetpoint();
     }
 
+    public double headingOutput(double value){
+        return headingPidController.calculate(value);
+    }
+
+    public double headingOutput(double value, double setPoint){
+        return headingPidController.calculate(value, setPoint);
+    }
+
     public double getGyroHeading() {
-        return (m_gyro.getAngle()*2);
+        return (m_gyro.getAngle());
     }
 
     /**

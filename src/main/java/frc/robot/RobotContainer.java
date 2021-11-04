@@ -66,16 +66,14 @@ public class RobotContainer {
     shooter.setDefaultCommand(new TurretDefault());
     intake.setDefaultCommand(new HandleIntake());
     indexer.setDefaultCommand(new HandleIndexer());
-    loader.setDefaultCommand(new LoaderDefault());
 
     /* Multiple Autonomous Selections */
     autoChooser = new SendableChooser<>();
     autoChooser.setDefaultOption("None", null);
-    autoChooser.addOption("Bounce",  new TrajectoryAttempt("BouncePathFull"));
-    autoChooser.addOption("Slalom Path", new TrajectoryAttempt("SlalomPath"));
-    autoChooser.addOption("Barrel Racing", new TrajectoryAttempt("BarrelRacing"));
-    autoChooser.addOption("Galactic Search A", new GalacticSearch("A"));
-    autoChooser.addOption("Galactic Search B", new GalacticSearch("B"));
+    autoChooser.addOption("Trench Run",  new TrenchRunAuto());
+    autoChooser.addOption("Shoot Auto", new ShootAuto());
+    autoChooser.addOption("Left Mid Auto", new LeftMidAuto());
+    autoChooser.addOption("Center Mid Auto", new CenterMidAuto());
 
     // Set button binding instances
     configureButtonBindings();

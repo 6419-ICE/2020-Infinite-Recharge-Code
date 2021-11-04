@@ -45,13 +45,14 @@ public class DriveByEncoder extends CommandBase {
     public void initialize() {
         System.out.println("DriveByEncoder Initialized.");
 
-        leftEncoder.setSelectedSensorPosition(0, 0, 30);
-        rightEncoder.setSelectedSensorPosition(0, 0, 30);
+        drivetrain.zeroHeading();
+        drivetrain.setHeadingTarget(0);
+        drivetrain.setHeadingPidEnabled(true);
 
+        drivetrain.resetEncoders();
         drivetrain.setMaxMotorSpeed(speedLimit);
-
         drivetrain.stop(); // Don't move on init
-        drivetrain.setSetpoints(distance, distance);
+        //drivetrain.setSetpoints(distance, distance);
     }
 
     /** Report to Shuffleboard of the current encoder position */
@@ -61,17 +62,18 @@ public class DriveByEncoder extends CommandBase {
         // SmartDashboard.putNumber("Right Encoder", Math.abs((rightEncoder.getSelectedSensorPosition()/4096 * 2) * inchesPerRotation));
 
         /*
-         * Drive to set number of inches if (leftEncoder.getPosition() *
-         * inchesPerRotation < distance && rightEncoder.getPosition() *
-         * -inchesPerRotation < distance){ RobotContainer.drivetrain.drive(0.5, 0.5); }
-         * else { RobotContainer.drivetrain.drive(0, 0); done = true; }
-         */
+         * Drive to set number of inches */
+            drivetrain.drive(0.5 - drivetrain.headingOutput(drivetrain.getGyroHeading(), 0), 0.5 + drivetrain.headingOutput(drivetrain.getGyroHeading(), 0));
+
 
         /*
-         * Stay in a straight line if (imu.getAngle() >= originalHeader + buffer){
-         * RobotContainer.drivetrain.drive(0.25, 0.5); } else if (imu.getAngle() <=
-         * originalHeader - buffer){ RobotContainer.drivetrain.drive(0.5, 0.25); }
-         */
+         * Stay in a straight line          
+         if (drivetrain.getHeading() >= 1){
+            drivetrain.drive(0.25, 0.5); 
+        } else if (drivetrain.getHeading() <= -1) { 
+            drivetrain.drive(0.5, 0.25); 
+        }
+        */
 
     }
 
@@ -81,12 +83,13 @@ public class DriveByEncoder extends CommandBase {
         System.out.println(String.format("Drive Complete: interrupted: %s", interrupted ? "yes" : "no"));
         drivetrain.stop();
         drivetrain.setMaxMotorSpeed(1);
+        drivetrain.setHeadingPidEnabled(false);
     }
 
     /** @return if the encoders have reached the desired position */
     @Override
     public boolean isFinished() {
-        return Math.abs((rightEncoder.getSelectedSensorPosition() / 4096 * 2) * inchesPerRotation) >= distance - 8
-                || Math.abs((leftEncoder.getSelectedSensorPosition() / 4096 * 2) * inchesPerRotation) >= distance - 8;
+        return Math.abs((rightEncoder.getSelectedSensorPosition() / 4096 * 2) * inchesPerRotation) >= distance
+                || Math.abs((leftEncoder.getSelectedSensorPosition() / 4096 * 2) * inchesPerRotation) >= distance;
     }
 }
